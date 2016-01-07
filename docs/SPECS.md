@@ -1,4 +1,4 @@
-# Buckutt Client Specifications
+# Buckless Client Specifications
 
 * Usage of Vuejs as frontend framework. Nothing but a web client only.
 * Warning : chrome beta (v > 44), --harmony.
@@ -36,7 +36,7 @@
         2. The seller clicks on the « paid » button
     12. If the user wants to cancel, eject him
     13. If the seller wants to disconnect, eject him (same as 12. but without user)
-    14. To change point (see Buckutt-Server/SPECS.md for more info), click on the point change button (top right) and select the point wanted. The user and the seller will be disconnected
+    14. To change point (see Buckless-Server/SPECS.md for more info), click on the point change button (top right) and select the point wanted. The user and the seller will be disconnected
 
 * Connection to server and device identification
 Use a client certificate, unique to each client and required to each connection.

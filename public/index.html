@@ -201,12 +201,12 @@
                         <template v-for="category in categories">
                             <div id="tab-{{ $index }}" class="mdl-tabs__panel mdl-cell mdl-cell--12-col articlesContainer">
                                 <template v-for="article in articles | filterBy category in 'category.name'" track-by="id">
-                                    <div class="mdl-card mdl-shadow--2dp buckutt-card-image"
+                                    <div class="mdl-card mdl-shadow--2dp buckless-card-image"
                                          @click="onArticleClick"
                                          data-id="{{ article.id }}">
                                         <div class="mdl-card__title mdl-card--expand"></div>
                                         <div class="mdl-card__actions">
-                                            <span class="buckutt-card-image__filename">{{ article.name }}</span>
+                                            <span class="buckless-card-image__filename">{{ article.name }}</span>
                                         </div>
                                         <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
                                                 @click="onMinusClick">

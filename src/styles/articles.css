@@ -4,7 +4,7 @@
     flex-wrap: wrap;
 }
 
-.buckutt-card-image {
+.buckless-card-image {
     background: url('../images/placeholder.jpg');
     cursor: pointer;
     margin: 15px;
@@ -17,12 +17,12 @@
 
 
 /* Activated */
-.buckutt-card-image.active {
+.buckless-card-image.active {
     border: 5px solid #2980b9;
 }
 
 /* Badge correction */
-.buckutt-card-image.active::after {
+.buckless-card-image.active::after {
     background-color: #e74c3c;
     font-size: 16px;
     height: 27px;
@@ -31,7 +31,7 @@
 }
 
 /* Blurry div */
-.buckutt-card-image > .mdl-card__actions::before {
+.buckless-card-image > .mdl-card__actions::before {
     content: ' ';
     background-position: 50% 36px !important;
     background-size: 100%;
@@ -44,7 +44,7 @@
     -webkit-filter: blur(2px);
 }
 
-.buckutt-card-image.active > .mdl-card__actions::before {
+.buckless-card-image.active > .mdl-card__actions::before {
     content: ' ';
     background-position: 50% 45px !important;
     background-size: 100%;
@@ -57,13 +57,13 @@
     -webkit-filter: blur(2px);
 }
 
-.buckutt-card-image > .mdl-card__actions {
+.buckless-card-image > .mdl-card__actions {
     font-size: 17px;
     overflow: hidden;
     padding: 0;
 }
 
-.buckutt-card-image > .mdl-card__actions > .buckutt-card-image__filename {
+.buckless-card-image > .mdl-card__actions > .buckless-card-image__filename {
     background-color: rgba(255, 255, 255, 0.6);
     display: inline-block;
     height: 35px;
@@ -75,16 +75,16 @@
     z-index: 2;
 }
 
-.buckutt-card-image.active > .mdl-card__actions > .buckutt-card-image__filename {
+.buckless-card-image.active > .mdl-card__actions > .buckless-card-image__filename {
     left: -155px;
 }
 
 /* -1 Button */
-.buckutt-card-image > .mdl-button {
+.buckless-card-image > .mdl-button {
     display: none;
 }
 
-.buckutt-card-image.active > .mdl-button {
+.buckless-card-image.active > .mdl-button {
     background-color: #f39c12;
     display: block;
     height: 36px;

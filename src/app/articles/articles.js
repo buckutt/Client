@@ -45,7 +45,7 @@ export default {
          */
         onArticleClick(e) {
             console.log('Click on article');
-            let $target = e.target.parents('.buckutt-card-image');
+            let $target = e.target.parents('.buckless-card-image');
             let id      = $target.getAttribute('data-id');
 
             this.basket.push(id);
@@ -69,7 +69,7 @@ export default {
             console.log('Click on article removal');
             e.stopPropagation();
 
-            let $target = e.target.parents('.buckutt-card-image');
+            let $target = e.target.parents('.buckless-card-image');
             let badge   = parseInt($target.getAttribute('data-badge'), 10);
 
             this.revertPromotions();
