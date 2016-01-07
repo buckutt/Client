@@ -1,0 +1,292 @@
+<html>
+    <head>
+        <title>Buckutt</title>
+        <meta charset="utf-8">
+        <meta name="description" content="Buckutt Client Application">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+            <div class="shadow-loader"
+                 v-show="startedLoading"
+                 transition="fade">
+                <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+            </div>
+
+            <div class="modal-error"
+                 v-show="error"
+                 transition="fade">
+                <div class="mdl-card mdl-shadow--4dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Erreur</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <p>
+                            {{{ errorMessage }}}
+                        </p>
+                        <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
+                                @click="closeError">
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-reload-credit"
+                 v-show="reloadCreditOpened"
+                 transition="fade">
+                <div id="reloadCard" class="mdl-card mdl-shadow--4dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Rechargement</h2>
+                        <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
+                                @click="closeReloadCredit">
+                            Annuler
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <template v-for="method in paymentMethods">
+                            <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
+                                    :class="{ 'mdl-button--raised': reloadMethod === method.slug }"
+                                    :disabled="reloadCreditOpened && waitingForValidation"
+                                    @click="selectReloadMethod(method.slug)">
+                                {{ method.name }}
+                            </button>
+                        </template>
+                        <div class="mdl-grid amountGrid">
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <span id="creditToReload">{{ creditToReload | credit }}</span>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">1</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">2</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">3</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">4</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">5</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">6</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">7</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">8</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">9</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadClearInput">
+                                <i class="material-icons">clear</i>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadInput">0</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 @click="onCreditToReloadValidateInput">
+                                <i class="material-icons">check</i>
+                            </div>
+                        </div>
+                        <div class="mdl-grid buttonsGrid">
+                            <div class="mdl-cell mdl-cell--12-col validate">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+                                        @click="validateReload">
+                                    Paiement accepté
+                                </button>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col cancel">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+                                        @click="invalidPayment">
+                                    Paiement refusé
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="revalidation"
+                 v-show="inputIsForDoubleValidation"
+                 transition="fade">
+                En attente de revalidation utilisateur
+            </div>
+
+            <div class="picture"
+                 v-if="userConnected && showPicture">
+                <template v-if="currentUser.image !== undefined">
+                    <img :src="'images/' + currentUser.image" alt="User pic" width="100" height="100">
+                </template>
+                <template v-if="currentUser.image === undefined">
+                    <i class="material-icons">face</i>
+                </template>
+            </div>
+            <header class="mdl-layout__header"
+                    :class="{ 'with-picture': userConnected && showPicture }">
+                <div class="mdl-layout__header-row">
+                    <div class="mdl-layout-spacer">
+                        <div v-if="userConnected">
+                            <div class="userCredit" data-badge="+{{ totalReload | credit true }}"
+                                 :class="{ 'mdl-badge': totalReload > 0 }">
+                                {{ currentUser.fullname }}
+                                <br>
+                                crédit :
+                                <span class="invalidPrice"
+                                      v-if="currentUser.credit - totalCost + totalReload < 0">{{ currentUser.credit - totalCost + totalReload | credit true }}</span>
+                                <span v-if="currentUser.credit - totalCost + totalReload >= 0">{{ currentUser.credit - totalCost + totalReload | credit true }}</span>
+                            </div>
+                            <span id="reloadMenu"
+                                  v-if="totalReload > 0"
+                                  @click="toggleReloadMenu">
+                                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect">
+                                    <template v-for="reload in detailedReloads">
+                                        <li class="mdl-menu__item"
+                                            @click="removeReloadBasket($index)">
+                                            {{ reload.with }} ({{ reload.amount | credit true }}) <i class="material-icons">delete</i>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </span>
+                            <span class="userBasket">Panier : {{{ panier | basket }}}</span>
+                        </div>
+                        <div v-if="!userConnected && sellerConnected && sellerAuth && lastUser && (lastCredit || lastReload)">
+                            <span v-if="lastCredit && !lastReload">
+                                Dernière action par {{ lastUser }} : achat de {{ lastCredit | credit true }}
+                                <br>
+                                Nouveau crédit : {{ lastAmount | credit true }}
+                            </span>
+                            <span v-if="!lastCredit && lastReload">
+                                Dernière action par {{ lastUser }} : rechargement de {{ lastReload | credit true }}
+                                <br>
+                                Nouveau crédit : {{ lastAmount | credit true }}
+                            </span>
+                            <span v-if="lastCredit && lastReload">
+                                Dernière action par {{ lastUser }} : achat de {{ lastCredit | credit true }} et rechargement de {{ lastReload | credit true }}
+                                <br>
+                                Nouveau crédit : {{ lastAmount | credit true }}
+                            </span>
+                        </div>
+                        <div v-if="!userConnected && sellerConnected && sellerAuth && !lastUser && !(lastCredit || lastReload)">
+                            En attente d'un acheteur
+                        </div>
+                        <div v-if="!userConnected && (!sellerConnected || !sellerAuth)">
+                            En attente d'un vendeur
+                        </div>
+                    </div>
+                    <nav class="mdl-navigation">
+                        <a id="eject" class="mdl-navigation__link" href="#"
+                           v-show="sellerConnected"
+                           @click="onEject">
+                            <i class="material-icons">eject</i>
+                        </a>
+                        <a id="reload" class="mdl-navigation__link" href="#"
+                           v-show="userConnected && sellerCanReload"
+                           @click="askReload">
+                            <i class="material-icons">attach_money</i>
+                        </a>
+                    </nav>
+                </div>
+                <div class="mdl-layout__tab-bar mdl-js-ripple-effect"
+                     v-show="userConnected"
+                     transition="fade">
+                    <a href="#tab-{{ $index }}" class="mdl-layout__tab is-active" data-target="tab-{{ $index }}"
+                       @click="onTabClick"
+                       :class="{ 'is-active': $index === 0 }"
+                       v-for="category in categories">{{ category }}</a>
+                </div>
+            </header>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <!-- Keep v-if on this div and not v-show, else inittabs is called immediately -->
+                    <div class="mdl-grid"
+                         v-if="userConnected"
+                         v-inittabs="">
+                        <template v-for="category in categories">
+                            <div id="tab-{{ $index }}" class="mdl-tabs__panel mdl-cell mdl-cell--12-col articlesContainer">
+                                <template v-for="article in articles | filterBy category in 'category.name'" track-by="id">
+                                    <div class="mdl-card mdl-shadow--2dp buckutt-card-image"
+                                         @click="onArticleClick"
+                                         data-id="{{ article.id }}">
+                                        <div class="mdl-card__title mdl-card--expand"></div>
+                                        <div class="mdl-card__actions">
+                                            <span class="buckutt-card-image__filename">{{ article.name }}</span>
+                                        </div>
+                                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                                                @click="onMinusClick">
+                                            <i class="material-icons">remove</i>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="mdl-grid"
+                         v-show="sellerConnected && sellerAuth && !userConnected"
+                         transition="fade">
+                        <div class="mdl-card mdl-shadow--6dp infoCard">
+                            En attente d'un acheteur
+                        </div>
+                    </div>
+
+                    <div class="mdl-grid"
+                         v-show="sellerConnected && !sellerAuth"
+                         transition="fade">
+                        <div class="mdl-card mdl-shadow--6dp infoCard authCard">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--12-col"
+                                     :class="{ 'wrong': wrongSellerPassword }">
+                                    <span id="password">{{ sellerPasswordInput | passwordHide }}</span>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">1</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">2</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">3</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">4</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">5</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">6</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">7</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">8</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">9</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onClearInput">
+                                    <i class="material-icons">clear</i>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onPasswordInput">0</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     @click="onValidateInput">
+                                    <i class="material-icons">check</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mdl-grid"
+                         v-show="!sellerAuth && !sellerConnected && !userConnected"
+                         transition="fade">
+                        <div class="mdl-card mdl-shadow--6dp infoCard">
+                            En attente d'un vendeur
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <button id="done" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                    v-show="userConnected"
+                    transition="fade"
+                    :class="{ 'error': notEnoughCredit, 'hiddenFab': loadingBasket }"
+                    @click="sendBasket">
+                    <i class="material-icons">done_all</i>
+                    <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"
+                        v-show="loadingBasket"
+                        transition="fade"></div>
+            </button>
+        </div>
+
+        <script src="bundle.js"></script>
+    </body>
+</html>
