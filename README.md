@@ -2,7 +2,7 @@
 
 ## Installation
 
-Required : node/io.js, npm, bower, gulp, static
+Required : node, npm, bower, gulp, static
 
 ```sh
 sudo apt-get install node npm
