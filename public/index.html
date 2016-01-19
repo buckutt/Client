@@ -125,7 +125,7 @@
                         <div v-if="userConnected">
                             <div class="userCredit" data-badge="+{{ totalReload | credit true }}"
                                  :class="{ 'mdl-badge': totalReload > 0 }">
-                                {{ currentUser.fullname }}
+                                {{ currentUser.firstname }} {{ currentUser.lastname }}
                                 <br>
                                 crédit :
                                 <span class="invalidPrice"
