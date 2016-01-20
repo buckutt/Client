@@ -1,0 +1,45 @@
+.mobile .mdl-layout__tab-bar {
+    padding-left: 0;
+    width: 100%;
+}
+
+.mobile .buckless-card-image {
+    margin: 7px;
+    max-height: 120px;
+    max-width: 120px;
+    min-height: 120px;
+    min-width: 120px;
+}
+
+.mobile .userCredit {
+    font-size: 16px;
+    margin-right: 0;
+}
+
+.mobile .userBasket {
+    display: none;
+}
+
+.mobile .mdl-layout__header-row .mdl-navigation__link {
+    padding: 0 5px;
+    position: relative;
+    right: 5px;
+}
+
+/* Picture */
+.is-small-screen .picture,
+.is-small-screen .picture i {
+    height: 104px;
+}
+
+.mobile .picture i {
+    font-size: 60px;
+    height: 104px;
+    line-height: 110px;
+    width: 64px;
+}
+
+.mobile .mdl-layout__header.with-picture {
+    width: calc(100% - 70px);
+    margin-left: 70px;
+}

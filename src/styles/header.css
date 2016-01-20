@@ -120,3 +120,7 @@
 .mdl-layout__tab-bar .mdl-layout__tab {
     cursor: pointer;
 }
+
+.mdl-layout__tab-bar-button {
+    display: none;
+}

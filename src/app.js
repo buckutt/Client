@@ -5,13 +5,7 @@
 // Styles
 
 import './bower_components/material-design-lite/material.min.css';
-import './styles/font.css';
-import './styles/main.css';
-import './styles/header.css';
-import './styles/articles.css';
-import './styles/cards.css';
-import './styles/reloads.css';
-import './styles/transitions.css';
+import './styles';
 
 import './bower_components/material-design-lite/material';
 import './app/utils';
