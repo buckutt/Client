@@ -13,8 +13,8 @@ bower install
 
 ### Note about material-design-lite
 
-Add `window.MaterialLayoutTab = MaterialLayoutTab;` after function declaration (
-`function MaterialLayoutTab(tab, tabs, panels, layout) {`)
+~~Add `window.MaterialLayoutTab = MaterialLayoutTab;` after function declaration (
+`function MaterialLayoutTab(tab, tabs, panels, layout) {`)~~ Fixed by https://github.com/google/material-design-lite/issues/1665
 
 ## Building
 
