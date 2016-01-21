@@ -37,6 +37,8 @@ class OfflineRequest {
         return new Promise((resolve, reject) => {
             let req = new XMLHttpRequest();
 
+            req.withCredentials = true;
+
             req.open(this.method.toUpperCase(), this.url, true);
 
             req.onload = () => {
