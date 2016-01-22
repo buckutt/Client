@@ -2,3 +2,6 @@ bower_components/
 .tern-project
 npm-debug.log
 node_modules/
+public/bundle.js
+public/bundle.js.map
+
