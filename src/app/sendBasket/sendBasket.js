@@ -103,7 +103,7 @@ export default {
                     } else {
                         let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.<br>';
                         error    += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
-                        error    += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckutt.';
+                        error    += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckless.';
                         this.throwError(error);
                     }
                 });
