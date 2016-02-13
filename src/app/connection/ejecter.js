@@ -3,7 +3,7 @@ export default {
         /**
          * Resets variables when user/seller disconnects
          */
-        onEject() {
+        onEject () {
             if (!this.userConnected) {
                 console.info('-> Eject seller');
                 this.currentSeller       = {};

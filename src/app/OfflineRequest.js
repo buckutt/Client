@@ -2,7 +2,7 @@
 
 const strictUriEncode = str =>
     encodeURIComponent(str)
-    .replace(/[!'()*]/g, c => '%' + c.charCodeAt(0).toString(16));
+        .replace(/[!'()*]/g, c => `%${c.charCodeAt(0).toString(16)}`);
 
 let bearer;
 
@@ -35,7 +35,7 @@ class OfflineRequest {
         }
 
         return new Promise((resolve, reject) => {
-            let req = new XMLHttpRequest();
+            const req = new XMLHttpRequest();
 
             req.withCredentials = true;
 
@@ -79,25 +79,25 @@ class OfflineRequest {
     }
 
     static get (url, args) {
-        let req = new OfflineRequest('get', url, args);
+        const req = new OfflineRequest('get', url, args);
 
         return req.send();
     }
 
     static post (url, args) {
-        let req = new OfflineRequest('post', url, args);
+        const req = new OfflineRequest('post', url, args);
 
         return req.send();
     }
 
     static head (url, args) {
-        let req = new OfflineRequest('head', url, args);
+        const req = new OfflineRequest('head', url, args);
 
         return req.send();
     }
 
     static patch (url, args) {
-        let req = new OfflineRequest('patch', url, args);
+        const req = new OfflineRequest('patch', url, args);
 
         return req.send();
     }
@@ -118,8 +118,8 @@ class OfflineRequest {
     static restore () {
         // Resend all the requests
         OfflineRequest.pendingRequests.forEach(req_ => {
-            let req  = req_[0];
-            let data = req_[1];
+            const req  = req_[0];
+            const data = req_[1];
             req.send(data);
         });
     }
@@ -132,9 +132,9 @@ class OfflineRequest {
         return Object.keys(obj)
             .sort()
             .map(key => {
-                let val = obj[key];
+                const val = obj[key];
 
-                if (val === undefined) {
+                if (typeof val === 'undefined') {
                     return '';
                 }
 
@@ -144,11 +144,11 @@ class OfflineRequest {
 
                 if (Array.isArray(val)) {
                     return val.sort().map(val2 =>
-                        strictUriEncode(key) + '=' + strictUriEncode(val2)
+                        `${strictUriEncode(key)}=${strictUriEncode(val2)}`
                     ).join('&');
                 }
 
-                return strictUriEncode(key) + '=' + strictUriEncode(val);
+                return `${strictUriEncode(key)}=${strictUriEncode(val)}`;
             })
             .filter(x => x.length > 0)
             .join('&');

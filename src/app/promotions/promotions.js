@@ -1,16 +1,17 @@
+import { filterObjId } from '../utils';
+
 /**
  * Sanitizes an articles array to keep only what's need for the algorithm
  * @param  {Array} articles Array of articles loaded by AJAX
  * @return {Array} Array sanitized
  */
-function sanitizeArticles (articles) {
-    return articles
-        .slice()
-        .map(article => ({
-                id: article.id
-            })
-        );
-}
+// function sanitizeArticles (articles) {
+//     return articles
+//         .slice()
+//         .map(article => ({
+//             id: article.id
+//         }));
+// }
 
 /**
  * Sanitizes a promotions array to keep only what's need for the algorithm
@@ -21,8 +22,8 @@ function sanitizePromotions (promotions) {
     return promotions
         .slice()
         .map(promotion => {
-            promotion.articles = promotion.articles || [];
-            promotion.sets     = promotion.sets || [];
+            promotion.articles = promotion.articles || [];
+            promotion.sets     = promotion.sets || [];
 
             return {
                 id      : promotion.id,
@@ -52,7 +53,7 @@ function containsArticle (basketCopy, article) {
 function articleIsFromSet (vm, articleId, setId) {
     let found = false;
 
-    let fullSet = vm.sets.filterObjId(setId);
+    const fullSet = filterObjId(vm.sets, setId);
 
     fullSet.articles.forEach(article => {
         if (article.id === articleId) {
@@ -72,7 +73,7 @@ function articleIsFromSet (vm, articleId, setId) {
  */
 function containsArticleFromSet (vm, basketCopy, set) {
     for (let i = 0; i < basketCopy.length; i++) {
-        let article = basketCopy[i];
+        const article = basketCopy[i];
 
         if (articleIsFromSet(vm, article, set)) {
             return i;
@@ -82,13 +83,13 @@ function containsArticleFromSet (vm, basketCopy, set) {
     return -1;
 }
 
-let articles_;
+// let articles_;
 let promotions_;
 
-let silent = false;
+// let silent = false;
 
 export default {
-    data   : {
+    data: {
         promotionsLoaded: false,
         setsLoaded      : false
     },
@@ -97,32 +98,32 @@ export default {
         /**
          * Silents one basket modification. Avoid infinite watchers loop
          */
-        silentBasketOnce() {
-            silent = true;
+        silentBasketOnce () {
+            // silent = true;
         },
 
         /**
          * Checks for promotions in the basket
          */
-        checkForPromotions() {
-            if (!this.promotionsLoaded || !this.articlesLoaded) {
+        checkForPromotions () {
+            if (!this.promotionsLoaded || !this.articlesLoaded) {
                 return;
             }
 
             let basket = this.basket;
 
-            articles_   = sanitizeArticles(this.articles);
+            // articles_   = sanitizeArticles(this.articles);
             promotions_ = sanitizePromotions(this.promotions);
 
-            let basketPromotions         = this.basketPromotions;
+            const basketPromotions       = this.basketPromotions;
             let promotionsThatDidntMatch = 0;
             let i                        = 0;
 
             // Check the first promotion and continues while they all stop matching (promotionsThatDidntMatch)
             do {
-                let promotion   = promotions_[i];
-                let basketCopy  = basket.slice();
-                let basketPromo = [];
+                const promotion   = promotions_[i];
+                const basketCopy  = basket.slice();
+                const basketPromo = [];
                 // Count what needs to be found
                 let still       = promotion.articles.length + promotion.sets.length;
 
@@ -132,11 +133,11 @@ export default {
 
                 // First check if basket contains articles (more precise)
                 for (let j = 0; j < promotion.articles.length; j++) {
-                    let articlePromotion = promotion.articles[j];
-                    let position         = containsArticle(basketCopy, articlePromotion);
+                    const articlePromotion = promotion.articles[j];
+                    const position         = containsArticle(basketCopy, articlePromotion);
 
                     if (position > -1) {
-                        console.log(articlePromotion + ' is present');
+                        console.log(`${articlePromotion} is present`);
                         // Remove from the temporary basket
                         basketCopy.splice(position, 1);
                         // And add to the temporary basket for this promotion
@@ -147,13 +148,13 @@ export default {
 
                 // Then check if basket contains article that matches set
                 for (let j = 0; j < promotion.sets.length; j++) {
-                    let setPromotion = promotion.sets[j];
-                    let position     = containsArticleFromSet(this, basketCopy, setPromotion);
+                    const setPromotion = promotion.sets[j];
+                    const position     = containsArticleFromSet(this, basketCopy, setPromotion);
 
                     if (position > -1) {
-                        console.log(setPromotion + ' has the good set');
+                        console.log(`${setPromotion} has the good set`);
                         // Get back the article id
-                        let articlePromotion  = basketCopy[position];
+                        const articlePromotion = basketCopy[position];
                         // Remove from the temporary basket
                         basketCopy.splice(position, 1);
                         // And add to the temporary basket for this promotion

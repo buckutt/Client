@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "webpack-dev-server --port 8081",
     "build": "NODE_ENV=production webpack --progress --hide-modules",
-    "lint": "eslint . --ignore-pattern public"
+    "lint": "eslint . --ignore-pattern public,src/bower_components"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",

@@ -1,3 +1,4 @@
+const path    = require('path');
 const webpack = require('webpack');
 
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
     ],
 
     output: {
-        path      : __dirname + '/public',
+        path      : path.join(__dirname, '/public'),
         publicPath: '/',
         filename  : 'bundle.js'
     },
@@ -18,10 +19,10 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.js$/,
+                test   : /\.js$/,
                 exclude: /(bower_components|node_modules)/,
-                loader: 'babel',
-                query: {
+                loader : 'babel',
+                query  : {
                     presets: ['es2015']
                 }
             },
@@ -37,8 +38,8 @@ module.exports = {
     },
 
     devServer: {
-        contentBase: './public',
-        hot: true
+        contentBase: path.join(__dirname, '/public'),
+        hot        : true
     },
 
     plugins: [

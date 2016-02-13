@@ -1,5 +1,3 @@
-'use strict';
-
 /* global window, componentHandler */
 
 // Styles
@@ -9,16 +7,15 @@ import './styles';
 
 import './bower_components/material-design-lite/material';
 import './app/utils';
-import filters from './app/filters';
 
 import Vue from './bower_components/vue/dist/vue';
 
-let data = {
+const data = {
     startedLoading: false,
     config        : {}
 };
 
-let methods = {};
+const methods = {};
 
 const values = obj => {
     if (!obj) {
@@ -28,13 +25,18 @@ const values = obj => {
     return Object.keys(obj).map(k => obj[k]);
 };
 
-let modules = [];
+const modules = [];
 
-import * as articles from './app/articles'; // articles, filterBestPrice, filterPoint
-import * as connection from './app/connection'; // connection, authInput, ejecter
-import * as promotions from './app/promotions'; // promotions, promotionsEvents
-import * as reloads from './app/reloads'; // askReload, reloadMenu
-import * as sendBasket from './app/sendBasket'; // doubleValidation, sendBasket
+// articles, filterBestPrice, filterPoint
+import * as articles from './app/articles';
+// connection, authInput, ejecter
+import * as connection from './app/connection';
+// promotions, promotionsEvents
+import * as promotions from './app/promotions';
+// askReload, reloadMenu
+import * as reloads from './app/reloads';
+// doubleValidation, sendBasket
+import * as sendBasket from './app/sendBasket';
 import initTabs from './app/directives/initTabs';
 import error from './app/error/error';
 import tabs from './app/tabs/tabs';
@@ -51,14 +53,14 @@ modules.push(tabs);
 modules.push(dataLoader);
 
 // Get only modules data
-let modulesDatas   = modules.map(module => (module && module.data) ? module.data : {});
-let modulesMethods = modules.map(module => (module && module.methods) ? module.methods : {});
+const modulesDatas   = modules.map(module => (module && module.data) ? module.data : {});
+const modulesMethods = modules.map(module => (module && module.methods) ? module.methods : {});
 
 // Merge all of it on data
 Object.assign(data, ...modulesDatas);
 Object.assign(methods, ...modulesMethods);
 
-let app = new Vue({
+const app = new Vue({
     el: '#main',
     data,
     methods

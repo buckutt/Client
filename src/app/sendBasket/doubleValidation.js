@@ -8,10 +8,10 @@ export default {
          * Revalidates the basket.
          * @param  {String} cardNumber The buyer id
          */
-        revalidate(cardNumber) {
+        revalidate (cardNumber) {
             const revalidate = true;
 
-            let mol = this.currentUser.meansOfLogin.filter(mol => mol.type === 'etuId')[0];
+            const mol = this.currentUser.meansOfLogin.filter(mol_ => mol_.type === 'etuId')[0];
 
             if (cardNumber === mol || revalidate) {
                 this.inputIsForDoubleValidation = false;

@@ -14,14 +14,14 @@ export default {
         /**
          * Open the reload modal
          */
-        askReload() {
+        askReload () {
             this.reloadCreditOpened = true;
         },
 
         /**
          * Closes the reload modal
          */
-        closeReloadCredit() {
+        closeReloadCredit () {
             this.reloadCreditOpened = false;
 
             if (this.waitingForValidation) {
@@ -38,14 +38,14 @@ export default {
          * Selects the payment method
          * @param  {String} slug The method name
          */
-        selectReloadMethod(slug) {
+        selectReloadMethod (slug) {
             this.reloadMethod = slug;
         },
 
         /**
          * Clears the reload amount
          */
-        onCreditToReloadClearInput() {
+        onCreditToReloadClearInput () {
             this.creditToReload = 0;
         },
 
@@ -53,8 +53,8 @@ export default {
          * Adds a number to the reload amount (credit card terminal like)
          * @param  {MouseEvent} e The click event
          */
-        onCreditToReloadInput(e) {
-            let value          = parseInt(e.target.parents('.mdl-cell').textContent.trim(), 10);
+        onCreditToReloadInput (e) {
+            const value          = parseInt(e.target.parents('.mdl-cell').textContent.trim(), 10);
             let creditToReload = this.creditToReload;
 
             creditToReload = creditToReload * 10 + value * 0.01;
@@ -68,8 +68,8 @@ export default {
          * Validates the amount
          * @param  {MouseEvent} e The click event
          */
-        onCreditToReloadValidateInput(e) {
-            let grid = e.target.parents('.mdl-grid');
+        onCreditToReloadValidateInput (e) {
+            const grid = e.target.parents('.mdl-grid');
             this.waitingForValidation              = true;
             grid.style.height                    = 0;
             grid.nextElementSibling.style.height = '122px';
@@ -79,8 +79,8 @@ export default {
          * Clears the payment
          * @param  {MouseEvent} e The click event
          */
-        invalidPayment(e) {
-            let grid = e.target.parents('.mdl-grid');
+        invalidPayment (e) {
+            const grid = e.target.parents('.mdl-grid');
             grid.style.height                        = 0;
             grid.previousElementSibling.style.height = '242px';
             this.waitingForValidation                  = false;
@@ -90,8 +90,8 @@ export default {
          * Validates the reload
          * @param  {MouseEvent} e The click event
          */
-        validateReload(e) {
-            let grid = e.target.parents('.mdl-grid');
+        validateReload (e) {
+            const grid = e.target.parents('.mdl-grid');
             grid.style.height                        = 0;
             grid.previousElementSibling.style.height = '242px';
 
@@ -103,7 +103,7 @@ export default {
                 amount: this.creditToReload * 100
             });
 
-            setTimeout(function () {
+            setTimeout(() => {
                 $('.userCredit').classList.add('showBadge');
             }, 300);
 

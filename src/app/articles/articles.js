@@ -1,3 +1,4 @@
+import { parents, filterObjId } from '../utils';
 import Vue from '../../bower_components/vue/dist/vue';
 
 /**
@@ -5,31 +6,25 @@ import Vue from '../../bower_components/vue/dist/vue';
  * @param {Vue} vm The view model
  */
 const calculateCost = vm => {
-    let basketCost = vm.basket
+    const basketCost = vm.basket
         .map(articleId =>
-            vm.articles
-                .filterObjId(articleId)
-                .price
-                .amount
+            filterObjId(vm.articles, articleId).price.amount
         );
 
-    let promoCost = vm.basketPromotions
+    const promoCost = vm.basketPromotions
         .map(basketPromotion =>
-            vm.promotions
-                .filterObjId(basketPromotion.id)
-                .price.amount
+            filterObjId(vm.promotions, basketPromotion.id).price.amount
         );
 
-    let totalCost = [0] // There must be at least one value to reduce
-        .concat(basketCost)
+    const totalCost = basketCost
         .concat(promoCost)
-        .reduce((a, b) => a + b);
+        .reduce((a, b) => a + b, 0);
 
     vm.totalCost = totalCost;
 };
 
 export default {
-    data  : {
+    data: {
         articles        : [],
         promotions      : [],
         sets            : [],
@@ -43,17 +38,17 @@ export default {
          * Triggers basket change on article click
          * @param  {MouseEvent} e The click event
          */
-        onArticleClick(e) {
+        onArticleClick (e) {
             console.log('Click on article');
-            let $target = e.target.parents('.buckless-card-image');
-            let id      = $target.getAttribute('data-id');
+            const $target = parents(e.target, '.buckless-card-image');
+            const id      = $target.getAttribute('data-id');
 
             this.basket.push(id);
             this.checkForPromotions();
             calculateCost(this);
 
             if ($target.hasAttribute('data-badge')) {
-                $target.setAttribute('data-badge', parseInt($target.getAttribute('data-badge'), 10) + 1 + '');
+                $target.setAttribute('data-badge', String(parseInt($target.getAttribute('data-badge'), 10) + 1));
             } else {
                 $target.setAttribute('data-badge', '1');
                 $target.classList.add('mdl-badge');
@@ -65,18 +60,18 @@ export default {
          * Triggers basket change on article removal
          * @param  {MouseEvent} e The click event
          */
-        onMinusClick(e) {
+        onMinusClick (e) {
             console.log('Click on article removal');
             e.stopPropagation();
 
-            let $target = e.target.parents('.buckless-card-image');
-            let badge   = parseInt($target.getAttribute('data-badge'), 10);
+            const $target = parents(e.target, '.buckless-card-image');
+            const badge   = parseInt($target.getAttribute('data-badge'), 10);
 
             this.revertPromotions();
 
             Vue.nextTick(() => {
-                let id      = $target.getAttribute('data-id');
-                let index   = this.basket.indexOf(id);
+                const id    = $target.getAttribute('data-id');
+                const index = this.basket.indexOf(id);
 
                 this.basket.splice(index, 1);
                 Vue.nextTick(() => {
@@ -85,7 +80,7 @@ export default {
             });
 
             if (badge > 1) {
-                $target.setAttribute('data-badge', badge - 1 + '');
+                $target.setAttribute('data-badge', String(badge - 1));
             } else {
                 $target.removeAttribute('data-badge');
                 $target.classList.remove('mdl-badge');

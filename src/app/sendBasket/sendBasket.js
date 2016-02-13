@@ -1,8 +1,9 @@
-import config         from '../config';
-import OfflineRequest from '../OfflineRequest';
+import { filterObjId } from '../utils';
+import config          from '../config';
+import OfflineRequest  from '../OfflineRequest';
 
 export default {
-    data  : {
+    data: {
         loadingBasket  : false,
         notEnoughCredit: false,
         lastCredit     : '',
@@ -16,8 +17,8 @@ export default {
          * Sends the basket to the API
          * @param {Boolean} revalidated Sends basket after correct revalidation
          */
-        sendBasket(revalidated) {
-            let basketToSend = [];
+        sendBasket (revalidated) {
+            const basketToSend = [];
 
             if (this.loadingBasket) {
                 return;
@@ -49,7 +50,7 @@ export default {
             }
 
             this.basket.forEach(articleId => {
-                let article = this.articles.filterObjId(articleId);
+                const article = filterObjId(this.articles, articleId);
                 basketToSend.push({
                     buyerId    : this.currentUser.id,
                     fundationId: article.fundationId,
@@ -61,10 +62,10 @@ export default {
                 });
             });
 
-            this.basketPromotions.forEach(basketPromo => {
-                let promoId        = basketPromo.id;
-                let articlesInside = basketPromo.contents;
-                let promo          = this.promotions.filterObjId(promoId);
+            this.basketPromotions.forEach(basketPromo => {
+                const promoId        = basketPromo.id;
+                const articlesInside = basketPromo.contents;
+                const promo          = filterObjId(this.promotions, promoId);
 
                 basketToSend.push({
                     buyerId    : this.currentUser.id,
@@ -101,7 +102,8 @@ export default {
 
                         this.onEject();
                     } else {
-                        let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.<br>';
+                        let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.' +
+                            '<br>';
                         error    += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
                         error    += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckless.';
                         this.throwError(error);

@@ -1,4 +1,4 @@
-import { $ } from '../utils';
+import { $, filterObjId } from '../utils';
 import Vue from '../../bower_components/vue/dist/vue';
 
 Vue.filter('basket', function () {
@@ -7,7 +7,7 @@ Vue.filter('basket', function () {
 
     // Articles display
     this.basket.forEach(item => {
-        let fullItem = this.articles.filterObjId(item);
+        const fullItem = filterObjId(this.articles, item);
 
         if (!fullItem) {
             return;
@@ -17,11 +17,11 @@ Vue.filter('basket', function () {
     });
 
     // Promotions display
-    this.basketPromotions.forEach(promo => {
-        let promotionId        = promo.id;
-        let promotionsArticles = promo.contents;
+    this.basketPromotions.forEach(promo => {
+        const promotionId        = promo.id;
+        const promotionsArticles = promo.contents;
 
-        let fullItem = this.promotions.filterObjId(promotionId);
+        const fullItem = filterObjId(this.promotions, promotionId);
 
         if (!fullItem) {
             return;
@@ -43,14 +43,14 @@ Vue.filter('basket', function () {
     // Stringify promotions
     promotion = Object.keys(promotion)
         .map(item => {
-            let fullName = `${promotion[item].name} x${promotion[item].count}`;
-            let template = `<button class="mdl-button mdl-js-button promotionButton" @click="onPromotionExpand">
+            const fullName = `${promotion[item].name} x${promotion[item].count}`;
+            let template   = `<button class="mdl-button mdl-js-button promotionButton" @click="onPromotionExpand">
                                 ${fullName}
                             </button>
                             <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect">`;
 
             template += promotion[item].articles
-                .map(articleId => this.articles.filterObjId(articleId))
+                .map(articleId => filterObjId(this.articles, articleId))
                 .filerUndefined()
                 .map(article => `<li class="mdl-menu__item">${article.name}</li>`)
                 .join('\n');
@@ -67,7 +67,7 @@ Vue.filter('basket', function () {
         .join(', ');
 
     Vue.nextTick(() => {
-        let $node = $('.mdl-layout-spacer');
+        const $node = $('.mdl-layout-spacer');
 
         if ($node) {
             this.$compile($node);

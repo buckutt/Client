@@ -1,12 +1,16 @@
+import { filterObjId } from '../utils';
+
 export default {
     methods: {
         /**
          * Filters the most accurate point
          */
-        filterPoint() {
+        filterPoint () {
             console.info('Filtering articles', this.articles.length);
 
-            this.articles = this.articles.filter(article => article.points.filterObjId(this.pointId))
+            this.articles = this.articles.filter(article =>
+                filterObjId(article.points, this.pointId)
+            );
         }
     }
-}
+};

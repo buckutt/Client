@@ -1,9 +1,6 @@
 /**
  * Uniquify an array
+ * @param {Array} arr The array
  * @return {Array} Uniquified array
  */
-Array.prototype.uniq = function () {
-    let self = this;
-
-    return self.filter((elem, pos) => self.indexOf(elem) === pos);
-};
+export default arr => arr.filter((elem, pos) => arr.indexOf(elem) === pos);

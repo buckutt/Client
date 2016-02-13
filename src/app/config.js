@@ -1,4 +1,4 @@
-let config = {
+const config = {
     protocol: 'https',
     host    : 'localhost',
     port    : 3000

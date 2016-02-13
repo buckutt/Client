@@ -1,5 +1,5 @@
 import Vue from '../../bower_components/vue/dist/vue';
-import { $, $$ } from '../utils';
+import { $, $$, uniq } from '../utils';
 
 let articlesParsed = false;
 
@@ -14,22 +14,22 @@ export default {
          * Change the tab
          * @param  {MouseEvent} e The click event
          */
-        onTabClick(e) {
-            let target  = e.target.parentElement.getAttribute('data-target');
+        onTabClick (e) {
+            const target = e.target.parentElement.getAttribute('data-target');
             console.info('New tab', target);
             this.tab = target;
         }
     },
 
     controller: vm => {
-        vm.$watch('tab', function (newTab) {
+        vm.$watch('tab', newTab => {
             console.log('tab change');
             Vue.nextTick(() => {
                 $$('.mdl-tabs__panel').forEach($tab => {
                     $tab.style.display = 'none';
                 });
 
-                let $newTab = $(`#${newTab}`);
+                const $newTab = $(`#${newTab}`);
 
                 if ($newTab) {
                     $newTab.style.display = 'flex';
@@ -37,7 +37,7 @@ export default {
             });
         });
 
-        vm.$watch('articles', function () {
+        vm.$watch('articles', () => {
             if (articlesParsed || this.articles.length === 0) {
                 return;
             }
@@ -45,9 +45,11 @@ export default {
             articlesParsed = true;
 
             let categories = this.articles
-                .map(a => a.category.name)
-                .uniq()
-                .sort((a, b) => 1 - a.localeCompare(b)); // Reverse sort
+                .map(a => a.category.name);
+
+            categories = uniq(categories)
+                // Reverse sort
+                .sort((a, b) => 1 - a.localeCompare(b));
 
             this.categories = categories;
         });

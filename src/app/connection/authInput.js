@@ -1,7 +1,6 @@
 import OfflineRequest from '../OfflineRequest';
 import config         from '../config';
 
-let authInput   = {};
 let authingUser = false;
 
 export default {
@@ -14,16 +13,16 @@ export default {
          * Adds value to password input when key is pressed
          * @param  {KeyboardEvent} e The key press event
          */
-        onPasswordInput(e) {
+        onPasswordInput (e) {
             console.log('Password key input');
-            let value = e.target.parents('.mdl-cell').textContent.trim();
+            const value              = e.target.parents('.mdl-cell').textContent.trim();
             this.sellerPasswordInput = this.sellerPasswordInput + value;
         },
 
         /**
          * Clears password input when clear button is pressed
          */
-        onClearInput() {
+        onClearInput () {
             console.log('Password clear input');
             this.sellerPasswordInput = '';
         },
@@ -31,7 +30,7 @@ export default {
         /**
          * Checks the seller when validating password
          */
-        onValidateInput() {
+        onValidateInput () {
             if (authingUser) {
                 return;
             }

@@ -9,7 +9,7 @@ export default {
          * Shows the error modal box
          * @param  {String} message The error message
          */
-        throwError(message) {
+        throwError (message) {
             this.error        = true;
             this.errorMessage = message;
         },
@@ -17,7 +17,7 @@ export default {
         /**
          * Closes the error modal box
          */
-        closeError() {
+        closeError () {
             this.error = false;
         }
     }

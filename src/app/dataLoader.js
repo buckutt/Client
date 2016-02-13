@@ -1,6 +1,6 @@
-import config         from './config';
-import { q }          from './utils';
-import OfflineRequest from './OfflineRequest';
+import config             from './config';
+import { q, filterObjId } from './utils';
+import OfflineRequest     from './OfflineRequest';
 
 export default {
     data: {
@@ -19,17 +19,17 @@ export default {
         /**
          * Loads JSON data
          */
-        loadData() {
+        loadData () {
             this.startedLoading = true;
 
             // Get the device id and point id from the headers
 
-            let notRemoved = {
+            const notRemoved = {
                 field: 'isRemoved',
                 eq   : false
             };
 
-            let articlesJoin = {
+            const articlesJoin = {
                 category: true,
                 points  : true,
                 prices  : {
@@ -40,7 +40,7 @@ export default {
                 }
             };
 
-            let promotionsJoin = {
+            const promotionsJoin = {
                 price   : true,
                 articles: true,
                 sets    : {
@@ -48,7 +48,7 @@ export default {
                 }
             };
 
-            let setsJoin = {
+            const setsJoin = {
                 promotion: true,
                 articles : true
             };
@@ -69,7 +69,8 @@ export default {
                     this.filterBestPrice();
                     this.filterPoint();
 
-                    return OfflineRequest.get(`${config.baseURL}/promotions/search?q=${q(notRemoved)}&embed=${q(promotionsJoin)}`);
+                    return OfflineRequest.get(`${config.baseURL}/promotions/search?q=${q(notRemoved)}` +
+                        `&embed=${q(promotionsJoin)}`);
                 })
                 .then(response => {
                     this.promotionsLoaded = true;
@@ -91,7 +92,7 @@ export default {
                 })
                 .then(response => {
                     this.deviceLoaded = true;
-                    this.device       = response.filterObjId(this.deviceId);
+                    this.device       = filterObjId(response, this.deviceId);
                 })
                 .then(() => {
                     this.startedLoading = false;

@@ -1,14 +1,13 @@
 /* global document, MaterialMenu */
 
-import Vue from '../../bower_components/vue/dist/vue';
-import { $$ } from '../utils';
+import { $$, once } from '../utils';
 
 export default {
     methods: {
         /**
          * Revert promotions to article. Useful when removing an item possibly in a promotion
          */
-        revertPromotions() {
+        revertPromotions () {
             let newBasket = this.basket.slice();
             this.basketPromotions.forEach(promotion => {
                 newBasket = newBasket.concat(promotion.contents);
@@ -22,20 +21,20 @@ export default {
          * Triggered when a dropdown is called to see promotion's content
          * @param  {MouseEvent} e The click event
          */
-        onPromotionExpand(e) {
+        onPromotionExpand (e) {
             console.info('Promotion expanding');
-            let $elem = e.target;
+            const $elem = e.target;
             e.preventDefault();
             let $menu = $elem.nextElementSibling;
             let $menuContainer;
 
             if (!$menu.classList.contains('mdl-menu__container')) {
                 // Init the mdl menu
-                let menu  = new MaterialMenu($menu);
+                const menu         = new MaterialMenu($menu);
                 $menu.MaterialMenu = menu;
-                $menuContainer = $menu.parentElement;
+                $menuContainer     = $menu.parentElement;
                 // Fix margin left not applied
-                $menuContainer.style.marginLeft = ($elem.offsetLeft - $menuContainer.offsetLeft) + 'px';
+                $menuContainer.style.marginLeft = `${($elem.offsetLeft - $menuContainer.offsetLeft)}px`;
             } else {
                 $menu = $menu.children[1];
                 $menuContainer = $menu.parentElement;
@@ -44,7 +43,7 @@ export default {
             $menu.parentElement.style.display = 'block';
 
             // If there is a click elsewhere, just hide this menu
-            document.once('click', () => {
+            once(document, 'click', () => {
                 $$('.mdl-menu__container.is-visible > ul').forEach(menu => menu.MaterialMenu.hide());
             });
 
