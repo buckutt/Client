@@ -52,7 +52,7 @@ class OfflineRequest {
                     resolve(req.responseText);
                 }
 
-                OfflineRequest.pointId  = req.getResponseHeader('point');
+                OfflineRequest.Point_id  = req.getResponseHeader('point');
                 OfflineRequest.deviceId = req.getResponseHeader('device');
             };
 
@@ -161,7 +161,7 @@ class OfflineRequest {
 
 OfflineRequest.pendingRequests    = [];
 OfflineRequest.isWatchingForAlive = false;
-OfflineRequest.pointId            = '';
+OfflineRequest.Point_id            = '';
 OfflineRequest.deviceId           = '';
 
 export default OfflineRequest;

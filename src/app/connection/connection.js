@@ -48,7 +48,7 @@ const checkSerie = (vm, cardNumber) => {
 
                 mol = response[0];
 
-                return OfflineRequest.get(`${config.baseURL}/users/${mol.userId}`);
+                return OfflineRequest.get(`${config.baseURL}/users/${mol.User_id}`);
             })
             .then(response => {
                 if (!response.id) {

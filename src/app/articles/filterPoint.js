@@ -9,7 +9,7 @@ export default {
             console.info('Filtering articles', this.articles.length);
 
             this.articles = this.articles.filter(article =>
-                filterObjId(article.points, this.pointId)
+                filterObjId(article.points, this.Point_id)
             );
         }
     }
