@@ -37,7 +37,7 @@ export default {
             });
         });
 
-        vm.$watch('articles', () => {
+        vm.$watch('articles', function () {
             if (articlesParsed || this.articles.length === 0) {
                 return;
             }
