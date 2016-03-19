@@ -1,5 +1,6 @@
 import OfflineRequest from '../OfflineRequest';
 import config         from '../config';
+import { parents }    from '../utils';
 
 let authingUser = false;
 
@@ -15,7 +16,7 @@ export default {
          */
         onPasswordInput (e) {
             console.log('Password key input');
-            const value              = e.target.parents('.mdl-cell').textContent.trim();
+            const value              = parents(e.target, '.mdl-cell').textContent.trim();
             this.sellerPasswordInput = this.sellerPasswordInput + value;
         },
 

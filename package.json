@@ -9,6 +9,7 @@
   ],
   "license": "MIT",
   "scripts": {
+    "start": "npm run build && static -p 8081 public",
     "dev": "webpack-dev-server --port 8081",
     "build": "NODE_ENV=production webpack --progress --hide-modules",
     "lint": "eslint . --ignore-pattern public,src/bower_components"

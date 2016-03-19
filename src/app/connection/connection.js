@@ -1,6 +1,6 @@
-import OfflineRequest from '../OfflineRequest';
-import config         from '../config';
-import { $, q }       from '../utils';
+import OfflineRequest         from '../OfflineRequest';
+import config                 from '../config';
+import { $, q, isCardNumber } from '../utils';
 
 /**
  * Checks the serie of number and do whatever it has to do (connect user or Seller)
@@ -8,7 +8,7 @@ import { $, q }       from '../utils';
  * @param {String} cardNumber     The number serie
  */
 const checkSerie = (vm, cardNumber) => {
-    if (!cardNumber.isCardNumber()) {
+    if (!isCardNumber(cardNumber)) {
         vm.throwError('Numéro de carte étu invalide');
 
         return;

@@ -7,6 +7,7 @@ import './styles';
 
 import './bower_components/material-design-lite/material';
 import './app/utils';
+import './app/filters';
 
 import Vue from './bower_components/vue/dist/vue';
 
