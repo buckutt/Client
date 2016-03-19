@@ -51,7 +51,7 @@ Vue.filter('basket', function () {
 
             template += promotion[item].articles
                 .map(articleId => filterObjId(this.articles, articleId))
-                .filerUndefined()
+                .filter(article => !!article)
                 .map(article => `<li class="mdl-menu__item">${article.name}</li>`)
                 .join('\n');
 
