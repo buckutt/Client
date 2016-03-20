@@ -42,7 +42,7 @@ const checkSerie = (vm, cardNumber) => {
             .get(`${config.baseURL}/meansoflogin/search` +
                  `?q[]=${molSearchIsRemoved}&q[]=${molSearchType}&q[]=${molSearchData}`)
             .then(response => {
-                if (!Array.isArray(response) || response.length === 0) {
+                if (!Array.isArray(response) || response.length === 0 || response.status === 404) {
                     throw new Error('Utilisateur invalide');
                 }
 
