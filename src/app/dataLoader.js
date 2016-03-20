@@ -9,7 +9,7 @@ export default {
         paymentMethodsLoaded: false,
         promotionsLoaded    : false,
         deviceLoaded        : false,
-        pointId             : '',
+        Point_id             : '',
         deviceId            : '',
         doubleValidation    : false,
         offlineSupport      : false
@@ -62,7 +62,7 @@ export default {
                     }
 
                     this.deviceId = OfflineRequest.deviceId;
-                    this.pointId  = OfflineRequest.pointId;
+                    this.Point_id  = OfflineRequest.Point_id;
 
                     this.articlesLoaded = true;
                     this.articles       = response;

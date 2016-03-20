@@ -52,10 +52,10 @@ export default {
             this.basket.forEach(articleId => {
                 const article = filterObjId(this.articles, articleId);
                 basketToSend.push({
-                    buyerId    : this.currentUser.id,
-                    fundationId: article.fundationId,
-                    promotionId: null,
-                    sellerId   : this.currentSeller.id,
+                    Buyer_id    : this.currentUser.id,
+                    Fundation_id: article.Fundation_id,
+                    Promotion_id: null,
+                    Seller_id   : this.currentSeller.id,
                     articles   : [article.id],
                     cost       : article.price.amount,
                     type       : 'purchase'
@@ -68,10 +68,10 @@ export default {
                 const promo          = filterObjId(this.promotions, promoId);
 
                 basketToSend.push({
-                    buyerId    : this.currentUser.id,
-                    fundationId: promo.fundationId,
-                    sellerId   : this.currentSeller.id,
-                    promotionId: promo.id,
+                    Buyer_id    : this.currentUser.id,
+                    Fundation_id: promo.Fundation_id,
+                    Seller_id   : this.currentSeller.id,
+                    Promotion_id: promo.id,
                     articles   : articlesInside,
                     cost       : promo.price.amount,
                     type       : 'purchase'
@@ -82,8 +82,8 @@ export default {
                 basketToSend.push({
                     credit  : reload.amount,
                     trace   : reload.with,
-                    buyerId : this.currentUser.id,
-                    sellerId: this.currentSeller.id,
+                    Buyer_id : this.currentUser.id,
+                    Seller_id: this.currentSeller.id,
                     type    : 'reload'
                 });
             });
