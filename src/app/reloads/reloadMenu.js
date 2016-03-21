@@ -1,6 +1,6 @@
 /* global document, MaterialMenu */
 
-import { $$, once } from '../utils';
+import { $$, listenOnce, parents } from '../utils';
 
 export default {
     methods: {
@@ -9,7 +9,7 @@ export default {
          * @param  {MouseEvent} e The click event
          */
         toggleReloadMenu (e) {
-            const $elem = e.target;
+            const $elem = e.currentTarget;
             e.preventDefault();
             let $menu = $elem.children[0];
 
@@ -22,7 +22,7 @@ export default {
             }
 
             // If there is a click elsewhere, just hide this menu
-            once(document, 'click', () => {
+            listenOnce(document, 'click', () => {
                 $$('.mdl-menu__container.is-visible > ul').forEach(menu => menu.MaterialMenu.hide());
             });
 

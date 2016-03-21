@@ -1,4 +1,4 @@
-import { $ } from '../utils';
+import { $, parents } from '../utils';
 
 export default {
     data: {
@@ -54,7 +54,7 @@ export default {
          * @param  {MouseEvent} e The click event
          */
         onCreditToReloadInput (e) {
-            const value          = parseInt(e.target.parents('.mdl-cell').textContent.trim(), 10);
+            const value          = parseInt(parents(e.target, '.mdl-cell').textContent.trim(), 10);
             let creditToReload = this.creditToReload;
 
             creditToReload = creditToReload * 10 + value * 0.01;
@@ -69,7 +69,7 @@ export default {
          * @param  {MouseEvent} e The click event
          */
         onCreditToReloadValidateInput (e) {
-            const grid = e.target.parents('.mdl-grid');
+            const grid = parents(e.target, '.mdl-grid');
             this.waitingForValidation              = true;
             grid.style.height                    = 0;
             grid.nextElementSibling.style.height = '122px';
@@ -80,7 +80,7 @@ export default {
          * @param  {MouseEvent} e The click event
          */
         invalidPayment (e) {
-            const grid = e.target.parents('.mdl-grid');
+            const grid = parents(e.target, '.mdl-grid');
             grid.style.height                        = 0;
             grid.previousElementSibling.style.height = '242px';
             this.waitingForValidation                  = false;
@@ -91,7 +91,7 @@ export default {
          * @param  {MouseEvent} e The click event
          */
         validateReload (e) {
-            const grid = e.target.parents('.mdl-grid');
+            const grid = parents(e.target, '.mdl-grid');
             grid.style.height                        = 0;
             grid.previousElementSibling.style.height = '242px';
 
