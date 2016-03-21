@@ -204,8 +204,10 @@
                                     <div class="mdl-card mdl-shadow--2dp buckless-card-image"
                                          @click="onArticleClick"
                                          data-id="{{ article.id }}">
+                                        <img class="buckless-card-image__background" :src="article.image" alt="{{ article.slug }}">
                                         <div class="mdl-card__title mdl-card--expand"></div>
                                         <div class="mdl-card__actions">
+                                            <span class="buckless-card-image__blurred" :style="article.image"></span>
                                             <span class="buckless-card-image__filename">{{ article.name }}</span>
                                         </div>
                                         <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"

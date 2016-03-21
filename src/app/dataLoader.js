@@ -1,3 +1,4 @@
+import slug               from 'slug';
 import config             from './config';
 import { q, filterObjId } from './utils';
 import OfflineRequest     from './OfflineRequest';
@@ -56,7 +57,6 @@ export default {
             OfflineRequest
                 .get(`${config.baseURL}/articles/search?q=${q(notRemoved)}&embed=${q(articlesJoin)}`)
                 .then(response => {
-                    console.log('ANSWER DATA');
                     if (response.status === 401) {
                         throw new Error('Pas de droits vendeurs');
                     }
@@ -65,7 +65,11 @@ export default {
                     this.Point_id  = OfflineRequest.Point_id;
 
                     this.articlesLoaded = true;
-                    this.articles       = response;
+                    this.articles       = response.map(article => {
+                        const slugName = slug(article.name, { lower: true, remove: /[.]/g });
+                        article.image = `../images/${slugName}.jpg`;
+                        return article;
+                    });
                     this.filterBestPrice();
                     this.filterPoint();
 
