@@ -99,7 +99,7 @@ export default {
             this.totalReload          = this.totalReload + (this.creditToReload * 100);
 
             this.detailedReloads.push({
-                with  : this.paymentMethods.filter(payment => payment.slug === this.reloadMethod)[0].text,
+                with  : this.paymentMethods.filter(payment => payment.slug === this.reloadMethod)[0].name,
                 amount: this.creditToReload * 100
             });
 
