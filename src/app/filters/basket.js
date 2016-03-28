@@ -1,5 +1,5 @@
 import { $, filterObjId } from '../utils';
-import Vue from '../../bower_components/vue/dist/vue';
+import Vue from 'vue';
 
 Vue.filter('basket', function () {
     let basket    = {};

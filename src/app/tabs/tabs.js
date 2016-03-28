@@ -1,4 +1,4 @@
-import Vue from '../../bower_components/vue/dist/vue';
+import Vue from 'vue';
 import { $, $$, uniq } from '../utils';
 
 let articlesParsed = false;

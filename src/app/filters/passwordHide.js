@@ -1,4 +1,4 @@
-import Vue from '../../bower_components/vue/dist/vue';
+import Vue from 'vue';
 
 Vue.filter('passwordHide', password => {
     if (!password) {
