@@ -1,6 +1,6 @@
 /* global componentHandler, location, MaterialLayoutTab */
 
-import Vue from '../../bower_components/vue/dist/vue';
+import Vue from 'vue';
 import { $, $$ } from '../utils';
 
 Vue.directive('inittabs', {

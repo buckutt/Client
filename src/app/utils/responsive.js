@@ -1,4 +1,4 @@
-import enquire from '../../bower_components/enquire';
+import enquire from 'enquire.js';
 import { $ } from './selector';
 
 const MOBILE_WIDTH = 605;

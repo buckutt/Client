@@ -2,14 +2,14 @@
 
 // Styles
 
-import './bower_components/material-design-lite/material.min.css';
+import 'material-design-lite/material.min.css';
 import './styles';
 
-import './bower_components/material-design-lite/material';
+import 'material-design-lite/material';
 import './app/utils';
 import './app/filters';
 
-import Vue from './bower_components/vue/dist/vue';
+import Vue from 'vue';
 
 const data = {
     startedLoading: false,

@@ -1,4 +1,5 @@
-import Vue from '../../bower_components/vue/dist/vue';
+import Vue from 'vue';
+console.log(Vue)
 
 Vue.filter('credit', (credit, divide) => {
     if (!credit) {

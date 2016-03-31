@@ -1,5 +1,5 @@
 import { parents, filterObjId } from '../utils';
-import Vue from '../../bower_components/vue/dist/vue';
+import Vue from 'vue';
 
 /**
  * Calculate the cost of the basket, including promotion.
