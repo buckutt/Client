@@ -53,12 +53,12 @@ export default {
                 const article = filterObjId(this.articles, articleId);
                 basketToSend.push({
                     Buyer_id    : this.currentUser.id,
-                    Fundation_id: article.Fundation_id,
+                    Price_id    : article.price.id,
                     Promotion_id: null,
                     Seller_id   : this.currentSeller.id,
-                    articles   : [article.id],
-                    cost       : article.price.amount,
-                    type       : 'purchase'
+                    articles    : [article.id],
+                    cost        : article.price.amount,
+                    type        : 'purchase'
                 });
             });
 
@@ -68,23 +68,24 @@ export default {
                 const promo          = filterObjId(this.promotions, promoId);
 
                 basketToSend.push({
+                    Price_id    : promo.price.id,
                     Buyer_id    : this.currentUser.id,
                     Fundation_id: promo.Fundation_id,
                     Seller_id   : this.currentSeller.id,
                     Promotion_id: promo.id,
-                    articles   : articlesInside,
-                    cost       : promo.price.amount,
-                    type       : 'purchase'
+                    articles    : articlesInside,
+                    cost        : promo.price.amount,
+                    type        : 'purchase'
                 });
             });
 
             this.detailedReloads.forEach(reload => {
                 basketToSend.push({
-                    credit  : reload.amount,
-                    trace   : reload.with,
+                    credit   : reload.amount,
+                    trace    : reload.with,
                     Buyer_id : this.currentUser.id,
                     Seller_id: this.currentSeller.id,
-                    type    : 'reload'
+                    type     : 'reload'
                 });
             });
 
