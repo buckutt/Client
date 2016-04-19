@@ -1,5 +1,4 @@
 import Vue from 'vue';
-console.log(Vue)
 
 Vue.filter('credit', (credit, divide) => {
     if (!credit) {
