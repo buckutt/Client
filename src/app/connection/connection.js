@@ -9,7 +9,7 @@ import { $, q, isCardNumber } from '../utils';
  */
 const checkSerie = (vm, cardNumber) => {
     if (!isCardNumber(cardNumber)) {
-        vm.throwError('Numéro de carte étu invalide');
+        vm.throwError('Numéro de carte invalide');
 
         return;
     }
