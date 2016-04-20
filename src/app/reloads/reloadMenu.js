@@ -1,6 +1,6 @@
 /* global document, MaterialMenu */
 
-import { $$, listenOnce, parents } from '../utils';
+import { $$, listenOnce } from '../utils';
 
 export default {
     methods: {

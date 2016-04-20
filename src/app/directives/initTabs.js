@@ -17,7 +17,7 @@ Vue.directive('inittabs', {
 
         $tabs.forEach((tab, i) => {
             try {
-                new MaterialLayoutTab($tabs[i], $tabs, $panels, $layout.MaterialLayout);
+                new MaterialLayoutTab($tabs[i], $tabs, $panels, $layout.MaterialLayout); // eslint-disable-line no-new
             } catch (e) {
                 location.reload();
             }

@@ -18,10 +18,10 @@ Vue.filter('basket', function () {
 
     // Promotions display
     this.basketPromotions.forEach(promo => {
-        const Promotion_id        = promo.id;
+        const promotionId        = promo.id;
         const promotionsArticles = promo.contents;
 
-        const fullItem = filterObjId(this.promotions, Promotion_id);
+        const fullItem = filterObjId(this.promotions, promotionId);
 
         if (!fullItem) {
             return;

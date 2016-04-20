@@ -54,8 +54,8 @@ modules.push(tabs);
 modules.push(dataLoader);
 
 // Get only modules data
-const modulesDatas   = modules.map(module => (module && module.data) ? module.data : {});
-const modulesMethods = modules.map(module => (module && module.methods) ? module.methods : {});
+const modulesDatas   = modules.map(module => (module && module.data || {}));
+const modulesMethods = modules.map(module => (module && module.methods || {}));
 
 // Merge all of it on data
 Object.assign(data, ...modulesDatas);

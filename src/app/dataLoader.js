@@ -10,7 +10,7 @@ export default {
         paymentMethodsLoaded: false,
         promotionsLoaded    : false,
         deviceLoaded        : false,
-        Point_id             : '',
+        Point_id            : '',
         deviceId            : '',
         doubleValidation    : false,
         offlineSupport      : false
