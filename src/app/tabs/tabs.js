@@ -44,12 +44,24 @@ export default {
             console.info('Creating categories based on articles');
             articlesParsed = true;
 
-            let categories = this.articles
-                .map(a => a.category.name);
+            this.articles = this.articles.map(article => {
+                // At this point we're sure that the article should be on the point (thanks to articles/filterPoint)
+                // Getting the right category is just filtering thoses that are allowed on this point,
+                // and taking the first one
 
-            categories = uniq(categories)
-                // Reverse sort
-                .sort((a, b) => 1 - a.localeCompare(b));
+                article.categories = article.categories.filter(category =>
+                    category.points.some(point => point.id === this.Point_id)
+                );
+
+                article.category = article.categories[0];
+
+                return article;
+            });
+
+            let categories = this.articles.map(a => a.category.name);
+
+            // Reverse sort
+            categories = uniq(categories).sort((a, b) => 1 - a.localeCompare(b));
 
             this.categories = categories;
         });

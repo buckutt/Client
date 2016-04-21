@@ -31,9 +31,11 @@ export default {
             };
 
             const articlesJoin = {
-                category: true,
-                points  : true,
-                prices  : {
+                points    : true,
+                categories: {
+                    points: true
+                },
+                prices: {
                     fundation: true,
                     group    : true,
                     period   : true,
