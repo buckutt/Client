@@ -1,4 +1,5 @@
 # Buckless-Client
+[![Build Status](https://travis-ci.org/buckless/Client.svg?branch=master)](https://travis-ci.org/buckless/Client) [![Coverage Status]
 
 ## Installation
 
