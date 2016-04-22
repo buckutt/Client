@@ -1,6 +1,6 @@
 const config = {
     protocol: 'https',
-    host    : 'localhost',
+    host    : location.hostname,
     port    : 3000
 };
 
