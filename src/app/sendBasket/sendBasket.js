@@ -1,6 +1,7 @@
 import { filterObjId } from '../utils';
 import config          from '../config';
 import OfflineRequest  from '../OfflineRequest';
+import namify          from '../filters/namify';
 
 export default {
     data: {
@@ -99,7 +100,7 @@ export default {
                         this.lastCredit = this.totalCost;
                         this.lastReload = this.totalReload;
                         this.lastAmount = this.currentUser.credit - this.totalCost + this.totalReload;
-                        this.lastUser   = `${this.currentUser.firstname} ${this.currentUser.lastname}`;
+                        this.lastUser   = `${namify(this.currentUser.firstname)} ${namify(this.currentUser.lastname)}`;
 
                         this.onEject();
                     } else {
