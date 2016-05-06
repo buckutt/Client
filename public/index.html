@@ -204,6 +204,7 @@
                                     <div class="mdl-card mdl-shadow--2dp buckless-card-image"
                                          @click="onArticleClick"
                                          data-id="{{ article.id }}">
+                                        <span class="buckless-card-image__price">{{ article.price.amount | credit true }}</span>
                                         <img class="buckless-card-image__background" :src="article.image" alt="{{ article.slug }}">
                                         <div class="mdl-card__title mdl-card--expand"></div>
                                         <div class="mdl-card__actions">
