@@ -57,7 +57,9 @@ export default {
             const value          = parseInt(parents(e.target, '.mdl-cell').textContent.trim(), 10);
             let creditToReload = this.creditToReload;
 
-            creditToReload = creditToReload * 10 + value * 0.01;
+            const step = this.paymentMethods.filter(m => m.slug === this.reloadMethod)[0].step;
+
+            creditToReload = creditToReload * 10 + value * (1 / step);
             creditToReload = Math.min(100, creditToReload);
             creditToReload = Math.max(0, creditToReload);
 
