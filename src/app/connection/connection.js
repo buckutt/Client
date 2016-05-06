@@ -29,7 +29,7 @@ const checkSerie = (vm, cardNumber) => {
 
         const molSearchType = q({
             field: 'type',
-            eq   : 'etuId'
+            eq   : config.buyerMol
         });
 
         const molSearchData = q({

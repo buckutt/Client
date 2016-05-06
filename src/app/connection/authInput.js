@@ -42,7 +42,7 @@ export default {
 
             OfflineRequest
                 .post(`${config.baseURL}/services/login`, {
-                    meanOfLogin: 'etuId',
+                    meanOfLogin: config.loginMol,
                     data       : this.sellerCardNum.trim(),
                     pin        : this.sellerPasswordInput
                 })
