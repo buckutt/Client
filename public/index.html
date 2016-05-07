@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header" :class="{ 'hideCategories': !showCategories }">
             <div class="shadow-loader"
                  v-show="startedLoading"
                  transition="fade">
@@ -184,7 +184,7 @@
                     </nav>
                 </div>
                 <div class="mdl-layout__tab-bar mdl-js-ripple-effect"
-                     v-show="userConnected"
+                     v-show="userConnected && showCategories"
                      transition="fade">
                     <a href="#tab-{{ $index }}" class="mdl-layout__tab is-active" data-target="tab-{{ $index }}"
                        @click="onTabClick"
@@ -196,7 +196,7 @@
                 <div class="page-content">
                     <!-- Keep v-if on this div and not v-show, else inittabs is called immediately -->
                     <div class="mdl-grid"
-                         v-if="userConnected"
+                         v-if="userConnected && showCategories"
                          v-inittabs="">
                         <template v-for="category in categories">
                             <div id="tab-{{ $index }}" class="mdl-tabs__panel mdl-cell mdl-cell--12-col articlesContainer">
@@ -220,6 +220,28 @@
                                 </template>
                             </div>
                         </template>
+                    </div>
+                    <div class="mdl-grid"
+                         v-if="userConnected && !showCategories"
+                         v-inittabs="">
+                        <div id="tab-0" class="mdl-tabs__panel mdl-cell mdl-cell--12-col articlesContainer">
+                            <template v-for="article in articles" track-by="id">
+                                <div class="mdl-card mdl-shadow--2dp buckless-card-image"
+                                     @click="onArticleClick"
+                                     data-id="{{ article.id }}">
+                                    <img class="buckless-card-image__background" :src="article.image" alt="{{ article.slug }}">
+                                    <div class="mdl-card__title mdl-card--expand"></div>
+                                    <div class="mdl-card__actions">
+                                        <span class="buckless-card-image__blurred" :style="article.image"></span>
+                                        <span class="buckless-card-image__filename">{{ article.name }}</span>
+                                    </div>
+                                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                                            @click="onMinusClick">
+                                        <i class="material-icons">remove</i>
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                     <div class="mdl-grid"
                          v-show="sellerConnected && sellerAuth && !userConnected"

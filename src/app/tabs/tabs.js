@@ -5,8 +5,9 @@ let articlesParsed = false;
 
 export default {
     data: {
-        tab       : 'none',
-        categories: []
+        tab           : 'none',
+        showCategories: true,
+        categories    : []
     },
 
     methods: {

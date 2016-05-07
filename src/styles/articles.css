@@ -26,6 +26,7 @@
 .buckless-card-image .buckless-card-image__background::after {
     content: ' ';
     background: url('../images/placeholder.jpg');
+    background-size: contain;
     position: absolute;
     top: 0;
     left: 0;
@@ -33,6 +34,24 @@
     height: 150px;
 }
 
+.hideCategories .articlesContainer {
+    justify-content: space-around;
+}
+
+.hideCategories .buckless-card-image .buckless-card-image__background::after {
+    height: 120px;
+    width: 120px;
+}
+
+.hideCategories .buckless-card-image.active > .buckless-card-image__background {
+    height: 110px;
+    width: 110px;
+}
+
+.hideCategories .buckless-card-image.active .buckless-card-image__background::after {
+    height: 110px;
+    width: 110px;
+}
 
 /* Activated */
 .buckless-card-image.active {

@@ -60,9 +60,10 @@ const checkSerie = (vm, cardNumber) => {
                 user.meansoflogin = [
                     mol
                 ];
-                vm.currentUser   = user;
-                vm.userConnected = true;
-                vm.showPicture = vm.device.showPicture;
+                vm.currentUser    = user;
+                vm.userConnected  = true;
+                vm.showCategories = vm.device.showCategories;
+                vm.showPicture    = vm.device.showPicture;
             })
             .catch(err => {
                 vm.throwError(err.message);

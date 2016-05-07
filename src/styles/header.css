@@ -16,6 +16,23 @@
     width: 100px;
 }
 
+.hideCategories .picture {
+    display: none;
+}
+
+.hideCategories .mdl-layout__header.with-picture {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+.hideCategories .mdl-layout__tab-bar-container {
+    display: none;
+}
+
+.hideCategories .mdl-layout__header-row {
+    border-bottom: 0;
+}
+
 .picture img {
     margin-top: 6px;
 }
