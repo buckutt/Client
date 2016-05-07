@@ -68,8 +68,9 @@
 }
 
 .buckless-card-image.active .buckless-card-image__background::after {
-    width: 140px;
+    background-position: -5px -5px;
     height: 140px;
+    width: 140px;
 }
 
 .buckless-card-image > .buckless-card-image__background {
