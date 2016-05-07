@@ -65,20 +65,6 @@
     z-index: 2;
 }
 
-/* Blurry div */
-.buckless-card-image > .mdl-card__actions > .buckless-card-image__blurred {
-    display: inline-block;
-    height: 35px;
-    position: relative;
-    top: 35px;
-    width: 150px;
-}
-
-.buckless-card-image.active > .mdl-card__actions > .buckless-card-image__blurred {
-    height: 34px;
-    top: 11px;
-}
-
 .buckless-card-image > .mdl-card__actions {
     font-size: 17px;
     overflow: hidden;
@@ -86,19 +72,23 @@
 }
 
 .buckless-card-image > .mdl-card__actions > .buckless-card-image__filename {
+    align-items: center;
     background-color: rgba(255, 255, 255, 0.6);
-    display: inline-block;
-    height: 35px;
+    box-sizing: border-box;
+    display: flex;
     left: 0;
-    line-height: 35px;
-    padding-left: 5px;
+    min-height: 35px;
+    padding: 0 5px;
     position: relative;
     width: 100%;
     z-index: 2;
 }
 
-.buckless-card-image.active > .mdl-card__actions > .buckless-card-image__filename {
-    left: -155px;
+.buckless-card-image > .mdl-card__actions > .buckless-card-image__filename > span {
+    display: inline-block;
+    padding: 5px 0;
+    white-space: normal;
+    width: 100%;
 }
 
 /* -1 Button */
