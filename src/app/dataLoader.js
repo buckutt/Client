@@ -31,7 +31,6 @@ export default {
             };
 
             const articlesJoin = {
-                points    : true,
                 categories: {
                     points: true
                 },
@@ -39,12 +38,15 @@ export default {
                     fundation: true,
                     group    : true,
                     period   : true,
+                    point    : true,
                     promotion: true
                 }
             };
 
             const promotionsJoin = {
-                price   : true,
+                prices: {
+                    period: true
+                },
                 articles: true,
                 sets    : {
                     articles: true
@@ -72,7 +74,6 @@ export default {
                         article.image = `../images/${slugName}.jpg`;
                         return article;
                     });
-                    this.filterBestPrice();
                     this.filterPoint();
 
                     return OfflineRequest.get(`${config.baseURL}/promotions/search?q=${q(notRemoved)}` +
@@ -87,6 +88,8 @@ export default {
                 .then(response => {
                     this.setsLoaded = true;
                     this.sets       = response;
+
+                    this.filterBestPrice();
 
                     return OfflineRequest.get(`${config.baseURL}/meansofpayment/search?q=${q(notRemoved)}`);
                 })

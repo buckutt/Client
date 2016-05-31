@@ -2,22 +2,22 @@ import Vue from 'vue';
 
 const now = new Date();
 
-const filterBestPriceArticle = article => {
-    article.prices = article.prices.filter(price => (new Date(price.period.start) <= now &&
+const filterBestPrice = item => {
+    item.prices = item.prices.filter(price => (new Date(price.period.start) <= now &&
                                                      now <= new Date(price.period.end)));
 
     let min         = Infinity;
     let chosenPrice = null;
-    article.prices.forEach(price => {
+    item.prices.forEach(price => {
         if (price.amount < min) {
             min         = price.amount;
             chosenPrice = price;
         }
     });
 
-    Vue.set(article, 'price', chosenPrice);
+    Vue.set(item, 'price', chosenPrice);
 
-    return article;
+    return item;
 };
 
 export default {
@@ -26,8 +26,11 @@ export default {
          * Filters the best article price
          */
         filterBestPrice () {
-            console.info('Finding prices', this.articles.length);
-            this.articles.forEach(article => filterBestPriceArticle(article));
+            console.info('Finding prices for articles', this.articles.length);
+            this.articles.forEach(article => filterBestPrice(article));
+
+            console.info('Finding prices for promotions', this.promotions.length);
+            this.promotions.forEach(promotion => filterBestPrice(promotion));
         }
     }
 };
