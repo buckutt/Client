@@ -42,6 +42,14 @@ class OfflineRequest {
             req.open(this.method.toUpperCase(), this.url, true);
 
             req.onload = () => {
+                if (!req.getResponseHeader('Content-Type')) {
+                    const err = new Error();
+                    err.type  = 'error';
+                    console.error('Missing certificate');
+
+                    return reject(err);
+                }
+
                 if (req.getResponseHeader('Content-Type').indexOf('application/json') > -1) {
                     try {
                         resolve(JSON.parse(req.responseText));
