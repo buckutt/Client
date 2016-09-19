@@ -10,7 +10,8 @@ export default {
 
             this.articles = this.articles.map(article => {
                 article.points = article.prices
-                    .map(price => price.point);
+                    .map(price => price.point)
+                    .filter(point => !point.isRemoved);
 
                 return article;
             });

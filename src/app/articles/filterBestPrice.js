@@ -3,8 +3,10 @@ import Vue from 'vue';
 const now = new Date();
 
 const filterBestPrice = item => {
-    item.prices = item.prices.filter(price => (new Date(price.period.start) <= now &&
-                                                     now <= new Date(price.period.end)));
+    item.prices = item.prices.filter(price =>
+        (new Date(price.period.start) <= now && now <= new Date(price.period.end) &&
+         !price.isRemoved)
+    );
 
     let min         = Infinity;
     let chosenPrice = null;
