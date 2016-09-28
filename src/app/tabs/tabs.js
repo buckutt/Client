@@ -59,7 +59,9 @@ export default {
                 return article;
             });
 
-            let categories = this.articles.map(a => a.category.name);
+            let categories = this.articles
+                .filter(a => a.category)
+                .map(a => a.category.name);
 
             // Reverse sort
             categories = uniq(categories).sort((a, b) => 1 - a.localeCompare(b));

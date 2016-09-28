@@ -5,7 +5,7 @@
  * @return {Mixed} The result
  */
 export default function (arr, id) {
-    const filtered = arr.filter(item => item.id === id);
+    const filtered = arr.filter(item => item).filter(item => item.id === id);
 
     if (filtered.length > 0) {
         return filtered[0];
