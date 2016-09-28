@@ -24,7 +24,9 @@ Vue.directive('inittabs', {
             componentHandler.upgradeElement($tabs[i].children[0]);
         });
 
-        try { $tabs[0].click(); } catch (e) { console.error(e); }
+        if ($tabs.length > 0) {
+            try { $tabs[0].click(); } catch (e) { console.error(e); }
+        }
 
         Vue.nextTick(() => {
             this.vm.tab = 'tab-0';
