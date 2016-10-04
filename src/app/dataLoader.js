@@ -90,6 +90,7 @@ export default {
                     this.sets       = response;
 
                     this.filterBestPrice();
+                    this.filterCategories();
 
                     return OfflineRequest.get(`${config.baseURL}/meansofpayment/search?q=${q(notRemoved)}`);
                 })
