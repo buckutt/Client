@@ -57,16 +57,29 @@ export default {
                     Price_id    : article.price.id,
                     Promotion_id: null,
                     Seller_id   : this.currentSeller.id,
-                    articles    : [article.id],
-                    cost        : article.price.amount,
-                    type        : 'purchase'
+                    articles    : [{
+                        id   : article.id,
+                        vat  : article.vat,
+                        price: article.price.id
+                    }],
+                    cost: article.price.amount,
+                    type: 'purchase'
                 });
             });
 
             this.basketPromotions.forEach(basketPromo => {
                 const promoId        = basketPromo.id;
-                const articlesInside = basketPromo.contents;
+                const articlesInside = [];
                 const promo          = filterObjId(this.promotions, promoId);
+
+                basketPromo.contents.forEach(articleInside => {
+                    const fullArticleInside = filterObjId(this.articles, articleInside);
+                    articlesInside.push({
+                        id   : articleInside,
+                        vat  : fullArticleInside.vat,
+                        price: fullArticleInside.price.id
+                    });
+                });
 
                 basketToSend.push({
                     Price_id    : promo.price.id,

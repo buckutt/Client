@@ -74,8 +74,16 @@ export default {
                 const index = this.basket.indexOf(id);
 
                 this.basket.splice(index, 1);
+
                 Vue.nextTick(() => {
-                    calculateCost(this);
+                    let check = this.basket.length;
+                    while (check--) {
+                        this.checkForPromotions();
+                    }
+
+                    Vue.nextTick(() => {
+                        calculateCost(this);
+                    });
                 });
             });
 
