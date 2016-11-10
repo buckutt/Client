@@ -36,9 +36,10 @@ const mutations = {
 
     SET_FULL_DEVICE(state, payload) {
         const keys = ['alcohol', 'doubleValidation', 'realtime', 'refreshInterval', 'showCategories', 'showPicture'];
-        for (const key of keys) {
+
+        keys.forEach((key) => {
             state.device.config[key] = payload[key];
-        }
+        });
     },
 
     ID_SELLER(state, meanOfLogin) {

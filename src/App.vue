@@ -65,7 +65,6 @@ export default {
 
             if (!this.buyer.isAuth || !this.buyer.isAuth) {
                 this.$refs.login.validate(value);
-                return;
             }
         },
 
