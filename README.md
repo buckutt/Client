@@ -1,4 +1,6 @@
 # buckless-client
+[![dependencies Status](https://david-dm.org/buckless/client/status.png)](https://david-dm.org/buckless/client)
+[![Build Status](https://travis-ci.org/buckless/Client.svg?branch=master)](https://travis-ci.org/buckless/Client)
 
 > Buckless Client
 
@@ -14,5 +16,3 @@ npm run dev
 # build for production with minification
 npm run build
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
