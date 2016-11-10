@@ -37,6 +37,8 @@ import Loading from './components/Loading';
 import Error   from './components/Error';
 
 export default {
+    name: 'App',
+
     components: {
         Items,
         Topbar,
