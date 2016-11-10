@@ -1,15 +1,27 @@
 {
-    "extends": "airbnb/base",
+    "root"         : true,
+    "parser"       : "babel-eslint",
+    "extends"      : "airbnb-base",
     "parserOptions": {
-        "ecmaVersion": 6,
         "sourceType": "module",
     },
     "env": {
         "browser": true,
-        "node": true,
-        "es6": true,
-        "mocha": true
+        "es6": true
     },
+    // required to lint *.vue files
+    "plugins": [
+        "html"
+    ],
+    // check if imports actually resolve
+    "settings": {
+        "import/resolver": {
+            "webpack": {
+                "config": "build/webpack.base.conf.js"
+            }
+        }
+    },
+    // add your custom rules here
     "rules": {
         // 4 chars instead of 2
         "indent": [
@@ -19,9 +31,8 @@
                 "SwitchCase": 1
             }
         ],
-
         // Disable last comma
-        comma-dangle: ["error", "never"],
+        "comma-dangle": ["error", "never"],
 
         // Align object keys
         "key-spacing": ["error", {
@@ -41,20 +52,14 @@
             }
         }],
 
+        // Allow hasOwnProperty
+        "no-prototype-builtins": 0,
+
         // Allow reassign props to params
         "no-param-reassign": ["error", { "props": false }],
 
         // Allow console
         "no-console": 0,
-
-        // Allow space before function paren
-        "space-before-function-paren": 0,
-
-        // Allow anonymous functions
-        "func-names": 0,
-
-        // 1TBS with single lines (arrow functions that does not return)
-        "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
 
         // Disable consistent return
         "consistent-return": 0,
@@ -62,13 +67,22 @@
         // Disable return in callbacks
         "array-callback-return": 0,
 
-        // Other bracket spaces style
-        "array-bracket-spacing": 0,
-
         // Require allowance
         "global-require": 0,
 
         // Dangle underscores allowance
-        "no-underscore-dangle": 0
+        "no-underscore-dangle": 0,
+
+        // Allow dynamic require
+        "import/no-dynamic-require": 0,
+
+        // Allow export without default
+        "import/prefer-default-export": 0,
+
+        // don't require .vue extension when importing
+        "import/extensions": ["error", "always", {
+            "js": "never",
+            "vue": "never"
+        }]
     }
 }

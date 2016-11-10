@@ -1,2 +1,2 @@
-public
-src/bower_components
+build/*.js
+config/*.js

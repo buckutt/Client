@@ -1,0 +1,73 @@
+@import 'main';
+
+@import '../node_modules/roboto-fontface/css/roboto/roboto-fontface.css';
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(./assets/icons/MaterialIcons-Regular.woff2) format('woff2');
+}
+
+html, body {
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+*, *:after, *:before {
+    box-sizing: border-box;
+}
+
+button, input, optgroup, select, textarea {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+#app {
+    color: $black;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.b--fade-enter-active, .b--fade-leave-active {
+    transition: opacity .3s ease;
+}
+
+.b--fade-enter, .b--fade-leave-active {
+    opacity: 0;
+}
+
+.b-main {
+    display: flex;
+    flex: 1;
+}
+
+.b--capitalized {
+    text-transform: capitalize;
+}
+
+.b-icon {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+.b--out-of-screen {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+    opacity: 0;
+}

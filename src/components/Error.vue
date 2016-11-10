@@ -1,0 +1,72 @@
+<template>
+    <div class="b-error" v-if="error">
+        <div
+            class="b-error__drop"
+            @click="clearError"></div>
+        <div class="b-error__modal">
+            <h3 class="b-error__modal__title">Erreur</h3>
+            <div class="b-error__modal__error">
+                {{ error }}
+            </div>
+            <button
+                class="b-error__modal__close"
+                @click="clearError">Fermer</button>
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+    computed: mapGetters(['error']),
+
+    methods: {
+        clearError() {
+            // Show green button after error
+            this.$store.commit('SET_BASKET_STATUS', 'WAITING');
+            this.$store.commit('ERROR', '');
+        }
+    }
+};
+</script>
+
+<style lang="scss" scoped>
+@import '../main';
+
+.b-error__drop {
+    @include modal-drop();
+}
+
+.b-error__modal {
+    @include modal(350px);
+
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+    padding: 20px;
+}
+
+.b-error__modal__title {
+    margin-top: 0;
+}
+
+.b-error__modal__close {
+    background-color: #fff;
+    border: 0;
+    cursor: pointer;
+    font-weight: bold;
+    height: 36px;
+    margin-top: 1em;
+    padding: 0 16px;
+    border-radius: 2px;
+    font-size: 14px;
+    text-transform: uppercase;
+    width: 100%;
+
+    &:active, &:focus, &:hover {
+        background-color: rgba($black, 0.3);
+    }
+}
+</style>

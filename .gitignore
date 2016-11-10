@@ -1,7 +1,4 @@
-bower_components/
-.tern-project
-npm-debug.log
+.DS_Store
 node_modules/
-public/bundle.js
-public/bundle.js.map
-
+dist/
+npm-debug.log

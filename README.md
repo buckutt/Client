@@ -1,35 +1,18 @@
-# Buckless-Client
-[![dependencies Status](https://david-dm.org/buckless/client/status.png)](https://david-dm.org/buckless/client)
-[![Build Status](https://travis-ci.org/buckless/Client.svg?branch=master)](https://travis-ci.org/buckless/Client)
+# buckless-client
 
-## Installation
+> Buckless Client
 
-Required : node, npm, bower, gulp, static
+## Build Setup
 
-```sh
-sudo apt-get install node npm
-sudo npm install -g gulp bower node-static webpack webpack-dev-server
+``` bash
+# install dependencies
 npm install
-bower install
-```
 
-### Note about material-design-lite
+# serve with hot reload at localhost:8080
+npm run dev
 
-~~Add `window.MaterialLayoutTab = MaterialLayoutTab;` after function declaration (
-`function MaterialLayoutTab(tab, tabs, panels, layout) {`)~~ Fixed by https://github.com/google/material-design-lite/issues/1665
-
-## Building
-
-```sh
+# build for production with minification
 npm run build
 ```
 
-## Starting
-
-Will build+watch the project
-
-```sh
-npm run dev
-```
-
-Open browser at http://localhost:8080/
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
