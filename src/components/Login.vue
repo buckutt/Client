@@ -124,6 +124,12 @@ export default {
                     return;
                 }
 
+                if (err.response && err.response.data.message === 'Device not found') {
+                    this.$store.commit('ERROR', {
+                        message: 'Device not found'
+                    });
+                }
+
                 this.setPoint({
                     id   : err.response.headers.device,
                     point: {

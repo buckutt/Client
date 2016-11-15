@@ -17,7 +17,7 @@ const articlesJoin = q({
 });
 
 const promotionsJoin = q({
-    prices  : { period: true },
+    prices  : { period: true, point: true },
     articles: true,
     sets    : { articles: true }
 });

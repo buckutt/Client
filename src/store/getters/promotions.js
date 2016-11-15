@@ -70,7 +70,6 @@ function containsArticleFromSet(state, basketCopy, set) {
     return -1;
 }
 
-
 export const sidebar = (state) => {
     let basket        = state.items.basket.slice();
     const promotions_ = sanitizePromotions(state.items.promotions.slice());
@@ -79,7 +78,7 @@ export const sidebar = (state) => {
         return { items: [], promotions: [] };
     }
 
-    let basketPromotions         = state.items.promotionsBasket.slice();
+    const basketPromotions       = state.items.promotionsBasket.slice();
     let promotionsThatDidntMatch = 0;
     let i                        = 0;
 
@@ -146,7 +145,7 @@ export const sidebar = (state) => {
 
     const basketNames = basket.map(id => state.items.items.find(item => item.id === id).name);
 
-    basketPromotions = basketPromotions.map(basketPromotion => (
+    const namedBasketPromotions = basketPromotions.map(basketPromotion => (
         {
             name: state.items.promotions
                 .find(promotion => promotion.id === basketPromotion.id)
@@ -158,6 +157,20 @@ export const sidebar = (state) => {
 
     return {
         items     : countBy(basketNames),
-        promotions: basketPromotions
+        full      : basket,
+        promotions: namedBasketPromotions,
+        basketPromotions
     };
+};
+
+export const cleanBasket = (state) => {
+    const sidebarResult = sidebar(state);
+
+    const basket = {
+        items     : sidebarResult.full,
+        promotions: sidebarResult.basketPromotions,
+        reloads   : state.reload.reloads
+    };
+
+    return basket;
 };

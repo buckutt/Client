@@ -52,6 +52,18 @@ const mutations = {
         });
     },
 
+    SET_PROMOTIONS_POINTS(state, points) {
+        points.forEach((point) => {
+            Vue.set(state.promotions[point.index], 'point', point.point);
+        });
+    },
+
+    SET_PROMOTIONS_PRICES(state, prices) {
+        prices.forEach((price) => {
+            Vue.set(state.promotions[price.index], 'price', price.price);
+        });
+    },
+
     ADD_PROMOTION(state, payload) {
         state.promotionsBasket.push(payload);
     },

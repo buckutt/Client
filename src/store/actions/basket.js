@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import axios  from 'axios';
 import config from '../../config.json';
 
@@ -22,12 +24,14 @@ export const sendBasket = (store) => {
         }
     }
 
+    const fullBasket = store.getters.cleanBasket;
+
     const basketToSend = [];
 
     let bought   = 0;
     let reloaded = 0;
 
-    store.state.items.basket.forEach((articleId) => {
+    fullBasket.items.forEach((articleId) => {
         const article = store.state.items.items.find(i => i.id === articleId);
         basketToSend.push({
             Buyer_id    : store.state.auth.buyer.id,
@@ -46,7 +50,7 @@ export const sendBasket = (store) => {
         bought += article.price.amount;
     });
 
-    store.state.items.promotionsBasket.forEach((basketPromo) => {
+    fullBasket.promotions.forEach((basketPromo) => {
         const promoId        = basketPromo.id;
         const articlesInside = [];
         const promo          = store.state.items.promotions.find(p => p.id === promoId);
@@ -71,16 +75,16 @@ export const sendBasket = (store) => {
             type        : 'purchase'
         });
 
-        reloaded += promo.price.amount;
+        bought += promo.price.amount;
     });
 
-    store.state.reload.reloads.forEach((reload) => {
+    fullBasket.reloads.forEach((reload) => {
         basketToSend.push({
             credit   : reload.amount,
-            trace    : reload.with,
+            trace    : reload.trace,
             Buyer_id : store.state.auth.buyer.id,
             Seller_id: store.state.auth.seller.id,
-            type     : 'reload'
+            type     : reload.type
         });
 
         reloaded += reload.amount;
@@ -92,6 +96,7 @@ export const sendBasket = (store) => {
         .post(`${config.api}/services/basket`, basketToSend, store.getters.tokenHeaders)
         .then(() => {
             store.commit('CLEAR_BASKET');
+            store.commit('REMOVE_RELOADS');
             store.commit('SET_BASKET_STATUS', 'WAITING');
             store.commit('SET_LAST_USER', {
                 name  : `${store.state.auth.buyer.firstname} ${store.state.auth.buyer.lastname}`,
@@ -99,6 +104,7 @@ export const sendBasket = (store) => {
                 reload: reloaded,
                 bought
             });
+
             store.commit('LOGOUT_BUYER');
         })
         .catch((err) => {

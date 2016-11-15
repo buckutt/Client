@@ -9,6 +9,14 @@ export default (state, error) => {
         return state.auth.seller.isAuth ? 'Client introuvable' : 'Vendeur introuvable';
     }
 
+    if (error.message === 'Device not found') {
+        return 'Équipement inconnu';
+    }
+
+    if (error.message === 'Server not reacheable') {
+        return 'Server injoignable';
+    }
+
     if (error.message.startsWith('Can not reload less than')) {
         return error.message.replace('Can not reload less than', 'Rechargement minimal');
     }
