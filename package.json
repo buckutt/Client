@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Buckless Client",
   "author": "Gabriel JUCHAULT <gabriel.juchault@gmail.com>",
+  "main": "src/browser.js",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -12,12 +13,12 @@
   "dependencies": {
     "axios": "^0.15.2",
     "babel-plugin-add-module-exports": "^0.2.1",
+    "electron": "^1.4.6",
     "lodash.countby": "^4.6.0",
     "lodash.uniq": "^4.5.0",
     "lodash.uniqby": "^4.7.0",
     "node-sass": "^3.11.1",
     "normalize.css": "^5.0.0",
-    "roboto-fontface": "^0.6.0",
     "sass-loader": "^4.0.2",
     "slugify": "^1.0.2",
     "vue": "^2.0.1",

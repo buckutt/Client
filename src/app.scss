@@ -1,16 +1,5 @@
 @import 'main';
 
-@import '../node_modules/roboto-fontface/css/roboto/roboto-fontface.css';
-
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Material Icons'),
-       local('MaterialIcons-Regular'),
-       url(./assets/icons/MaterialIcons-Regular.woff2) format('woff2');
-}
-
 html, body {
     font-family: 'Roboto', sans-serif;
     height: 100%;

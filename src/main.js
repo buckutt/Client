@@ -9,10 +9,10 @@ window.app = new Vue({
     render: h => h(App)
 });
 
-// Load all pictures
+// Load all pictures/fonts
 const assets = require.context(
   './assets',
-  false,
+  true,
   /\.jpg$/
 );
 

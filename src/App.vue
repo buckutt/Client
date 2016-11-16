@@ -77,4 +77,53 @@ export default {
 
 <style lang="scss">
 @import 'app';
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(./assets/fonts/Roboto-Light.woff2) format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(./assets/fonts/Roboto-LightItalic.woff2) format('woff2');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(./assets/fonts/Roboto-Regular.woff2) format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(./assets/fonts/Roboto-RegularItalic.woff2) format('woff2');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(./assets/fonts/Roboto-Bold.woff2) format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url(./assets/fonts/Roboto-BoldItalic.woff2) format('woff2');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./assets/icons/MaterialIcons-Regular.woff2) format('woff2');
+}
 </style>
