@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "serve": "static dist/ -a 0.0.0.0 -p 8081"
   },
   "dependencies": {
     "axios": "^0.15.2",
@@ -18,6 +19,7 @@
     "lodash.uniq": "^4.5.0",
     "lodash.uniqby": "^4.7.0",
     "node-sass": "^3.11.1",
+    "node-static": "^0.7.9",
     "normalize.css": "^5.0.0",
     "sass-loader": "^4.0.2",
     "slugify": "^1.0.2",

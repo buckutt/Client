@@ -36,7 +36,7 @@
 <script>
 import axios                      from 'axios';
 import { mapActions, mapGetters } from 'vuex';
-import config                     from '../config.json';
+import config                     from '../config';
 
 import Currency                   from './Currency';
 import NumericalInput             from './NumericalInput';

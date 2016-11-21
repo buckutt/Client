@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import axios  from 'axios';
-import config from '../../config.json';
+import config from '../../config';
 
 export const addItemToBasket = (store, item) => {
     store.commit('ADD_ITEM', item);
