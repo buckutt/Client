@@ -17,12 +17,13 @@ export const createTabs = (store) => {
                 return null;
             }
 
-            return { id: category.id, name: category.name };
+            return { id: category.id, name: category.name, priority: category.priority };
         })
-        .filter(category => category);
+        .filter(category => category)
+        .sort((a, b) => b.priority - a.priority);
 
     // Reverse sort
-    tabs = uniqBy(tabs, 'name').sort((a, b) => b.name.localeCompare(a.name));
+    tabs = uniqBy(tabs, 'name');
 
     if (tabs.length === 0) {
         return;
