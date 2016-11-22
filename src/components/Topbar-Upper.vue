@@ -1,11 +1,11 @@
 <template>
     <div class="b-upper-bar">
         <div class="b-upper-bar__buyer" v-if="buyer.isAuth">
-            <div class="b-upper-bar__buyer__name">Gabriel Juchault</div>
+            <div class="b-upper-bar__buyer__name">{{ buyer.firstname }} {{ buyer.lastname }}</div>
             <div class="b-upper-bar__buyer__credit">
                 crédit:
-                <span :class="{ 'b-upper-bar__buyer__credit--negative': buyer.credit < 0 }">
-                    <currency :value="buyer.credit"></currency>
+                <span :class="{ 'b-upper-bar__buyer__credit--negative': credit < 0 }">
+                    <currency :value="credit"></currency>
                 </span>
             </div>
         </div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 import Currency from './Currency';
 import LiveTime from './Topbar-Upper-Time';
@@ -45,6 +45,8 @@ export default {
         Currency,
         LiveTime
     },
+
+    computed: mapGetters(['credit']),
 
     methods: mapActions(['openReloadModal', 'logout'])
 };

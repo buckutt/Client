@@ -3,9 +3,8 @@
 import axios  from 'axios';
 import config from '../../config';
 
-export const addItemToBasket = (store, item) => {
-    store.commit('ADD_ITEM', item);
-    store.commit('UPDATE_CREDIT', store.state.auth.buyer.credit - item.price.amount);
+export const addItemToBasket = ({ commit }, item) => {
+    commit('ADD_ITEM', item);
 };
 
 export const removeItemFromBasket = ({ commit }, item) => {

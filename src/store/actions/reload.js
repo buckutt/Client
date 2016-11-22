@@ -20,7 +20,6 @@ export const changeMeanOfPayment = ({ commit }, meanOfPayment) => {
 };
 
 export const addReload = (store, reload) => {
-    store.commit('UPDATE_CREDIT', store.state.auth.buyer.credit + reload.amount);
     store.commit('ADD_RELOAD', reload);
 };
 

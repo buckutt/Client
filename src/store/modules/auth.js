@@ -70,10 +70,6 @@ const mutations = {
 
     LOGOUT_BUYER(state) {
         state.buyer.isAuth = false;
-    },
-
-    UPDATE_CREDIT(state, credit) {
-        state.buyer.credit = credit;
     }
 };
 

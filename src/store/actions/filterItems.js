@@ -24,7 +24,6 @@ function addPointsAndPrices(pointId, pricesStore, pointsStore) {
         });
 
         /* Filter obj point */
-        console.log(prices, pointId);
         const point = prices
             .map(p => p.point)
             .find(p => p && !p.isRemoved && p.id === pointId);
