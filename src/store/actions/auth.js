@@ -26,9 +26,6 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
             });
 
             dispatch('dataLoader')
-                .then(() => dispatch('filterItems'))
-                .then(() => dispatch('createTabs'))
-                .then(() => dispatch('createTabsItems'))
                 .then(() => commit('SET_DATA_LOADED'));
         })
         .catch((err) => {
@@ -65,7 +62,12 @@ export const buyer = (store, { cardNumber }) => {
     });
 
     const embedUser = q({
-        user: true
+        user: {
+            groupPeriods: {
+                group : true,
+                period: true
+            }
+        }
     });
 
     const querySearch = `q[]=${molSearchIsRemoved}&q[]=${molSearchType}&q[]=${molSearchData}`;
@@ -81,11 +83,16 @@ export const buyer = (store, { cardNumber }) => {
             }
 
             store.commit('ID_BUYER', {
-                id       : res.data[0].user.id,
-                credit   : res.data[0].user.credit,
-                firstname: res.data[0].user.firstname,
-                lastname : res.data[0].user.lastname
+                id          : res.data[0].user.id,
+                credit      : res.data[0].user.credit,
+                firstname   : res.data[0].user.firstname,
+                lastname    : res.data[0].user.lastname,
+                groupPeriods: res.data[0].user.groupPeriods
             });
+
+            store.dispatch('filterItems')
+                .then(() => store.dispatch('createTabs'))
+                .then(() => store.dispatch('createTabsItems'));
         })
         .catch((err) => {
             store.commit('ERROR', err);

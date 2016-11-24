@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 const initialState = {
     categories      : [],
     sets            : [],
@@ -38,30 +36,6 @@ const mutations = {
 
     CLEAR_BASKET(state) {
         state.basket = [];
-    },
-
-    SET_ITEMS_POINTS(state, points) {
-        points.forEach((point) => {
-            Vue.set(state.items[point.index], 'point', point.point);
-        });
-    },
-
-    SET_ITEMS_PRICES(state, prices) {
-        prices.forEach((price) => {
-            Vue.set(state.items[price.index], 'price', price.price);
-        });
-    },
-
-    SET_PROMOTIONS_POINTS(state, points) {
-        points.forEach((point) => {
-            Vue.set(state.promotions[point.index], 'point', point.point);
-        });
-    },
-
-    SET_PROMOTIONS_PRICES(state, prices) {
-        prices.forEach((price) => {
-            Vue.set(state.promotions[price.index], 'price', price.price);
-        });
     },
 
     ADD_PROMOTION(state, payload) {

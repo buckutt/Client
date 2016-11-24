@@ -9,11 +9,12 @@ const initialState = {
         config: {}
     },
     buyer: {
-        isAuth   : false,
-        id       : null,
-        credit   : 0,
-        firstname: null,
-        lastname : null
+        isAuth      : false,
+        id          : null,
+        credit      : 0,
+        firstname   : null,
+        lastname    : null,
+        groupPeriods: []
     },
     seller: {
         isAuth     : false,
@@ -57,11 +58,12 @@ const mutations = {
     },
 
     ID_BUYER(state, payload) {
-        state.buyer.isAuth    = true;
-        state.buyer.id        = payload.id;
-        state.buyer.credit    = payload.credit;
-        state.buyer.firstname = payload.firstname;
-        state.buyer.lastname  = payload.lastname;
+        state.buyer.isAuth       = true;
+        state.buyer.id           = payload.id;
+        state.buyer.credit       = payload.credit;
+        state.buyer.firstname    = payload.firstname;
+        state.buyer.lastname     = payload.lastname;
+        state.buyer.groupPeriods = payload.groupPeriods;
     },
 
     LOGOUT_SELLER(state) {

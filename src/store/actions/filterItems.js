@@ -1,13 +1,28 @@
-function addPointsAndPrices(pointId, pricesStore, pointsStore) {
+import Vue from 'vue';
+
+function extract(objs) {
+    return objs.map((obj) => {
+        const clone = {};
+
+        Object.keys(obj).forEach((key) => {
+            clone[key] = obj[key];
+        });
+
+        return clone;
+    });
+}
+
+function addPointsAndPrices(pointId, groups) {
     const now = new Date();
 
-    return function iterator(obj, index) {
+    return function iterator(obj, index, arr) {
         /* Filter obj price */
         const prices = obj.prices
             .filter(p => p &&
                 new Date(p.period.start) <= now &&
                 now <= new Date(p.period.end)
-            );
+            )
+            .filter(p => groups.indexOf(p.Group_id) > -1);
 
         let min         = Infinity;
         let chosenPrice = null;
@@ -18,42 +33,39 @@ function addPointsAndPrices(pointId, pricesStore, pointsStore) {
             }
         });
 
-        pricesStore.push({
-            index,
-            price: chosenPrice
-        });
+        Vue.set(arr[index], 'price', chosenPrice);
 
         /* Filter obj point */
         const point = prices
             .map(p => p.point)
             .find(p => p && !p.isRemoved && p.id === pointId);
 
-        pointsStore.push({
-            index,
-            point
-        });
+        Vue.set(arr[index], 'point', point || null);
+
+        return arr[index];
     };
 }
 
 export const filterItems = (store) => {
+    const now     = new Date();
     const pointId = store.state.auth.device.point.id;
+    const buyer   = store.state.auth.buyer;
 
-    const itemsPrices = [];
-    const itemsPoints = [];
+    const groups = buyer.groupPeriods
+        .filter(gP => gP &&
+            new Date(gP.period.start) <= now &&
+            now <= new Date(gP.period.end)
+        )
+        .map(gP => gP.group.id);
 
-    store.state.items
-        .items
-        .forEach(addPointsAndPrices(pointId, itemsPrices, itemsPoints));
+    const items = extract(store.state.items.items)
+        .map(addPointsAndPrices(pointId, groups))
+        .filter(item => item.price && item.point);
 
-    const promotionsPrices = [];
-    const promotionsPoints = [];
+    const promotions = extract(store.state.items.promotions)
+        .map(addPointsAndPrices(pointId, groups))
+        .filter(promotion => promotion.price && promotion.point);
 
-    store.state.items
-        .promotions
-        .forEach(addPointsAndPrices(pointId, promotionsPrices, promotionsPoints));
-
-    store.commit('SET_ITEMS_PRICES', itemsPrices);
-    store.commit('SET_ITEMS_POINTS', itemsPoints);
-    store.commit('SET_PROMOTIONS_PRICES', promotionsPrices);
-    store.commit('SET_PROMOTIONS_POINTS', promotionsPoints);
+    store.commit('SET_ITEMS', items);
+    store.commit('SET_PROMOTIONS', promotions);
 };
