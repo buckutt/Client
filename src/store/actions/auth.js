@@ -1,6 +1,5 @@
 import axios  from 'axios';
 import q      from '../../utils/q';
-import config from '../../config';
 
 export const setPoint = ({ commit }, payload) => {
     commit('SET_DEVICE', payload);

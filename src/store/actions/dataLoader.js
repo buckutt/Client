@@ -1,6 +1,5 @@
 import axios   from 'axios';
 import slugify from 'slugify';
-import config  from '../../config';
 import q       from '../../utils/q';
 
 const notRemoved = q({ field: 'isRemoved', eq: false });

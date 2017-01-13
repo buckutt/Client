@@ -9,6 +9,9 @@
         "browser": true,
         "es6": true
     },
+    "globals": {
+        "config": false
+    },
     // required to lint *.vue files
     "plugins": [
         "html"

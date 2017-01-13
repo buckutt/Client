@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import axios  from 'axios';
-import config from '../../config';
 
 export const addItemToBasket = ({ commit }, item) => {
     commit('ADD_ITEM', item);
