@@ -1,11 +1,22 @@
 language: node_js
 sudo: false
+
+services:
+  - docker
+  
 node_js:
-  - '7'
+  - 7
 
 install:
-  - "npm install"
+  - npm install
 
 script:
-  - "npm run build"
-  - "npm run lint"
+  - npm run build
+  - npm run lint
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker build -t buckless/client .;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker push buckless/client;
+    fi
