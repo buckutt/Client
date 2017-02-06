@@ -96,7 +96,8 @@
     },
     "linux": {
       "category": "Office",
-      "target": "AppImage"
+      "target": "AppImage",
+      "icon": "../"
     },
     "mac": {
       "category": "public.app-category.business",
