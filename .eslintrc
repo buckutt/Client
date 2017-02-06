@@ -86,6 +86,9 @@
         "import/extensions": ["error", "always", {
             "js": "never",
             "vue": "never"
-        }]
+        }],
+
+        // Allow electron in devDeps even if used by browser.js
+        "import/no-extraneous-dependencies": 0
     }
 }

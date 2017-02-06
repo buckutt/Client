@@ -1,0 +1,8 @@
+{
+    "NODE_ENV": "'development'",
+    "app": {
+        "api": "'https://localhost:3000'",
+        "loginMeanOfLogin": "'etuId'",
+        "buyerMeanOfLogin": "'etuId'"
+    }
+}

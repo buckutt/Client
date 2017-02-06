@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require('electron');
 const config                 = require('./config');
 const path                   = require('path');
 const url                    = require('url');
+const updater                = require('./browser.updater');
 
 // global reference
 let win;
@@ -20,13 +21,17 @@ function createWindow() {
 
     win.setMenu(null);
 
-    if (!process.env.NODE_ENV || process.env.NODE_ENV.trim() !== 'production') {
+    if (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'development') {
         win.webContents.openDevTools();
     }
 
     win.on('closed', () => {
         // dereference
         win = null;
+    });
+
+    win.on('ready-to-show', () => {
+        updater();
     });
 }
 
