@@ -79,6 +79,9 @@
         // Allow dynamic require
         "import/no-dynamic-require": 0,
 
+        // Allow config.js
+        "import/no-unresolved": 0,
+
         // Allow export without default
         "import/prefer-default-export": 0,
 

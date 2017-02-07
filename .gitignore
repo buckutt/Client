@@ -3,3 +3,4 @@ node_modules/
 dist/
 out/
 npm-debug.log
+src/config.js

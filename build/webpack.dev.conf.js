@@ -14,6 +14,9 @@ module.exports = merge(baseWebpackConfig, {
   module: {
     loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
+  output: {
+    publicPath: (process.env.ELECTRON) ? './' : null,
+  },
   // eval-source-map is faster for development
   devtool: '#eval-source-map',
   plugins: [
@@ -23,7 +26,6 @@ module.exports = merge(baseWebpackConfig, {
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
@@ -33,3 +35,7 @@ module.exports = merge(baseWebpackConfig, {
     })
   ]
 })
+
+if (process.env.ELECTRON) {
+  module.exports.plugins.push(new webpack.HotModuleReplacementPlugin())
+}

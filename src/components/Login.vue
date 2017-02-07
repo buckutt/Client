@@ -49,7 +49,6 @@ export default {
     data() {
         return {
             authingSeller: false,
-            sellerId     : false,
             passwordMask : ''
         };
     },
@@ -116,6 +115,7 @@ export default {
             .get(config.api)
             // Not found error
             .catch((err) => {
+                console.log(err);
                 if (err.message === 'Network Error') {
                     this.$store.commit('ERROR', {
                         message: 'Server not reacheable'

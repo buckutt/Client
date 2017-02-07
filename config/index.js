@@ -3,7 +3,7 @@ var path = require('path')
 
 module.exports = {
   build: {
-    env: require('./prod'),
+    env: require('./production'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
@@ -17,7 +17,7 @@ module.exports = {
     productionGzipExtensions: ['js', 'css']
   },
   dev: {
-    env: require('./dev'),
+    env: require('./development'),
     port: 8081,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

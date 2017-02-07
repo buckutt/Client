@@ -19,6 +19,7 @@ module.exports = {
     publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
     filename: '[name].js'
   },
+  target: (process.env.ELECTRON) ? 'electron-renderer' : 'web',
   resolve: {
     extensions: ['', '.js', '.json', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],

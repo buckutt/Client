@@ -1,17 +1,31 @@
 language: node_js
-sudo: false
 
 services:
   - docker
 
+env:
+  - CXX=g++-4.8
+
 node_js:
-  - 7
+  - '7'
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq libpcsclite1 libpcsclite-dev
+  - sudo apt-get install -qq pcscd
 
 install:
   - yarn install
 
 script:
-  - yarn run build
+  - yarn run build:electron
   - yarn run lint
 
 after_success:

@@ -19,6 +19,7 @@
             class="b--out-of-screen"
             type="text"
             ref="input"
+            v-model="inputValue"
             autofocus
             @keyup.enter="validate"/>
     </div>
@@ -27,6 +28,8 @@
 <script>
 import 'normalize.css';
 import { mapActions, mapGetters } from 'vuex';
+
+import NFC from './nfc';
 
 import Items   from './components/Items';
 import Topbar  from './components/Topbar';
@@ -49,6 +52,12 @@ export default {
         Error
     },
 
+    data() {
+        return {
+            inputValue: ''
+        };
+    },
+
     computed: mapGetters(['buyer', 'seller', 'basketStatus', 'loaded']),
 
     methods: {
@@ -57,8 +66,8 @@ export default {
         },
 
         validate() {
-            const value = this.$refs.input.value;
-            this.$refs.input.value = '';
+            const value = this.inputValue;
+            this.inputValue = '';
 
             if (this.basketStatus === 'DOUBLE') {
                 this.sendBasket();
@@ -71,6 +80,23 @@ export default {
         },
 
         ...mapActions(['sendBasket'])
+    },
+
+    mounted() {
+        const nfc = new NFC();
+
+        nfc.on('log', (data) => {
+            console.log(data);
+        });
+
+        nfc.on('data', (data) => {
+            this.inputValue = data.data;
+            this.validate();
+        });
+
+        nfc.on('error', (err) => {
+            console.error(err);
+        });
     }
 };
 </script>

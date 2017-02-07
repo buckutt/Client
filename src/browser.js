@@ -1,5 +1,4 @@
 const { app, BrowserWindow } = require('electron');
-const config                 = require('./config');
 const path                   = require('path');
 const url                    = require('url');
 const updater                = require('./browser.updater');
@@ -38,12 +37,8 @@ function createWindow() {
 app.on('ready', createWindow);
 
 app.on('certificate-error', (e, webContents, reqUrl, error, certificate, callback) => {
-    if (reqUrl.indexOf(config.api) === 0) {
-        e.preventDefault();
-        callback(true);
-    } else {
-        callback(false);
-    }
+    e.preventDefault();
+    callback(true);
 });
 
 app.on('window-all-closed', () => app.quit());
