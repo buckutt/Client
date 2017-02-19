@@ -17,6 +17,7 @@
     "build": "node build/build.js",
     "build:dev": "cross-env ELECTRON=1 webpack --config build/webpack.dev.conf.js",
     "build:electron": "cross-env ELECTRON=1 npm run build",
+    "postinstall": "npm run build:electron && npm run package",
     "lint": "eslint --ext .js,.vue src",
     "serve": "static dist/ -a 0.0.0.0 -p 8081",
     "release": "build",
