@@ -13,13 +13,12 @@
   "license": "MIT",
   "main": "src/browser.js",
   "scripts": {
-    "dev": "node build/dev-server.js",
+    "dev": "cross-env NODE_ENV=development electron .",
     "build": "node build/build.js",
     "build:dev": "cross-env ELECTRON=1 webpack --config build/webpack.dev.conf.js",
     "build:electron": "cross-env ELECTRON=1 npm run build",
     "build:serverPackage": "cross-env ELECTRON=1 npm run build:electron && build --linux",
     "lint": "eslint --ext .js,.vue src",
-    "serve": "static dist/ -a 0.0.0.0 -p 8081",
     "release": "build",
     "package": "build"
   },
@@ -37,6 +36,7 @@
     "normalize.css": "^5.0.0",
     "sass-loader": "^4.0.2",
     "slugify": "^1.0.2",
+    "unzip": "^0.1.11",
     "vue": "^2.0.1",
     "vuex": "^2.0.0"
   },
@@ -94,7 +94,9 @@
     "copyright": "Copyright © 2017 Buckless",
     "productName": "buckless-client",
     "publish": [
-        { "provider": "github" }
+      {
+        "provider": "github"
+      }
     ],
     "directories": {
       "output": "out"

@@ -1,24 +1,34 @@
-const { BrowserWindow } = require('electron');
-const { autoUpdater }   = require('electron-updater');
+const http         = require('http');
+const path         = require('path');
+const { Readable } = require('stream');
+const unzip        = require('unzip');
 
-function notify(title, message) {
-    const windows = BrowserWindow.getAllWindows();
-    if (windows.length === 0) {
-        return;
-    }
-
-    windows[0].webContents.send('notify', title, message);
-}
-
+// TODO : move to socket.io client listener
 module.exports = () => {
-    if (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'development') {
-        return;
-    }
+    const server = http.createServer((req, res) => {
+        let body = Buffer.alloc(0);
 
-    autoUpdater.signals.updateDownloaded((it) => {
-        const msg = `La version ${it.version} a été téléchargée et sera installé automatiquement à la fermeture.`;
-        notify('Nouvelle version', msg);
+        req.on('data', data => {
+            body = Buffer.concat([body, data]);
+        });
+
+        req.on('end', () => {
+            const update = JSON.parse(body.toString());
+
+            if (!update.hasOwnProperty('data')) {
+                res.statusCode = 400;
+                return res.end();
+            }
+
+            const r = new Readable();
+            r.push(Buffer.from(update.data));
+            r.push(null);
+
+            r.pipe(unzip.Extract({ path: path.join(__dirname, '..', 'dist') }));
+
+            return res.end();
+        });
     });
 
-    autoUpdater.checkForUpdates();
-};
+    server.listen(8080);
+}
