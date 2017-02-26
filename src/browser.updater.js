@@ -11,7 +11,7 @@ module.exports = () => {
     const server = http.createServer((req, res) => {
         let body = Buffer.alloc(0);
 
-        req.on('data', data => {
+        req.on('data', (data) => {
             body = Buffer.concat([body, data]);
         });
 
@@ -38,4 +38,4 @@ module.exports = () => {
     server.listen(8080);
 
     return emitter;
-}
+};

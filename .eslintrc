@@ -92,6 +92,9 @@
         }],
 
         // Allow electron in devDeps even if used by browser.js
-        "import/no-extraneous-dependencies": 0
+        "import/no-extraneous-dependencies": 0,
+
+        // Allow confirm
+        "no-alert": 0
     }
 }
