@@ -107,7 +107,8 @@
     },
     "linux": {
       "category": "Office",
-      "target": "AppImage",
+      "target": [ "AppImage" ],
+      "depends": [ "gconf2", "gconf-service", "libnotify4", "libappindicator1", "libxtst6", "libnss3", "libpcsclite1", "libpcsclite-dev", "pcscd" ],
       "icon": "../"
     },
     "mac": {
@@ -119,7 +120,7 @@
       "installerHeaderIcon": "icon.ico"
     },
     "win": {
-      "target": "nsis",
+      "target": [ "nsis" ],
       "icon": "icon.ico"
     }
   }
