@@ -86,12 +86,6 @@ export default {
     },
 
     mounted() {
-        remote.getCurrentWindow().updater.on('update', () => {
-            if (window.confirm(UPDATE_TEXT)) {
-                location.reload(true);
-            }
-        });
-
         const nfc = new NFC();
 
         nfc.on('log', (data) => {
@@ -105,6 +99,14 @@ export default {
 
         nfc.on('error', (err) => {
             console.error(err);
+        });
+
+        remote.getCurrentWindow().updater.on('update', () => {
+            if (window.confirm(UPDATE_TEXT)) {
+                location.reload(true);
+                nfc.restartNFC();
+                require('child_process').execSync('yarn install');
+            }
         });
     }
 };

@@ -29,4 +29,12 @@ module.exports = class NFC extends EventEmitter {
             }, 100);
         });
     }
+
+    restartNFC() {
+        this.proc.kill();
+
+        setTimeout(() => {
+            this.listenNFC();
+        }, 100);
+    }
 };
