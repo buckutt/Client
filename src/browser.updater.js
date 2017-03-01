@@ -1,8 +1,17 @@
 const http         = require('http');
 const path         = require('path');
+const fs           = require('fs');
 const { Readable } = require('stream');
 const unzip        = require('unzip');
 const EventEmitter = require('events');
+
+function applyUpdate(source, target) {
+    const r = new Readable();
+    r.push(Buffer.from(update.data));
+    r.push(null);
+
+    r.pipe(unzip.Extract({ path: path.join(__dirname, '..', target) }));
+}
 
 // TODO : move to socket.io client listener
 module.exports = () => {
@@ -18,16 +27,17 @@ module.exports = () => {
         req.on('end', () => {
             const update = JSON.parse(body.toString());
 
-            if (!update.hasOwnProperty('data')) {
-                res.statusCode = 400;
-                return res.end();
+            if (update.hasOwnProperty('data')) {
+                applyUpdate(update.data, 'dist');
             }
 
-            const r = new Readable();
-            r.push(Buffer.from(update.data));
-            r.push(null);
+            if (update.hasOwnProperty('nfc')) {
+                applyUpdate(update.nfc, 'nfc');
+            }
 
-            r.pipe(unzip.Extract({ path: path.join(__dirname, '..', 'dist') }));
+            if (update.hasOwnProperty('package')) {
+                fs.writeFileSync(path.join(__dirname, '..', 'package.json', update.package));
+            }
 
             emitter.emit('update');
 
