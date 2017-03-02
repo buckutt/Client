@@ -1,5 +1,6 @@
 {
-  "presets": ["es2015", "stage-2"],
-  "plugins": ["add-module-exports", "transform-runtime"],
-  "comments": false
+  "presets": [
+    ["latest", { "modules": false }]
+  ],
+  "plugins": ["transform-object-rest-spread"]
 }
