@@ -1,9 +1,6 @@
 language: node_js
 sudo: false
 
-services:
-  - docker
-
 env:
   - CXX=g++-4.8
 
@@ -26,14 +23,3 @@ install:
 script:
   - yarn run build
   - yarn run lint
-
-after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build -t buckless/client .;
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push buckless/client;
-    fi
-
-env:
-  global:
-    secure: "j3spCe1nc/sdQwEl0AnUGbCiCAxrPaTBohbFNuFr7J/VUeaZ+jIRahyl6EGfecIb5lAd55snJWAzlxe3Q9pfd2yjzJJzgDPxxf4J1Y0K7FjoccX9V5khbB5bncu7c3h5SfiNUx65LzTn0dqSyc+krnPO3lQ27Cs3ODey9yfmmxrY2pB47Ba6LvNFfHwZ+/UQoU/LPNbzXK6u5akM/J+Rf5mP3pHS0visGH0bBaSLqGYaYS0W0smuorOWVnmojE7abtekN8asBNV6DFEiHb0FbGKSU8H+9Cycni34G95Txs6OIp9t145L47GPYB1jWtpw2pJEu84/eawb7P+r5xf6xvWs4eOCUpawYFwW8tJaXrE0zJ4+VbINKls79FAIPFTg7GTSlJXVqU0a9+n5PXGMxBtLs3hlQ6kGLt5xiG1oNitbs11Rqe4V9kSG7rYZgtgwVyAvTzHGAs+E6NBwY+xHJTfp9ZpUmR/twyo0h/rPQULwjf/32dHniEoo064bniP67WSyUuziMJhJWTR6p6IK59lmCyPL4MJVNPzl261JhWgydTeBeMPjjO5zhb+FY7xObjTr13R0oIVUJe/kZnbmPRI0B88Gg6m7nHy/kV4vDrkivt9gSJCDnZWlofn3B8qhiL5BaUVMZNt3X2iClxhDenfQfK82kI9+8t0P38I/xr0="
