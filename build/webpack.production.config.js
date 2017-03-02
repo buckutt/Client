@@ -11,7 +11,7 @@ module.exports = merge(base, {
     output: {
         path: utils.resolve('./dist'),
         filename: 'app.js',
-        publicPath: '/'
+        publicPath: './'
     },
     module: {
         rules: utils.styleLoaders({ extract: true })
@@ -19,7 +19,8 @@ module.exports = merge(base, {
     devtool: false,
     plugins: [
         new webpack.DefinePlugin({
-            'process.env': { NODE_ENV: '"production"' }
+            'process.env': { NODE_ENV: '"production"' },
+            'config': require('../config')
         }),
         new ClosureCompilerPlugin({
             compiler: {

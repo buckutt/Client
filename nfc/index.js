@@ -4,7 +4,6 @@ const Promise  = require('bluebird');
 const pcsclite = require('@pokusew/pcsclite');
 
 let config = require('../config');
-config = ((process.env.NODE_ENV === 'development') ? config.dev : config.build).env.app;
 
 const classic = require('./classic');
 const desfire = require('./desfire');

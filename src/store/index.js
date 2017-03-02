@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import createLogger from 'vuex/dist/logger';
 
 import * as actions from './actions';
-import * as getters from './getters';
+import getters from './getters';
 
 import auth   from './modules/auth';
 import items  from './modules/items';
