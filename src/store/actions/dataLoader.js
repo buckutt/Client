@@ -1,6 +1,5 @@
-import axios   from 'axios';
-import slugify from 'slugify';
-import q       from '../../utils/q';
+import axios from 'axios';
+import q     from '../../utils/q';
 
 const notRemoved = q({ field: 'isRemoved', eq: false });
 
@@ -44,14 +43,7 @@ export const dataLoader = (store) => {
             };
 
             store.commit('SET_DEVICE', device);
-
-            const articles = res.data.map((article) => {
-                const slugName = slugify(article.name).toLowerCase();
-                article.image = `/static/img/${slugName}.jpg`;
-                return article;
-            });
-
-            store.commit('SET_ITEMS', articles);
+            store.commit('SET_ITEMS', res.data);
         });
 
     const setsQuery = axios
