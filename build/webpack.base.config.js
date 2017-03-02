@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: utils.resolve('./dist'),
     filename: 'app.js',
-    publicPath: '/dist/'
+    publicPath: './'
   },
   target: 'electron-renderer',
   resolve: {
@@ -36,7 +36,7 @@ module.exports = {
         loader: 'url-loader',
         query: {
           limit: 10000,
-          name: utils.resolve('static/img/[name].[hash:7].[ext]')
+          name: 'static/img/[name].[hash:7].[ext]'
         }
       },
       {
@@ -44,7 +44,7 @@ module.exports = {
         loader: 'url-loader',
         query: {
           limit: 10000,
-          name: utils.resolve('static/fonts/[name].[hash:7].[ext]')
+          name: 'static/fonts/[name].[hash:7].[ext]'
         }
       }
     ]

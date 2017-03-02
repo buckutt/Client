@@ -14,7 +14,7 @@
   "main": "src/browser.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --config build/ --progress --hide-modules --watch",
-    "build": "cross-env NODE_ENV=production ELECTRON=1 webpack --config build/ --progress --hide-modules && build",
+    "build": "cross-env NODE_ENV=production ELECTRON=1 webpack --config build/ --progress --hide-modules",
     "lint": "eslint --ext .js,.vue src",
     "release": "build"
   },
@@ -23,7 +23,6 @@
     "async": "^2.1.2",
     "axios": "^0.15.2",
     "bluebird": "^3.4.6",
-    "electron-updater": "^1.4.2",
     "lodash.countby": "^4.6.0",
     "lodash.uniq": "^4.5.0",
     "lodash.uniqby": "^4.7.0",
@@ -32,6 +31,7 @@
     "normalize.css": "^5.0.0",
     "sass-loader": "^6.0.2",
     "slugify": "^1.0.2",
+    "unzip": "^0.1.11",
     "vue": "^2.0.1",
     "vuex": "^2.0.0"
   },
@@ -45,7 +45,6 @@
     "cross-env": "^3.1.3",
     "css-loader": "^0.26.2",
     "electron": "^1.4.6",
-    "electron-builder": "^14.5.3",
     "eslint": "^3.7.1",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-friendly-formatter": "^2.0.5",
@@ -76,43 +75,5 @@
   "engines": {
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
-  },
-  "build": {
-    "appId": "com.buckless.client",
-    "copyright": "Copyright © 2017 Buckless",
-    "productName": "buckless-client",
-    "publish": [
-      {
-        "provider": "github"
-      }
-    ],
-    "directories": {
-      "output": "out"
-    },
-    "dmg": {
-      "icon": "icon.icns",
-      "title": "Buckless Client"
-    },
-    "linux": {
-      "category": "Office",
-      "target": [
-        "AppImage"
-      ],
-      "icon": "../"
-    },
-    "mac": {
-      "category": "public.app-category.business",
-      "icon": "icon.icns"
-    },
-    "nsis": {
-      "installerIcon": "icon.ico",
-      "installerHeaderIcon": "icon.ico"
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "icon.ico"
-    }
   }
 }

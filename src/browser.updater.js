@@ -1,24 +1,51 @@
-const { BrowserWindow } = require('electron');
-const { autoUpdater }   = require('electron-updater');
+const http         = require('http');
+const path         = require('path');
+const fs           = require('fs');
+const { Readable } = require('stream');
+const unzip        = require('unzip');
+const EventEmitter = require('events');
 
-function notify(title, message) {
-    const windows = BrowserWindow.getAllWindows();
-    if (windows.length === 0) {
-        return;
-    }
+function applyUpdate(source, target) {
+    const r = new Readable();
+    r.push(Buffer.from(source));
+    r.push(null);
 
-    windows[0].webContents.send('notify', title, message);
+    r.pipe(unzip.Extract({ path: path.join(__dirname, '..', target) }));
 }
 
+// TODO : move to socket.io client listener
 module.exports = () => {
-    if (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'development') {
-        return;
-    }
+    const emitter = new EventEmitter();
 
-    autoUpdater.signals.updateDownloaded((it) => {
-        const msg = `La version ${it.version} a été téléchargée et sera installé automatiquement à la fermeture.`;
-        notify('Nouvelle version', msg);
+    const server = http.createServer((req, res) => {
+        let body = Buffer.alloc(0);
+
+        req.on('data', (data) => {
+            body = Buffer.concat([body, data]);
+        });
+
+        req.on('end', () => {
+            const update = JSON.parse(body.toString());
+
+            if (update.hasOwnProperty('data')) {
+                applyUpdate(update.data, 'dist');
+            }
+
+            if (update.hasOwnProperty('nfc')) {
+                applyUpdate(update.nfc, 'nfc');
+            }
+
+            if (update.hasOwnProperty('package')) {
+                fs.writeFileSync(path.join(__dirname, '..', 'package.json', update.package));
+            }
+
+            emitter.emit('update');
+
+            return res.end();
+        });
     });
 
-    autoUpdater.checkForUpdates();
+    server.listen(8080);
+
+    return emitter;
 };

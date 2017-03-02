@@ -7,9 +7,11 @@ const updater                = require('./browser.updater');
 let win;
 
 function createWindow() {
+    const isDev = (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'development');
+
     win = new BrowserWindow({
-        fullscreen: true,
-        kiosk     : true
+        fullscreen: !isDev,
+        kiosk     : !isDev
     });
 
     win.loadURL(url.format({
@@ -20,7 +22,7 @@ function createWindow() {
 
     win.setMenu(null);
 
-    if (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'development') {
+    if (isDev) {
         win.webContents.openDevTools();
     }
 
@@ -29,9 +31,7 @@ function createWindow() {
         win = null;
     });
 
-    win.on('ready-to-show', () => {
-        updater();
-    });
+    win.updater = updater();
 }
 
 app.on('ready', createWindow);
