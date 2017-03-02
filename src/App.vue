@@ -27,6 +27,7 @@
 
 <script>
 import 'normalize.css';
+import { remote } from 'electron';
 import { mapActions, mapGetters } from 'vuex';
 
 import NFC from './nfc';
@@ -38,6 +39,8 @@ import Reload  from './components/Reload';
 import Login   from './components/Login';
 import Loading from './components/Loading';
 import Error   from './components/Error';
+
+const UPDATE_TEXT = 'Une mise à jour a été effectuée. Recharger pour mettre à jour ? (cela entraînera une déconnexion)';
 
 export default {
     name: 'App',
@@ -96,6 +99,14 @@ export default {
 
         nfc.on('error', (err) => {
             console.error(err);
+        });
+
+        remote.getCurrentWindow().updater.on('update', () => {
+            if (window.confirm(UPDATE_TEXT)) {
+                nfc.restartNFC();
+                require('child_process').execSync('yarn install');
+                location.reload(true);
+            }
         });
     }
 };
