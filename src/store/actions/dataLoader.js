@@ -43,7 +43,7 @@ export const dataLoader = (store) => {
             };
 
             store.commit('SET_DEVICE', device);
-            store.commit('SET_ITEMS', articles);
+            store.commit('SET_ITEMS', res.data);
         });
 
     const setsQuery = axios
