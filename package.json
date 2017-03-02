@@ -35,7 +35,6 @@
     "node-sass": "^3.11.1",
     "normalize.css": "^5.0.0",
     "sass-loader": "^4.0.2",
-    "slugify": "^1.0.2",
     "vue": "^2.0.1",
     "vuex": "^2.0.0"
   },
@@ -93,7 +92,9 @@
     "copyright": "Copyright © 2017 Buckless",
     "productName": "buckless-client",
     "publish": [
-        { "provider": "github" }
+      {
+        "provider": "github"
+      }
     ],
     "directories": {
       "output": "out"
