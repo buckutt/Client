@@ -103,9 +103,9 @@ export default {
 
         remote.getCurrentWindow().updater.on('update', () => {
             if (window.confirm(UPDATE_TEXT)) {
-                location.reload(true);
                 nfc.restartNFC();
                 require('child_process').execSync('yarn install');
+                location.reload(true);
             }
         });
     }
