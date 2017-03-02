@@ -20,7 +20,7 @@
     "settings": {
         "import/resolver": {
             "webpack": {
-                "config": "build/webpack.base.conf.js"
+                "config": "build/webpack.base.config.js"
             }
         }
     },
@@ -86,10 +86,7 @@
         "import/prefer-default-export": 0,
 
         // don't require .vue extension when importing
-        "import/extensions": ["error", "always", {
-            "js": "never",
-            "vue": "never"
-        }],
+        "import/extensions": 0,
 
         // Allow electron in devDeps even if used by browser.js
         "import/no-extraneous-dependencies": 0,
