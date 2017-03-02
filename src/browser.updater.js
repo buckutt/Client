@@ -7,7 +7,7 @@ const EventEmitter = require('events');
 
 function applyUpdate(source, target) {
     const r = new Readable();
-    r.push(Buffer.from(update.data));
+    r.push(Buffer.from(source));
     r.push(null);
 
     r.pipe(unzip.Extract({ path: path.join(__dirname, '..', target) }));
