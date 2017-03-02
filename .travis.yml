@@ -32,7 +32,6 @@ after_success:
     docker build -t buckless/client .;
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
     docker push buckless/client;
-    yarn run release;
     fi
 
 env:

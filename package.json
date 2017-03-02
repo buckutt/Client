@@ -14,7 +14,7 @@
   "main": "src/browser.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --config build/ --progress --hide-modules --watch",
-    "build": "cross-env NODE_ENV=production ELECTRON=1 webpack --config build/ --progress --hide-modules && build",
+    "build": "cross-env NODE_ENV=production ELECTRON=1 webpack --config build/ --progress --hide-modules",
     "lint": "eslint --ext .js,.vue src",
     "release": "build"
   },
