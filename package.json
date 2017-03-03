@@ -70,9 +70,5 @@
     "webpack-closure-compiler": "^2.1.4",
     "webpack-dev-server": "^2.4.1",
     "webpack-merge": "^3.0.0"
-  },
-  "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
   }
 }
