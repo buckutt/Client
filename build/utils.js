@@ -1,5 +1,4 @@
-const path              = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
 
 const IS_PROD = process.env.NODE_ENV === 'production';
 
@@ -25,14 +24,7 @@ const cssLoaders = function (options = {}) {
             });
         }
 
-        if (options.extract) {
-            return ExtractTextPlugin.extract({
-                use: loaders,
-                fallback: 'vue-style-loader'
-            });
-        } else {
-            return ['vue-style-loader'].concat(loaders)
-        }
+        return ['vue-style-loader'].concat(loaders)
     }
 
     return {
