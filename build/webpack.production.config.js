@@ -3,18 +3,12 @@ const merge                 = require('webpack-merge');
 const utils                 = require('./utils');
 const base                  = require('./webpack.base.config');
 const OptimizeCSSPlugin     = require('optimize-css-assets-webpack-plugin');
-const ExtractTextPlugin     = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin     = require('html-webpack-plugin')
 const ClosureCompilerPlugin = require('webpack-closure-compiler');
 
 module.exports = merge(base, {
-    output: {
-        path: utils.resolve('./dist'),
-        filename: 'app.js',
-        publicPath: './'
-    },
     module: {
-        rules: utils.styleLoaders({ extract: true })
+        rules: utils.styleLoaders()
     },
     devtool: false,
     plugins: [
@@ -33,9 +27,6 @@ module.exports = merge(base, {
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true
-        }),
-        new ExtractTextPlugin({
-            filename: 'static/css/[name].css'
         }),
         new OptimizeCSSPlugin(),
         new HtmlWebpackPlugin({
