@@ -1,7 +1,8 @@
 import { remote } from 'electron';
 import axios      from 'axios';
-import updater    from '../../updater';
 import q          from '../../utils/q';
+
+const UPDATE_TEXT = 'Une mise à jour a été effectuée. Recharger pour mettre à jour ? (cela entraînera une déconnexion)';
 
 export const setPoint = ({ commit }, payload) => {
     commit('SET_DEVICE', payload);
@@ -26,9 +27,9 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
                 canReload: res.data.user.canReload
             });
 
-            remote.getCurrentWindow().updater(token).on('update', () => {
+            remote.getCurrentWindow().updater(res.data.token).on('update', () => {
                 if (window.confirm(UPDATE_TEXT)) {
-                    nfc.restartNFC();
+                    window.app.nfc.restartNFC();
                     require('child_process').execSync('yarn install');
                     location.reload(true);
                 }

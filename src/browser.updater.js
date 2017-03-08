@@ -15,7 +15,7 @@ function applyUpdate(source, target) {
 
 let io;
 
-module.exports = function (token) {
+module.exports = function updater (token) {
     if (io) {
         io.close();
     }
@@ -50,4 +50,4 @@ module.exports = function (token) {
     });
 
     return emitter;
-}
+};

@@ -39,8 +39,6 @@ import Login   from './components/Login';
 import Loading from './components/Loading';
 import Error   from './components/Error';
 
-const UPDATE_TEXT = 'Une mise à jour a été effectuée. Recharger pour mettre à jour ? (cela entraînera une déconnexion)';
-
 export default {
     name: 'App',
 
@@ -99,6 +97,8 @@ export default {
         nfc.on('error', (err) => {
             console.error(err);
         });
+
+        window.app.nfc = nfc;
     }
 };
 </script>
