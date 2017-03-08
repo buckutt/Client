@@ -15,7 +15,7 @@ function applyUpdate(source, target) {
 
 let io;
 
-module.exports = function updater (token) {
+module.exports = function updater(token) {
     if (io) {
         io.close();
     }
