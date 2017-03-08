@@ -27,7 +27,6 @@
 
 <script>
 import 'normalize.css';
-import { remote } from 'electron';
 import { mapActions, mapGetters } from 'vuex';
 
 import NFC from './nfc';
@@ -99,14 +98,6 @@ export default {
 
         nfc.on('error', (err) => {
             console.error(err);
-        });
-
-        remote.getCurrentWindow().updater.on('update', () => {
-            if (window.confirm(UPDATE_TEXT)) {
-                nfc.restartNFC();
-                require('child_process').execSync('yarn install');
-                location.reload(true);
-            }
         });
     }
 };

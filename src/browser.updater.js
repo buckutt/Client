@@ -1,9 +1,9 @@
-const http         = require('http');
 const path         = require('path');
 const fs           = require('fs');
 const { Readable } = require('stream');
-const unzip        = require('unzip');
 const EventEmitter = require('events');
+const socketio     = require('socket.io-client');
+const unzip        = require('unzip');
 
 function applyUpdate(source, target) {
     const r = new Readable();
@@ -13,20 +13,26 @@ function applyUpdate(source, target) {
     r.pipe(unzip.Extract({ path: path.join(__dirname, '..', target) }));
 }
 
-// TODO : move to socket.io client listener
-module.exports = () => {
+let io;
+
+module.exports = function (token) {
+    if (io) {
+        io.close();
+    }
+
     const emitter = new EventEmitter();
 
-    const server = http.createServer((req, res) => {
-        let body = Buffer.alloc(0);
+    io = socketio(config.api, {
+        strictSSL         : false,
+        rejectUnauthorized: false,
+        extraHeaders      : {
+            origin       : 'https://localhost:3006',
+            Authorization: `Bearer ${token}`
+        }
+    });
 
-        req.on('data', (data) => {
-            body = Buffer.concat([body, data]);
-        });
-
-        req.on('end', () => {
-            const update = JSON.parse(body.toString());
-
+    io.on('connected', () => {
+        io.on('update', (update) => {
             if (update.hasOwnProperty('data')) {
                 applyUpdate(update.data, 'dist');
             }
@@ -40,12 +46,8 @@ module.exports = () => {
             }
 
             emitter.emit('update');
-
-            return res.end();
         });
     });
 
-    server.listen(8080);
-
     return emitter;
-};
+}

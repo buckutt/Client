@@ -1,5 +1,7 @@
-import axios  from 'axios';
-import q      from '../../utils/q';
+import { remote } from 'electron';
+import axios      from 'axios';
+import updater    from '../../updater';
+import q          from '../../utils/q';
 
 export const setPoint = ({ commit }, payload) => {
     commit('SET_DEVICE', payload);
@@ -22,6 +24,14 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
                 lastname : res.data.user.lastname,
                 canSell  : res.data.user.canSell,
                 canReload: res.data.user.canReload
+            });
+
+            remote.getCurrentWindow().updater(token).on('update', () => {
+                if (window.confirm(UPDATE_TEXT)) {
+                    nfc.restartNFC();
+                    require('child_process').execSync('yarn install');
+                    location.reload(true);
+                }
             });
 
             dispatch('dataLoader')

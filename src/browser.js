@@ -31,7 +31,7 @@ function createWindow() {
         win = null;
     });
 
-    win.updater = updater();
+    win.updater = updater;
 }
 
 app.on('ready', createWindow);
