@@ -60,6 +60,11 @@ export const buyer = (store, { cardNumber }) => {
         eq   : cardNumber.trim()
     });
 
+    const molBlocked = q({
+        field: 'blocked',
+        eq   : false
+    });
+
     const embedUser = q({
         user: {
             groupPeriods: {
@@ -69,7 +74,7 @@ export const buyer = (store, { cardNumber }) => {
         }
     });
 
-    const querySearch = `q[]=${molSearchIsRemoved}&q[]=${molSearchType}&q[]=${molSearchData}`;
+    const querySearch = `q[]=${molSearchIsRemoved}&q[]=${molSearchType}&q[]=${molSearchData}&q[]=${molBlocked}`;
 
     const token = store.getters.tokenHeaders;
 
