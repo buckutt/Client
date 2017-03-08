@@ -1,8 +1,7 @@
-const webpack           = require('webpack');
-const merge             = require('webpack-merge');
-const utils             = require('./utils');
-const base              = require('./webpack.base.config');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const webpack = require('webpack');
+const merge   = require('webpack-merge');
+const utils   = require('./utils');
+const base    = require('./webpack.base.config');
 
 module.exports = merge(base, {
     module: {
@@ -14,12 +13,6 @@ module.exports = merge(base, {
             'process.env': { NODE_ENV: '"development"' },
             'config': require('../config')
         }),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new HtmlWebpackPlugin({
-            filename: utils.resolve('dist/index.html'),
-            template: utils.resolve('index.html'),
-            inject  : true
-        })
+        new webpack.NoEmitOnErrorsPlugin()
     ]
 });

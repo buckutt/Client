@@ -49,12 +49,14 @@ module.exports = {
             }
         ]
     },
-    devServer: {
-        historyApiFallback: true,
-        noInfo: true
-    },
     performance: {
         hints: false
+    },
+    devServer: {
+        historyApiFallback: true,
+        hot: true,
+        port: 8081,
+        publicPath: '/'
     },
     devtool: '#eval-source-map'
 }
