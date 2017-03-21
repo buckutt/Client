@@ -91,7 +91,7 @@ export const sendBasket = (store) => {
     store.commit('SET_BASKET_STATUS', 'DOING');
 
     axios
-        .post(`${config.api}/services/basket`, basketToSend, store.getters.tokenHeaders)
+        .post(`${config.app.api}/services/basket`, basketToSend, store.getters.tokenHeaders)
         .then(() => {
             store.commit('CLEAR_BASKET');
             store.commit('REMOVE_RELOADS');

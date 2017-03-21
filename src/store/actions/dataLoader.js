@@ -30,7 +30,7 @@ export const dataLoader = (store) => {
     const token = store.getters.tokenHeaders;
 
     const articlesQuery = axios
-        .get(`${config.api}/articles/search?q=${notRemoved}&embed=${articlesJoin}`, token)
+        .get(`${config.app.api}/articles/search?q=${notRemoved}&embed=${articlesJoin}`, token)
         .then((res) => {
             const device = {
                 id   : res.headers.device,
@@ -47,23 +47,23 @@ export const dataLoader = (store) => {
         });
 
     const setsQuery = axios
-        .get(`${config.api}/sets/search?q=${notRemoved}&embed=${setsJoin}`, token)
+        .get(`${config.app.api}/sets/search?q=${notRemoved}&embed=${setsJoin}`, token)
         .then((res) => {
             store.commit('SET_SETS', res.data);
         });
 
     const meansOfPaymentQuery = axios
-        .get(`${config.api}/meansofpayment/search?q=${notRemoved}`, token)
+        .get(`${config.app.api}/meansofpayment/search?q=${notRemoved}`, token)
         .then((res) => {
             store.commit('SET_MEANS_OF_PAYMENT', res.data);
         });
 
     const devicesQuery = axios
-        .get(`${config.api}/devices/search?q=${notRemoved}`, token)
+        .get(`${config.app.api}/devices/search?q=${notRemoved}`, token)
         .then(res => res.data);
 
     const promotionsQuery = axios
-        .get(`${config.api}/promotions/search?q=${notRemoved}&embed=${promotionsJoin}`, token)
+        .get(`${config.app.api}/promotions/search?q=${notRemoved}&embed=${promotionsJoin}`, token)
         .then((res) => {
             store.commit('SET_PROMOTIONS', res.data);
         });

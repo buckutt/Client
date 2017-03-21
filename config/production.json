@@ -1,7 +1,7 @@
 {
     "NODE_ENV": "\"production\"",
     "app": {
-        "api": "\"https://server:3000\"",
+        "api": "\"https://api.buck.uttnetgroup.net\"",
         "loginMeanOfLogin": "\"etuId\"",
         "buyerMeanOfLogin": "\"etuId\"",
         "desfire"         : {
@@ -12,6 +12,10 @@
         },
         "classic": {
             "fileId": "[255, 243, 0, 5]"
+        },
+        "certificate": {
+            "path": "\"./buckutt-certificate.p12\"",
+            "password": "\"foo\""
         }
     }
 }

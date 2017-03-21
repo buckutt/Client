@@ -12,6 +12,10 @@
         },
         "classic": {
             "fileId": "[255, 243, 0, 5]"
+        },
+        "certificate": {
+            "path": "\"./buckutt-certificate.p12\"",
+            "password": "\"foo\""
         }
     }
 }
