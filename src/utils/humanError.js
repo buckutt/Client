@@ -9,6 +9,10 @@ export default (state, error) => {
         return state.auth.seller.isAuth ? 'Client introuvable' : 'Vendeur introuvable';
     }
 
+    if (error.message === 'Not enough rights') {
+        return 'Pas de droit de vente / recharge';
+    }
+
     if (error.message === 'Device not found') {
         return 'Équipement inconnu';
     }
