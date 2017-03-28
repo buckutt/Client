@@ -1,9 +1,3 @@
-import * as ui         from './ui';
-import * as auth       from './auth';
-import * as promotions from './promotions';
-
-export default {
-    ...ui,
-    ...auth,
-    ...promotions
-};
+export * from './ui';
+export * from './auth';
+export * from './promotions';
