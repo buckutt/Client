@@ -19,7 +19,7 @@ function sanitizePromotions(promotions) {
                 sets    : promotion.sets.map(set => set.id)
             };
         })
-        .filter(promotion => promotion.articles.length > 0);
+        .filter(promotion => promotion.articles.length > 0 || promotion.sets.length > 0);
 }
 
 /**
