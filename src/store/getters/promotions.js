@@ -18,7 +18,8 @@ function sanitizePromotions(promotions) {
                 articles: promotion.articles.map(article => article.id),
                 sets    : promotion.sets.map(set => set.id)
             };
-        });
+        })
+        .filter(promotion => promotion.articles.length > 0);
 }
 
 /**
