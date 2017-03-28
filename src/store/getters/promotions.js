@@ -8,6 +8,7 @@ import countBy from 'lodash.countby';
 function sanitizePromotions(promotions) {
     return promotions
         .slice()
+        .filter(promotion => !promotion.isRemoved)
         .map((promotion) => {
             promotion.articles = promotion.articles || [];
             promotion.sets     = promotion.sets || [];
@@ -17,7 +18,8 @@ function sanitizePromotions(promotions) {
                 articles: promotion.articles.map(article => article.id),
                 sets    : promotion.sets.map(set => set.id)
             };
-        });
+        })
+        .filter(promotion => promotion.articles.length > 0);
 }
 
 /**

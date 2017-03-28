@@ -36,6 +36,7 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
 export const logout = (store) => {
     if (store.state.auth.buyer.isAuth) {
         store.commit('LOGOUT_BUYER');
+        store.commit('SET_BASKET_STATUS', 'WAITING');
     } else if (store.state.auth.seller.isAuth) {
         store.commit('LOGOUT_SELLER');
         store.commit('ID_SELLER', '');
