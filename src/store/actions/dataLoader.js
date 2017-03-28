@@ -1,9 +1,10 @@
-import axios from 'axios';
-import q     from '../../utils/q';
+import axios                    from 'axios';
+import q                        from '../../utils/q';
+import filterIsRemovedRecursive from '../../utils/filterIsRemovedRecursive';
 
 const notRemoved = q({ field: 'isRemoved', eq: false });
 
-const articlesJoin = q({
+const articlesJoin = {
     categories: { points: true },
     prices    : {
         fundation: true,
@@ -12,9 +13,9 @@ const articlesJoin = q({
         point    : true,
         promotion: true
     }
-});
+};
 
-const promotionsJoin = q({
+const promotionsJoin = {
     prices: {
         group : true,
         period: true,
@@ -22,15 +23,15 @@ const promotionsJoin = q({
     },
     articles: true,
     sets    : { articles: true }
-});
+};
 
-const setsJoin = q({ promotion: true, articles: true });
+const setsJoin = { promotion: true, articles: true };
 
 export const dataLoader = (store) => {
     const token = store.getters.tokenHeaders;
 
     const articlesQuery = axios
-        .get(`${config.app.api}/articles/search?q=${notRemoved}&embed=${articlesJoin}`, token)
+        .get(`${config.app.api}/articles/search?q=${notRemoved}&embed=${q(articlesJoin)}`, token)
         .then((res) => {
             const device = {
                 id   : res.headers.device,
@@ -43,13 +44,13 @@ export const dataLoader = (store) => {
             };
 
             store.commit('SET_DEVICE', device);
-            store.commit('SET_ITEMS', res.data);
+            store.commit('SET_ITEMS', filterIsRemovedRecursive(res.data, articlesJoin));
         });
 
     const setsQuery = axios
-        .get(`${config.app.api}/sets/search?q=${notRemoved}&embed=${setsJoin}`, token)
+        .get(`${config.app.api}/sets/search?q=${notRemoved}&embed=${q(setsJoin)}`, token)
         .then((res) => {
-            store.commit('SET_SETS', res.data);
+            store.commit('SET_SETS', filterIsRemovedRecursive(res.data, setsJoin));
         });
 
     const meansOfPaymentQuery = axios
@@ -63,9 +64,9 @@ export const dataLoader = (store) => {
         .then(res => res.data);
 
     const promotionsQuery = axios
-        .get(`${config.app.api}/promotions/search?q=${notRemoved}&embed=${promotionsJoin}`, token)
+        .get(`${config.app.api}/promotions/search?q=${notRemoved}&embed=${q(promotionsJoin)}`, token)
         .then((res) => {
-            store.commit('SET_PROMOTIONS', res.data);
+            store.commit('SET_PROMOTIONS', filterIsRemovedRecursive(res.data, promotionsJoin));
         });
 
     return Promise
