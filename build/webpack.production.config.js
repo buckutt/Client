@@ -13,17 +13,9 @@ module.exports = merge(base, {
     devtool: false,
     plugins: [
         new webpack.DefinePlugin({
+            'IS_ELECTRON': 'true',
             'process.env': { NODE_ENV: '"production"' },
             'config': require('../config')
-        }),
-        new ClosureCompilerPlugin({
-            compiler: {
-                language_in: 'ECMASCRIPT6',
-                language_out: 'ECMASCRIPT5',
-                compilation_level: 'SIMPLE',
-                warning_level: 'QUIET'
-            },
-            jsCompiler: true
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true

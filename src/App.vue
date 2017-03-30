@@ -26,11 +26,9 @@
 </template>
 
 <script>
+/* global IS_ELECTRON */
 import 'normalize.css';
-import { remote } from 'electron';
 import { mapActions, mapGetters } from 'vuex';
-
-import NFC from './nfc';
 
 import Items   from './components/Items';
 import Topbar  from './components/Topbar';
@@ -86,28 +84,31 @@ export default {
     },
 
     mounted() {
-        const nfc = new NFC();
+        if (IS_ELECTRON) {
+            const NFC = require('./nfc');
+            const nfc = new NFC();
 
-        nfc.on('log', (data) => {
-            console.log(data);
-        });
+            nfc.on('log', (data) => {
+                console.log(data);
+            });
 
-        nfc.on('data', (data) => {
-            this.inputValue = data.data;
-            this.validate();
-        });
+            nfc.on('data', (data) => {
+                this.inputValue = data.data;
+                this.validate();
+            });
 
-        nfc.on('error', (err) => {
-            console.error(err);
-        });
+            nfc.on('error', (err) => {
+                console.error(err);
+            });
 
-        remote.getCurrentWindow().updater.on('update', () => {
-            if (window.confirm(UPDATE_TEXT)) {
-                nfc.restartNFC();
-                require('child_process').execSync('yarn install');
-                location.reload(true);
-            }
-        });
+            require('electron').remote.getCurrentWindow().updater.on('update', () => {
+                if (window.confirm(UPDATE_TEXT)) {
+                    nfc.restartNFC();
+                    require('child_process').execSync('yarn install');
+                    location.reload(true);
+                }
+            });
+        }
     }
 };
 </script>

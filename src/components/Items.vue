@@ -2,7 +2,8 @@
     <div class="b-items">
         <item
             v-for="item in tabsItems"
-            :item="item"></item>
+            :item="item"
+            :key="item.id"></item>
     </div>
 </template>
 

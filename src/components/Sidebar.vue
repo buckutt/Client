@@ -6,10 +6,12 @@
                 :amount="reloadSum"></sidebar-reload>
             <sidebar-promotion
                 v-for="promotion in sidebar.promotions"
+                :key="promotion.id"
                 :name="promotion.name"
                 :items="promotion.items"></sidebar-promotion>
             <sidebar-item
-                v-for="(count, name) in sidebar.items"
+                v-for="(count, name, index) in sidebar.items"
+                :key="index"
                 :name="name"
                 :count="count"></sidebar-item>
         </div>

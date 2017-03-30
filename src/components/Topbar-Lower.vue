@@ -6,6 +6,7 @@
                 v-if="buyer.isAuth && seller.canSell"
                 :name="tab.name"
                 :id="tab.id"
+                :key="tab.id"
                 :index="i"></tab>
         </div>
         <div class="b-lower-bar__device">
