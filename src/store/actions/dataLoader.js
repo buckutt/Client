@@ -28,9 +28,10 @@ const promotionsJoin = {
 const setsJoin = { promotion: true, articles: true };
 
 export const dataLoader = (store) => {
-    const token = store.getters.tokenHeaders;
+    const token      = store.getters.tokenHeaders;
+    const isReloader = !store.getters.seller.canSell && store.getters.seller.canReload;
 
-    const articlesQuery = axios
+    const articlesQuery = isReloader ? Promise.resolve() : axios
         .get(`${config.app.api}/articles/search?q=${notRemoved}&embed=${q(articlesJoin)}`, token)
         .then((res) => {
             const device = {
@@ -47,7 +48,7 @@ export const dataLoader = (store) => {
             store.commit('SET_ITEMS', filterIsRemovedRecursive(res.data, articlesJoin));
         });
 
-    const setsQuery = axios
+    const setsQuery = isReloader ? Promise.resolve() : axios
         .get(`${config.app.api}/sets/search?q=${notRemoved}&embed=${q(setsJoin)}`, token)
         .then((res) => {
             store.commit('SET_SETS', filterIsRemovedRecursive(res.data, setsJoin));
@@ -63,7 +64,7 @@ export const dataLoader = (store) => {
         .get(`${config.app.api}/devices/search?q=${notRemoved}`, token)
         .then(res => res.data);
 
-    const promotionsQuery = axios
+    const promotionsQuery = isReloader ? Promise.resolve() : axios
         .get(`${config.app.api}/promotions/search?q=${notRemoved}&embed=${q(promotionsJoin)}`, token)
         .then((res) => {
             store.commit('SET_PROMOTIONS', filterIsRemovedRecursive(res.data, promotionsJoin));
