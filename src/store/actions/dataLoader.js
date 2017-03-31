@@ -45,13 +45,13 @@ export const dataLoader = (store) => {
             };
 
             store.commit('SET_DEVICE', device);
-            store.commit('SET_ITEMS', filterIsRemovedRecursive(res.data, articlesJoin));
+            store.commit('SET_ITEMS', res.data.map(article => filterIsRemovedRecursive(article, articlesJoin)));
         });
 
     const setsQuery = isReloader ? Promise.resolve() : axios
         .get(`${config.app.api}/sets/search?q=${notRemoved}&embed=${q(setsJoin)}`, token)
         .then((res) => {
-            store.commit('SET_SETS', filterIsRemovedRecursive(res.data, setsJoin));
+            store.commit('SET_SETS', res.data.map(set => filterIsRemovedRecursive(set, setsJoin)));
         });
 
     const meansOfPaymentQuery = axios
@@ -67,7 +67,9 @@ export const dataLoader = (store) => {
     const promotionsQuery = isReloader ? Promise.resolve() : axios
         .get(`${config.app.api}/promotions/search?q=${notRemoved}&embed=${q(promotionsJoin)}`, token)
         .then((res) => {
-            store.commit('SET_PROMOTIONS', filterIsRemovedRecursive(res.data, promotionsJoin));
+            store.commit('SET_PROMOTIONS', res.data
+                .map(promotion => filterIsRemovedRecursive(promotion, promotionsJoin)
+            ));
         });
 
     return Promise

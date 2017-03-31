@@ -16,7 +16,7 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
         })
         .then((res) => {
             if (!res.data.user.canSell && !res.data.user.canReload) {
-                return Promise.reject({ response: { data: 'Not enough rights' } });
+                return Promise.reject({ response: { data: { message: 'Not enough rights' } } });
             }
 
             commit('AUTH_SELLER', {

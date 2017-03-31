@@ -77,7 +77,13 @@ export const sidebar = (state) => {
     const promotions_ = sanitizePromotions(state.items.promotions.slice());
 
     if (promotions_.length === 0) {
-        return { items: [], promotions: [] };
+        const basketNames = basket.map(id => state.items.items.find(item => item.id === id).name);
+        return {
+            items           : countBy(basketNames),
+            full            : basket,
+            promotions      : [],
+            basketPromotions: []
+        };
     }
 
     const basketPromotions       = state.items.promotionsBasket.slice();

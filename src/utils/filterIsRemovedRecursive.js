@@ -6,6 +6,10 @@ export default function filterIsRemovedRecursive(doc, tree) {
     Object
         .keys(tree)
         .forEach((key) => {
+            if (!doc[key]) {
+                return;
+            }
+
             const subtree = tree[key];
             const method = (typeof subtree === 'boolean') ? identity : filterIsRemovedRecursive;
 
