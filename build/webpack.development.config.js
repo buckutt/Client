@@ -10,6 +10,7 @@ module.exports = merge(base, {
     devtool: '#cheap-module-eval-source-map',
     plugins: [
         new webpack.DefinePlugin({
+            'IS_ELECTRON': process.env.ELECTRON ? 'true' : 'false',
             'process.env': { NODE_ENV: '"development"' },
             'config': require('../config')
         }),

@@ -1,7 +1,10 @@
 <template>
     <div class="b-upper-bar">
         <div class="b-upper-bar__buyer" v-if="buyer.isAuth">
-            <div class="b-upper-bar__buyer__name">{{ buyer.firstname }} {{ buyer.lastname }}</div>
+            <div class="b-upper-bar__buyer__name">
+                <span class="b--capitalized">{{ buyer.firstname }}</span>
+                <span class="b--capitalized">{{ buyer.lastname }}</span>
+            </div>
             <div class="b-upper-bar__buyer__credit">
                 crédit:
                 <span :class="{ 'b-upper-bar__buyer__credit--negative': credit < 0 }">

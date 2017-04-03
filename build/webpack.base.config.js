@@ -9,7 +9,7 @@ module.exports = {
         filename: 'app.js',
         publicPath: './'
     },
-    target: 'electron-renderer',
+    target: process.env.ELECTRON ? 'electron-renderer' : 'web',
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         alias: {

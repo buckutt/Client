@@ -77,7 +77,13 @@ export const sidebar = (state) => {
     const promotions_ = sanitizePromotions(state.items.promotions.slice());
 
     if (promotions_.length === 0) {
-        return { items: [], promotions: [] };
+        const basketNames = basket.map(id => state.items.items.find(item => item.id === id).name);
+        return {
+            items           : countBy(basketNames),
+            full            : basket,
+            promotions      : [],
+            basketPromotions: []
+        };
     }
 
     const basketPromotions       = state.items.promotionsBasket.slice();
@@ -181,12 +187,12 @@ export const credit = (state) => {
     const initialCredit = state.auth.buyer.credit;
     const basket        = cleanBasket(state);
 
-    const items = basket.items
+    const items = (basket.items || [])
         .map(item => state.items.items.find(i => i.id === item))
         .map(item => item.price.amount)
         .reduce((a, b) => a + b, 0);
 
-    const promotions = basket.promotions
+    const promotions = (basket.promotions || [])
         .map(promo => state.items.promotions.find(p => p.id === promo.id))
         .map(promo => promo.price.amount)
         .reduce((a, b) => a + b, 0);

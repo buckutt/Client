@@ -15,6 +15,10 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
             pin        : password
         })
         .then((res) => {
+            if (!res.data.user.canSell && !res.data.user.canReload) {
+                return Promise.reject({ response: { data: { message: 'Not enough rights' } } });
+            }
+
             commit('AUTH_SELLER', {
                 id       : res.data.user.id,
                 token    : res.data.token,
