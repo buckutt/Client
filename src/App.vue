@@ -14,6 +14,7 @@
         <transition name="b--fade">
             <loading v-if="loaded === false"></loading>
         </transition>
+        <alcohol-warning></alcohol-warning>
         <error></error>
         <input
             class="b--out-of-screen"
@@ -30,13 +31,14 @@
 import 'normalize.css';
 import { mapActions, mapGetters } from 'vuex';
 
-import Items   from './components/Items';
-import Topbar  from './components/Topbar';
-import Sidebar from './components/Sidebar';
-import Reload  from './components/Reload';
-import Login   from './components/Login';
-import Loading from './components/Loading';
-import Error   from './components/Error';
+import Items          from './components/Items';
+import Topbar         from './components/Topbar';
+import Sidebar        from './components/Sidebar';
+import Reload         from './components/Reload';
+import Login          from './components/Login';
+import Loading        from './components/Loading';
+import Error          from './components/Error';
+import AlcoholWarning from './components/AlcoholWarning';
 
 const UPDATE_TEXT = 'Une mise à jour a été effectuée. Recharger pour mettre à jour ? (cela entraînera une déconnexion)';
 
@@ -50,7 +52,8 @@ export default {
         Reload,
         Login,
         Loading,
-        Error
+        Error,
+        AlcoholWarning
     },
 
     data() {

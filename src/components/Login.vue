@@ -135,7 +135,10 @@ export default {
                         id  : err.response.headers.point,
                         name: err.response.headers.pointname
                     },
-                    event: err.response.headers.eventname
+                    event: {
+                        id  : err.response.headers.event,
+                        name: err.response.headers.eventname
+                    }
                 });
             });
 

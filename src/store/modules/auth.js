@@ -5,7 +5,11 @@ const initialState = {
             id  : null,
             name: null
         },
-        event : null,
+        event: {
+            id    : null,
+            name  : null,
+            config: {}
+        },
         config: {}
     },
     buyer: {
@@ -14,7 +18,8 @@ const initialState = {
         credit      : 0,
         firstname   : null,
         lastname    : null,
-        groupPeriods: []
+        groupPeriods: [],
+        purchases   : []
     },
     seller: {
         isAuth     : false,
@@ -30,9 +35,10 @@ const initialState = {
 
 const mutations = {
     SET_DEVICE(state, payload) {
-        state.device.id    = payload.id;
-        state.device.point = payload.point;
-        state.device.event = payload.event;
+        state.device.id         = payload.id;
+        state.device.point      = payload.point;
+        state.device.event.id   = payload.event.id;
+        state.device.event.name = payload.event.name;
     },
 
     SET_FULL_DEVICE(state, payload) {
@@ -41,6 +47,10 @@ const mutations = {
         keys.forEach((key) => {
             state.device.config[key] = payload[key];
         });
+    },
+
+    SET_EVENT(state, payload) {
+        state.device.event.config = payload.config;
     },
 
     ID_SELLER(state, meanOfLogin) {
@@ -64,6 +74,7 @@ const mutations = {
         state.buyer.firstname    = payload.firstname;
         state.buyer.lastname     = payload.lastname;
         state.buyer.groupPeriods = payload.groupPeriods;
+        state.buyer.purchases    = payload.purchases;
     },
 
     LOGOUT_SELLER(state) {

@@ -37,12 +37,13 @@ export const sendBasket = (store) => {
             Promotion_id: null,
             Seller_id   : store.state.auth.seller.id,
             articles    : [{
-                id   : article.id,
-                vat  : article.vat,
-                price: article.price.id
+                id     : article.id,
+                vat    : article.vat,
+                price  : article.price.id
             }],
-            cost: article.price.amount,
-            type: 'purchase'
+            alcohol: article.alcohol,
+            cost   : article.price.amount,
+            type   : 'purchase'
         });
 
         bought += article.price.amount;
@@ -51,6 +52,7 @@ export const sendBasket = (store) => {
     fullBasket.promotions.forEach((basketPromo) => {
         const promoId        = basketPromo.id;
         const articlesInside = [];
+        let alcohol          = 0;
         const promo          = store.state.items.promotions.find(p => p.id === promoId);
 
         basketPromo.contents.forEach((articleInside) => {
@@ -60,6 +62,8 @@ export const sendBasket = (store) => {
                 vat  : fullArticleInside.vat,
                 price: fullArticleInside.price.id
             });
+
+            alcohol += fullArticleInside.alcohol;
         });
 
         basketToSend.push({
@@ -70,7 +74,8 @@ export const sendBasket = (store) => {
             Promotion_id: promo.id,
             articles    : articlesInside,
             cost        : promo.price.amount,
-            type        : 'purchase'
+            type        : 'purchase',
+            alcohol
         });
 
         bought += promo.price.amount;
