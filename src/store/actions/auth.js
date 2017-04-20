@@ -9,9 +9,9 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
     commit('SET_DATA_LOADED', false);
 
     return axios
-        .post(`${config.app.api}/services/login`, {
-            meanOfLogin: config.app.loginMeanOfLogin,
-            data       : meanOfLogin.slice(0, 13),
+        .post(`${config.api}/services/login`, {
+            meanOfLogin: config.loginMeanOfLogin,
+            data       : meanOfLogin,
             pin        : password
         })
         .then((res) => {
@@ -57,7 +57,7 @@ export const buyer = (store, { cardNumber }) => {
 
     const molSearchType = q({
         field: 'type',
-        eq   : config.app.buyerMeanOfLogin
+        eq   : config.buyerMeanOfLogin
     });
 
     const molSearchData = q({
@@ -84,7 +84,7 @@ export const buyer = (store, { cardNumber }) => {
     const token = store.getters.tokenHeaders;
 
     axios
-        .get(`${config.app.api}/meansoflogin/search?${querySearch}&embed=${embedUser}`, token)
+        .get(`${config.api}/meansoflogin/search?${querySearch}&embed=${embedUser}`, token)
         .then((res) => {
             if (res.data.length === 0) {
                 store.commit('ERROR', { message: 'User not found' });

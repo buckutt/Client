@@ -35,8 +35,8 @@ function createWindow() {
     win.updater = updater();
 
     const opts = {
-        certificate: JSON.parse(config.app.certificate.path),
-        password   : JSON.parse(config.app.certificate.password)
+        certificate: JSON.parse(config.certificate.path),
+        password   : JSON.parse(config.certificate.password)
     };
 
     app.importCertificate(opts, result => console.log(result));
