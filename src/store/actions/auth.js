@@ -70,6 +70,11 @@ export const buyer = (store, { cardNumber }) => {
             groupPeriods: {
                 group : true,
                 period: true
+            },
+            purchases: {
+                price: {
+                    period: true
+                }
             }
         }
     });
@@ -91,7 +96,8 @@ export const buyer = (store, { cardNumber }) => {
                 credit      : res.data[0].user.credit,
                 firstname   : res.data[0].user.firstname,
                 lastname    : res.data[0].user.lastname,
-                groupPeriods: res.data[0].user.groupPeriods
+                groupPeriods: res.data[0].user.groupPeriods,
+                purchases   : res.data[0].user.purchases
             });
 
             store.dispatch('filterItems')

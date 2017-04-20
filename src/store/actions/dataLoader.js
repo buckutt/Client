@@ -29,6 +29,7 @@ const setsJoin = { promotion: true, articles: true };
 
 export const dataLoader = (store) => {
     const token      = store.getters.tokenHeaders;
+    const eventId    = store.state.auth.device.event.id;
     const isReloader = !store.getters.seller.canSell && store.getters.seller.canReload;
 
     const articlesQuery = isReloader ? Promise.resolve() : axios
@@ -40,7 +41,7 @@ export const dataLoader = (store) => {
                     id  : res.headers.point,
                     name: res.headers.pointname
                 },
-                event : res.headers.eventname,
+                event : { name: res.headers.eventname, id: res.headers.event },
                 config: {}
             };
 
@@ -64,6 +65,12 @@ export const dataLoader = (store) => {
         .get(`${config.app.api}/devices/search?q=${notRemoved}`, token)
         .then(res => res.data);
 
+    const eventQuery = axios
+        .get(`${config.app.api}/events/${eventId}`, token)
+        .then((res) => {
+            store.commit('SET_EVENT', res.data);
+        });
+
     const promotionsQuery = isReloader ? Promise.resolve() : axios
         .get(`${config.app.api}/promotions/search?q=${notRemoved}&embed=${q(promotionsJoin)}`, token)
         .then((res) => {
@@ -75,6 +82,7 @@ export const dataLoader = (store) => {
     return Promise
         .all([
             devicesQuery,
+            eventQuery,
             articlesQuery,
             setsQuery,
             meansOfPaymentQuery,
