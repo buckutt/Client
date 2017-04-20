@@ -112,7 +112,7 @@ export default {
         this.timeout = 0;
 
         axios
-            .get(config.app.api)
+            .get(config.api)
             // Not found error
             .catch((err) => {
                 console.log(err);

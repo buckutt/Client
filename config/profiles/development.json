@@ -1,0 +1,18 @@
+{
+    "api": "\"https://localhost:3000\"",
+    "loginMeanOfLogin": "\"etuId\"",
+    "buyerMeanOfLogin": "\"etuId\"",
+    "desfire"         : {
+        "key"   : "\"0\"",
+        "keyId" : "[4]",
+        "fileId": "[2, 0, 0, 0, 14, 0, 0]",
+        "appId" : "[64, 132, 245]"
+    },
+    "classic": {
+        "fileId": "[255, 243, 0, 5]"
+    },
+    "certificate": {
+        "path": "\"./buckless-certificate.p12\"",
+        "password": "\"foo\""
+    }
+}

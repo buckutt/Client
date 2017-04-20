@@ -34,7 +34,7 @@ export const addReload = (store, reload) => {
         ];
 
         axios
-            .post(`${config.app.api}/services/basket`, basketToSend, store.getters.tokenHeaders)
+            .post(`${config.api}/services/basket`, basketToSend, store.getters.tokenHeaders)
             .then(() => {
                 store.commit('REMOVE_RELOADS');
                 store.commit('SET_LAST_USER', {
