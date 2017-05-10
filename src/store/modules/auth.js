@@ -13,13 +13,13 @@ const initialState = {
         config: {}
     },
     buyer: {
-        isAuth      : false,
-        id          : null,
-        credit      : 0,
-        firstname   : null,
-        lastname    : null,
-        groupPeriods: [],
-        purchases   : []
+        isAuth   : false,
+        id       : null,
+        credit   : 0,
+        firstname: null,
+        lastname : null,
+        groups   : [],
+        purchases: []
     },
     seller: {
         isAuth     : false,
@@ -73,7 +73,7 @@ const mutations = {
         state.buyer.credit       = payload.credit;
         state.buyer.firstname    = payload.firstname;
         state.buyer.lastname     = payload.lastname;
-        state.buyer.groupPeriods = payload.groupPeriods;
+        state.buyer.groups       = payload.groups;
         state.buyer.purchases    = payload.purchases;
     },
 

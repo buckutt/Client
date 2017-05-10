@@ -7,11 +7,11 @@ const notRemoved = q({ field: 'isRemoved', eq: false });
 const articlesJoin = {
     categories: { points: true },
     prices    : {
-        fundation: true,
-        group    : true,
-        period   : true,
-        point    : true,
-        promotion: true
+        fundation : true,
+        group     : true,
+        period    : true,
+        point     : true,
+        promotions: true
     }
 };
 
@@ -25,7 +25,7 @@ const promotionsJoin = {
     sets    : { articles: true }
 };
 
-const setsJoin = { promotion: true, articles: true };
+const setsJoin = { promotions: true, articles: true };
 
 export const dataLoader = (store) => {
     const token      = store.getters.tokenHeaders;
@@ -66,7 +66,7 @@ export const dataLoader = (store) => {
         .then(res => res.data);
 
     const eventQuery = axios
-        .get(`${config.app.api}/events/${eventId}`, token)
+        .get(`${config.api}/events/${eventId}`, token)
         .then((res) => {
             store.commit('SET_EVENT', res.data);
         });

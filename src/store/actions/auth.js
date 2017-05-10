@@ -67,9 +67,10 @@ export const buyer = (store, { cardNumber }) => {
 
     const embedUser = q({
         user: {
-            groupPeriods: {
-                group : true,
-                period: true
+            groups: {
+                _through: {
+                    period: true
+                }
             },
             purchases: {
                 price: {
@@ -92,12 +93,12 @@ export const buyer = (store, { cardNumber }) => {
             }
 
             store.commit('ID_BUYER', {
-                id          : res.data[0].user.id,
-                credit      : res.data[0].user.credit,
-                firstname   : res.data[0].user.firstname,
-                lastname    : res.data[0].user.lastname,
-                groupPeriods: res.data[0].user.groupPeriods,
-                purchases   : res.data[0].user.purchases
+                id       : res.data[0].user.id,
+                credit   : res.data[0].user.credit,
+                firstname: res.data[0].user.firstname,
+                lastname : res.data[0].user.lastname,
+                groups   : res.data[0].user.groups,
+                purchases: res.data[0].user.purchases
             });
 
             store.dispatch('filterItems')
