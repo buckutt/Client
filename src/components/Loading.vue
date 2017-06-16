@@ -4,8 +4,12 @@
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
+
+:root {
+    --loadingSize: 50px;
+}
 
 .b-loading {
     position: absolute;
@@ -13,19 +17,17 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba($black, 0.75);
+    background-color: color(var(--black) a(0.75));
 }
 
 .b-loading__icon {
-    $size: 50px;
-
     animation: spin 1s infinite linear;
     border-radius: 50%;
-    border: 4px solid rgba(#fff, 0.2);
+    border: 4px solid rgba(255, 255, 255, 0.2);
     border-top-color: #fff;
     margin: calc(50% - 25px) auto 0;
-    height: $size;
-    width: $size;
+    height: var(--loadingSize);
+    width: var(--loadingSize);
 }
 
 @keyframes spin {

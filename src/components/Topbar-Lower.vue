@@ -48,7 +48,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-lower-bar {
@@ -73,7 +73,7 @@ export default {
 .b-lower-bar__device__event {
     height: 100%;
     line-height: 46px;
-    border-left: 1px solid rgba(#fff, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
     margin-left: 10px;
     padding-left: 10px;
 }

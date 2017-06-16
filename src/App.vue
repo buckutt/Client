@@ -116,8 +116,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import 'app';
+<style>
+@import './app.css';
 
 @font-face {
     font-family: 'Roboto';

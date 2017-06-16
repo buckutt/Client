@@ -33,7 +33,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-reload-methods {
@@ -43,7 +43,7 @@ export default {
 
 .b-reload-methods__method {
     border-radius: 2px;
-    color: $lightblue;
+    color: var(--lightblue);
     cursor: pointer;
     font-size: 14px;
     height: 35px;
@@ -53,19 +53,19 @@ export default {
 
     &--disabled {
         box-shadow: none;
-        color: rgba($black, 0.35);
+        color: color(var(--black) a(0.35));
         pointer-events: none;
     }
 
     &--active {
         color: #fff;
         cursor: default;
-        background-color: $lightblue
+        background-color: var(--lightblue)
     }
 }
 
 .b-reload-methods__method--active.b-reload-methods__method--disabled {
-    background-color: rgba($black, 0.2);
-    color: rgba($black, 0.35);
+    background-color: color(var(--black) a(0.2));
+    color: color(var(--black) a(0.35));
 }
 </style>

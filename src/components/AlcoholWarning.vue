@@ -12,7 +12,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .b-alcohol-warning {
     -webkit-text-stroke-color: #c0392b;
     -webkit-text-stroke-width: 1px;

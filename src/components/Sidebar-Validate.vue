@@ -41,27 +41,27 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-sidebar-validate {
-    background-color: $green;
+    background-color: var(--green);
     border: 0;
     color: #fff;
     cursor: pointer;
     height: 55px;
     line-height: 0;
 
-    > .b-icon {
+    & > .b-icon {
         font-size: 40px;
     }
 
     &--doing {
-        background-color: $lightorange;
+        background-color: var(--lightorange);
     }
 
     &--error {
-        background-color: $red;
+        background-color: var(--red);
     }
 }
 

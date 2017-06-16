@@ -15,13 +15,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-sidebar-item {
     background-color: #fff;
     border-radius: 2px;
-    box-shadow: 0 3px 2px rgba($black, 0.25);
+    box-shadow: 0 3px 2px color(var(--black) a(0.25));
     display: flex;
     font-size: 18px;
     margin: 10px;
@@ -38,7 +38,7 @@ export default {
 }
 
 .b-sidebar-item__count {
-    background-color: rgba($green, 0.75);
+    background-color: color(var(--green) a(0.75));
     color: #fff;
     height: 30px;
     line-height: 30px;

@@ -30,11 +30,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-header {
-    background-color: $blue;
+    background-color: var(--blue);
     color: #fff;
     height: 112px;
     width: 100%;

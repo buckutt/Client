@@ -30,11 +30,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-tab {
-    color: rgba(#fff, 0.6);
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     line-height: 46px;
     text-align: center;
@@ -62,7 +62,7 @@ export default {
         color: #fff;
 
         &:after {
-            background-color: $red;
+            background-color: var(--red);
         }
     }
 }

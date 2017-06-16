@@ -39,7 +39,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .b-sidebar {
     background-color: #dee2e6;
     box-shadow: inset 1px 1px 3px #919eaa;

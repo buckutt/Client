@@ -55,7 +55,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-upper-bar__buyer {
@@ -84,7 +84,7 @@ export default {
     display: flex;
     line-height: 65px;
 
-    > div .b-icon {
+    & > div .b-icon {
         font-size: 28px;
         line-height: 65px;
         margin-right: 20px;
@@ -100,7 +100,7 @@ export default {
 }
 
 .b-upper-bar__buyer__credit--negative {
-    color: $red;
+    color: var(--red);
     font-weight: bold;
 }
 </style>

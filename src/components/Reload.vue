@@ -93,7 +93,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-reload--reloadOnly {
@@ -104,11 +104,11 @@ export default {
 }
 
 .b-reload__drop {
-    @include modal-drop();
+    @include modal-drop;
 }
 
 .b-reload__modal {
-    @include modal(450px);
+    @include modal 450px;
 }
 
 .b-reload__modal__topbar {
@@ -125,7 +125,7 @@ export default {
 }
 
 .b-reload__modal__topbar__cancel {
-    color: $lightblue;
+    color: var(--lightblue);
     cursor: pointer;
     flex: 0;
     font-size: 14px;
@@ -140,7 +140,7 @@ export default {
 }
 
 .b-reload__modal__currency {
-    color: rgba($black, 0.65);
+    color: color(var(--black) a(0.65));
     font-size: 25px;
     margin-bottom: 15px;
     text-align: center;
@@ -156,19 +156,19 @@ export default {
     flex-direction: column;
     padding: 0 40px 20px 40px;
 
-    > button {
+    & > button {
         border: 0;
-        background-color: $green;
+        background-color: var(--green);
         border-radius: 2px;
-        box-shadow: 0 2px 4px rgba($black, 0.25);
+        box-shadow: 0 2px 4px color(var(--black) a(0.25));
         color: #fff;
         cursor: pointer;
         height: 45px;
         text-transform: uppercase;
     }
 
-    > button:last-child {
-        background-color: $lightorange;
+    & > button:last-child {
+        background-color: var(--lightorange);
         margin: 10px 0;
     }
 }

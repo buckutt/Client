@@ -21,7 +21,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .b-items {
     align-content: flex-start;
     display: flex;

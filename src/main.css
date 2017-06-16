@@ -1,0 +1,30 @@
+:root {
+    --blue: #34495e;
+    --lightblue: #3498db;
+    --green: #2ecc71;
+    --red: #e74c3c;
+    --lightorange: #f39c12;
+    --orange: #e67e22;
+    --black: #222;
+}
+
+@define-mixin modal $width {
+    background-color: #fff;
+    border: 1px solid rgba(34, 34, 34, .5);
+    border-radius: 2px;
+    box-shadow: 0 0 4px rgba(34, 34, 34, .5);
+    left: 50%;
+    margin-left: calc(-1 * $width / 2);
+    position: absolute;
+    top: 150px;
+    width: $width;
+}
+
+@define-mixin modal-drop {
+    background-color: rgba(34, 34, 34, .5);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
