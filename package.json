@@ -16,7 +16,7 @@
     "dev:electron": "cross-env NODE_ENV=development ELECTRON=1 webpack --config build/ --progress --hide-modules --watch",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config build/ --open --hot --host 0.0.0.0",
     "build": "cross-env NODE_ENV=production ELECTRON=1 webpack --config build/ --progress --hide-modules",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js src",
     "release": "build"
   },
   "dependencies": {

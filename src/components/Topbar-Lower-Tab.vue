@@ -28,6 +28,36 @@ export default {
 
     methods: mapActions(['selectTab'])
 };
+<template>
+    <div
+        class="b-tab"
+        :class="{ 'b-tab--selected': selected }"
+        v-show="showCategories"
+        @click="selectTab({ index, tab: id })">
+        {{ name }}
+    </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+
+export default {
+    props: {
+        index: { type: Number, required: true },
+        name : { type: String, required: true },
+        id   : { type: String, required: true }
+    },
+
+    computed: {
+        selected() {
+            return this.tab === this.index;
+        },
+
+        ...mapGetters(['tab', 'showCategories'])
+    },
+
+    methods: mapActions(['selectTab'])
+};
 </script>
 
 <style scoped>

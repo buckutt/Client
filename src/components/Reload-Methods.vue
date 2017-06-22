@@ -31,6 +31,39 @@ export default {
         ...mapActions(['changeMeanOfPayment'])
     }
 };
+<template>
+    <div class="b-reload-methods">
+        <div
+            v-for="mean in meansOfPayment"
+            class="b-reload-methods__method"
+            :class="buttonClasses(mean)"
+            @click="changeMeanOfPayment(mean.slug)">
+            {{ mean.name }}
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+
+export default {
+    props: {
+        disabled: { type: Boolean, default: false }
+    },
+
+    computed: mapGetters(['meansOfPayment', 'meanOfPayment']),
+
+    methods: {
+        buttonClasses(mean) {
+            return {
+                'b-reload-methods__method--active'  : this.meanOfPayment === mean.slug,
+                'b-reload-methods__method--disabled': this.disabled
+            };
+        },
+
+        ...mapActions(['changeMeanOfPayment'])
+    }
+};
 </script>
 
 <style scoped>
@@ -67,5 +100,11 @@ export default {
 .b-reload-methods__method--active.b-reload-methods__method--disabled {
     background-color: color(var(--black) a(0.2));
     color: color(var(--black) a(0.35));
+}
+
+@media (max-width: 768px) {
+    .b-reload-methods__method {
+        padding: 0 10px;
+    }
 }
 </style>

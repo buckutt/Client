@@ -13,6 +13,21 @@
 export default {
     props: ['name', 'count']
 };
+<template>
+    <div class="b-sidebar-item">
+        <div class="b-sidebar-item__name">
+            {{ name }}
+        </div>
+        <div class="b-sidebar-item__count">
+            {{ count }}
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: ['name', 'count']
+};
 </script>
 
 <style scoped>

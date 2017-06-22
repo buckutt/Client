@@ -14,10 +14,16 @@
     border-radius: 2px;
     box-shadow: 0 0 4px rgba(34, 34, 34, .5);
     left: 50%;
-    margin-left: calc(-1 * $width / 2);
     position: absolute;
     top: 150px;
+    transform: translateX(-50%);
     width: $width;
+    z-index: 10;
+
+    @media (max-width: 768px) {
+        max-width: 280px;
+        top: 40px;
+    }
 }
 
 @define-mixin modal-drop {
@@ -27,4 +33,5 @@
     position: absolute;
     top: 0;
     width: 100%;
+    z-index: 9;
 }

@@ -183,9 +183,8 @@ export const cleanBasket = (state) => {
     return basket;
 };
 
-export const credit = (state) => {
-    const initialCredit = state.auth.buyer.credit;
-    const basket        = cleanBasket(state);
+export const basketAmount = (state) => {
+    const basket = cleanBasket(state);
 
     const items = (basket.items || [])
         .map(item => state.items.items.find(i => i.id === item))
@@ -197,9 +196,17 @@ export const credit = (state) => {
         .map(promo => promo.price.amount)
         .reduce((a, b) => a + b, 0);
 
+    return items - promotions;
+};
+
+export const credit = (state) => {
+    const initialCredit = state.auth.buyer.credit;
+    const basket        = cleanBasket(state);
+    const basketCost    = basketAmount(state);
+
     const reloads = basket.reloads
         .map(reload => reload.amount)
         .reduce((a, b) => a + b, 0);
 
-    return (initialCredit + reloads) - items - promotions;
+    return (initialCredit + reloads) - basketCost;
 };

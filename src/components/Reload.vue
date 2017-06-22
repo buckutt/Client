@@ -1,45 +1,134 @@
 <template>
-    <transition name="b--fade">
+    <div
+        v-if="reloadState !== 'closed' || reloadOnly"
+        class="b-reload"
+        :class="{ 'b-reload--reloadOnly': reloadOnly }">
         <div
-            v-if="reloadState !== 'closed' || reloadOnly"
-            class="b-reload"
-            :class="{ 'b-reload--reloadOnly': reloadOnly }">
-            <div
-                class="b-reload__drop"
-                v-if="!reloadOnly"></div>
-            <div class="b-reload__modal">
-                <div class="b-reload__modal__topbar">
-                    <h3 class="b-reload__modal__topbar__title">Rechargement</h3>
-                    <h3
-                        class="b-reload__modal__topbar__cancel"
-                        v-if="!reloadOnly"
-                        @click="closeReload">
-                        Annuler
-                    </h3>
-                </div>
-                <div class="b-reload__modal__methods">
-                    <methods :disabled="reloadState === 'confirm'"></methods>
-                </div>
-                <div class="b-reload__modal__currency">
-                    <currency :value="reloadAmount"></currency>
-                </div>
-                <div v-show="reloadState === 'opened' || reloadOnly">
-                    <div class="b-reload__modal__numerical-input">
-                        <numerical-input
-                            @changed="updateCurrency"
-                            @validate="confirmReloadModal"
-                            ref="input"></numerical-input>
-                    </div>
-                </div>
-                <div
-                    class="b-reload__modal__buttons"
-                    v-show="reloadState === 'confirm'">
-                    <button @click="reload">Paiement accepté</button>
-                    <button @click="cancelReloadModal">Paiement refusé</button>
+            class="b-reload__drop"
+            v-if="!reloadOnly"></div>
+        <div class="b-reload__modal">
+            <div class="b-reload__modal__topbar">
+                <h3 class="b-reload__modal__topbar__title">Rechargement</h3>
+                <h3
+                    class="b-reload__modal__topbar__cancel"
+                    v-if="!reloadOnly"
+                    @click="closeReload">
+                    Annuler
+                </h3>
+            </div>
+            <div class="b-reload__modal__methods">
+                <methods :disabled="reloadState === 'confirm'"></methods>
+            </div>
+            <div class="b-reload__modal__currency">
+                <currency :value="reloadAmount"></currency>
+            </div>
+            <div v-show="reloadState === 'opened' || reloadOnly">
+                <div class="b-reload__modal__numerical-input">
+                    <numerical-input
+                        @changed="updateCurrency"
+                        @validate="confirmReloadModal"
+                        ref="input"></numerical-input>
                 </div>
             </div>
+            <div
+                class="b-reload__modal__buttons"
+                v-show="reloadState === 'confirm'">
+                <button @click="reload">Paiement accepté</button>
+                <button @click="cancelReloadModal">Paiement refusé</button>
+            </div>
         </div>
-    </transition>
+    </div>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+
+import Currency       from './Currency';
+import Methods        from './Reload-Methods';
+import NumericalInput from './NumericalInput';
+
+export default {
+    props: {
+        reloadOnly: { type: Boolean, required: false, default: false }
+    },
+
+    components: {
+        Currency,
+        Methods,
+        NumericalInput
+    },
+
+    data() {
+        return {
+            reloadAmount: 0
+        };
+    },
+
+    computed: mapGetters(['reloadState']),
+
+    methods: {
+        updateCurrency(amount) {
+            this.reloadAmount = parseInt(amount || 0, 10);
+        },
+
+        closeReload() {
+            this.$refs.input.clear();
+            this.closeReloadModal();
+        },
+
+        reload() {
+            this.$store.dispatch('addReload', {
+                amount: this.reloadAmount,
+                type  : this.$store.state.reload.meanOfPayment,
+                trace : ''
+            });
+
+            this.closeReload();
+        },
+
+        ...mapActions(['confirmReloadModal', 'closeReloadModal', 'addReload', 'cancelReloadModal'])
+    }
+};
+<template>
+    <div
+        v-if="reloadState !== 'closed' || reloadOnly"
+        class="b-reload"
+        :class="{ 'b-reload--reloadOnly': reloadOnly }">
+        <div
+            class="b-reload__drop"
+            v-if="!reloadOnly"></div>
+        <div class="b-reload__modal">
+            <div class="b-reload__modal__topbar">
+                <h3 class="b-reload__modal__topbar__title">Rechargement</h3>
+                <h3
+                    class="b-reload__modal__topbar__cancel"
+                    v-if="!reloadOnly"
+                    @click="closeReload">
+                    Annuler
+                </h3>
+            </div>
+            <div class="b-reload__modal__methods">
+                <methods :disabled="reloadState === 'confirm'"></methods>
+            </div>
+            <div class="b-reload__modal__currency">
+                <currency :value="reloadAmount"></currency>
+            </div>
+            <div v-show="reloadState === 'opened' || reloadOnly">
+                <div class="b-reload__modal__numerical-input">
+                    <numerical-input
+                        @changed="updateCurrency"
+                        @validate="confirmReloadModal"
+                        ref="input"></numerical-input>
+                </div>
+            </div>
+            <div
+                class="b-reload__modal__buttons"
+                v-show="reloadState === 'confirm'">
+                <button @click="reload">Paiement accepté</button>
+                <button @click="cancelReloadModal">Paiement refusé</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -97,18 +186,18 @@ export default {
 @import '../main';
 
 .b-reload--reloadOnly {
-    .b-reload__modal {
+    & .b-reload__modal {
         transform: scale(1.2);
         transform-origin: top;
     }
 }
 
 .b-reload__drop {
-    @include modal-drop;
+    @add-mixin modal-drop;
 }
 
 .b-reload__modal {
-    @include modal 450px;
+    @add-mixin modal 450px;
 }
 
 .b-reload__modal__topbar {
@@ -170,6 +259,17 @@ export default {
     & > button:last-child {
         background-color: var(--lightorange);
         margin: 10px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .b-reload__modal {
+        max-width: 310px;
+    }
+
+    .b-reload__modal__methods {
+        flex-wrap: wrap;
+        width: 100%;
     }
 }
 

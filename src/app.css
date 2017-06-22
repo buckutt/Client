@@ -26,14 +26,6 @@ input, textarea, keygen, select, button {
     height: 100%;
 }
 
-.b--fade-enter-active, .b--fade-leave-active {
-    transition: opacity .3s ease;
-}
-
-.b--fade-enter, .b--fade-leave-active {
-    opacity: 0;
-}
-
 .b-main {
     display: flex;
     flex: 1;

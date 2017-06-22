@@ -11,4 +11,11 @@ export const reloadState    = state => state.reload.reloadState;
 export const reloadSum      = state => state.reload.reloads.reduce((a, b) => a + b.amount, 0);
 export const tab            = state => state.ui.currentTab;
 export const tabs           = state => state.ui.tabs;
-export const tabsItems      = state => state.items.tabsItems[state.ui.currentTab];
+export const tabsItems      = (state) => {
+    if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+        // flatten all tabs on mobile
+        return [].concat(...state.items.tabsItems);
+    }
+
+    return state.items.tabsItems[state.ui.currentTab];
+};

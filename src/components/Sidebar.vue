@@ -37,6 +37,45 @@ export default {
         SidebarValidate
     }
 };
+<template>
+    <div class="b-sidebar">
+        <div class="b-sidebar__items">
+            <sidebar-reload
+                v-if="reloadSum > 0"
+                :amount="reloadSum"></sidebar-reload>
+            <sidebar-promotion
+                v-for="promotion in sidebar.promotions"
+                :key="promotion.id"
+                :name="promotion.name"
+                :items="promotion.items"></sidebar-promotion>
+            <sidebar-item
+                v-for="(count, name, index) in sidebar.items"
+                :key="index"
+                :name="name"
+                :count="count"></sidebar-item>
+        </div>
+        <sidebar-validate></sidebar-validate>
+    </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+import SidebarItem      from './Sidebar-Item';
+import SidebarPromotion from './Sidebar-Promotion';
+import SidebarReload    from './Sidebar-Reload';
+import SidebarValidate  from './Sidebar-Validate';
+
+export default {
+    computed: mapGetters(['sidebar', 'reloadSum']),
+
+    components: {
+        SidebarItem,
+        SidebarPromotion,
+        SidebarReload,
+        SidebarValidate
+    }
+};
 </script>
 
 <style scoped>
@@ -50,5 +89,15 @@ export default {
 
 .b-sidebar__items {
     flex: 1;
+}
+
+@media (max-width: 768px) {
+    .b-sidebar {
+        width: 0;
+    }
+
+    .b-sidebar__items {
+        display: none;
+    }
 }
 </style>

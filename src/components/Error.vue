@@ -29,6 +29,37 @@ export default {
         }
     }
 };
+<template>
+    <div class="b-error" v-if="error">
+        <div
+            class="b-error__drop"
+            @click="clearError"></div>
+        <div class="b-error__modal">
+            <h3 class="b-error__modal__title">Erreur</h3>
+            <div class="b-error__modal__error">
+                {{ error }}
+            </div>
+            <button
+                class="b-error__modal__close"
+                @click="clearError">Fermer</button>
+        </div>
+    </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+export default {
+    computed: mapGetters(['error']),
+
+    methods: {
+        clearError() {
+            // Show green button after error
+            this.$store.commit('SET_BASKET_STATUS', 'WAITING');
+            this.$store.commit('ERROR', '');
+        }
+    }
+};
 </script>
 
 <style scoped>

@@ -9,21 +9,15 @@
                 <i class="b-icon" v-if="toggled">remove</i>
             </div>
         </div>
-        <transition
-            @before-enter="beforeEnter"
-            @enter="enter"
-            @leave="leave"
-            :css="false">
+        <div
+            class="b-sidebar-promotion__row__details"
+            v-if="toggled">
             <div
-                class="b-sidebar-promotion__row__details"
-                v-if="toggled">
-                <div
-                    v-for="item of items"
-                    class="b-sidebar-promotion__row__details__item">
-                    {{ item }}
-                </div>
+                v-for="item of items"
+                class="b-sidebar-promotion__row__details__item">
+                {{ item }}
             </div>
-        </transition>
+        </div>
     </div>
 </template>
 
@@ -39,37 +33,46 @@ export default {
     },
 
     methods: {
-        beforeEnter(el) {
-            el.style.transition = 'max-height .3s ease-in';
-            el.style.overflow   = 'hidden';
-        },
+        toggleDetails() {
+            this.toggled = !this.toggled;
+        }
+    }
+};
+<template>
+    <div class="b-sidebar-promotion" @click="toggleDetails">
+        <div class="b-sidebar-promotion__row">
+            <div class="b-sidebar-promotion__row__name">
+                {{ name }}
+            </div>
+            <div class="b-sidebar-promotion__row__show-details">
+                <i class="b-icon" v-if="!toggled">add</i>
+                <i class="b-icon" v-if="toggled">remove</i>
+            </div>
+        </div>
+        <div
+            class="b-sidebar-promotion__row__details"
+            v-if="toggled">
+            <div
+                v-for="item of items"
+                class="b-sidebar-promotion__row__details__item">
+                {{ item }}
+            </div>
+        </div>
+    </div>
+</template>
 
-        enter(el, done) {
-            const height = el.getBoundingClientRect().width;
+<script>
+export default {
+    props: {
+        name : { type: String, required: true },
+        items: { type: Array, required: true }
+    },
 
-            el.style.maxHeight = '0px';
+    data() {
+        return { toggled: false };
+    },
 
-            setTimeout(() => {
-                el.style.maxHeight = `${height}px`;
-            });
-
-            setTimeout(() => {
-                done();
-            }, 300);
-        },
-
-        beforeLeave(el) {
-            el.transition = 'max-height .3s ease-out';
-        },
-
-        leave(el, done) {
-            el.style.maxHeight = '0px';
-
-            setTimeout(() => {
-                done();
-            }, 300);
-        },
-
+    methods: {
         toggleDetails() {
             this.toggled = !this.toggled;
         }
