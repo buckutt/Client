@@ -5,10 +5,8 @@ export const setPoint = ({ commit }, payload) => {
     commit('SET_DEVICE', payload);
 };
 
-export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
-    commit('SET_DATA_LOADED', false);
-
-    return axios
+export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
+    axios
         .post(`${config.api}/services/login`, {
             meanOfLogin: config.loginMeanOfLogin,
             data       : meanOfLogin,
@@ -27,15 +25,11 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
                 canSell  : res.data.user.canSell,
                 canReload: res.data.user.canReload
             });
-
-            dispatch('dataLoader')
-                .then(() => commit('SET_DATA_LOADED'));
         })
         .catch((err) => {
             commit('ID_SELLER', '');
             commit('ERROR', err.response.data);
         });
-};
 
 export const logout = (store) => {
     if (store.state.auth.buyer.isAuth) {
@@ -101,7 +95,11 @@ export const buyer = (store, { cardNumber }) => {
                 purchases: res.data[0].user.purchases
             });
 
-            store.dispatch('filterItems')
+            store.commit('SET_DATA_LOADED', false);
+
+            store.dispatch('dataLoader')
+                .then(() => store.commit('SET_DATA_LOADED', true))
+                .then(() => store.dispatch('filterItems'))
                 .then(() => store.dispatch('createTabs'))
                 .then(() => store.dispatch('createTabsItems'));
         })
