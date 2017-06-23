@@ -38,46 +38,6 @@ export default {
         }
     }
 };
-<template>
-    <div class="b-sidebar-promotion" @click="toggleDetails">
-        <div class="b-sidebar-promotion__row">
-            <div class="b-sidebar-promotion__row__name">
-                {{ name }}
-            </div>
-            <div class="b-sidebar-promotion__row__show-details">
-                <i class="b-icon" v-if="!toggled">add</i>
-                <i class="b-icon" v-if="toggled">remove</i>
-            </div>
-        </div>
-        <div
-            class="b-sidebar-promotion__row__details"
-            v-if="toggled">
-            <div
-                v-for="item of items"
-                class="b-sidebar-promotion__row__details__item">
-                {{ item }}
-            </div>
-        </div>
-    </div>
-</template>
-
-<script>
-export default {
-    props: {
-        name : { type: String, required: true },
-        items: { type: Array, required: true }
-    },
-
-    data() {
-        return { toggled: false };
-    },
-
-    methods: {
-        toggleDetails() {
-            this.toggled = !this.toggled;
-        }
-    }
-};
 </script>
 
 <style scoped>

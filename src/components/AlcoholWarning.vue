@@ -10,18 +10,6 @@ import { mapGetters } from 'vuex';
 export default {
     computed: mapGetters(['warnAlcohol', 'alcoholAmount'])
 };
-<template>
-    <div class="b-alcohol-warning" v-if="warnAlcohol">
-        Alcool : {{ alcoholAmount }} UA
-    </div>
-</template>
-
-<script>
-import { mapGetters } from 'vuex';
-
-export default {
-    computed: mapGetters(['warnAlcohol', 'alcoholAmount'])
-};
 </script>
 
 <style scoped>

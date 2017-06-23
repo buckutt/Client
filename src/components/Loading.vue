@@ -25,7 +25,7 @@
     border-radius: 50%;
     border: 4px solid rgba(255, 255, 255, 0.2);
     border-top-color: #fff;
-    margin: calc(50% - 25px) auto 0;
+    margin: 150px auto 0;
     height: var(--loadingSize);
     width: var(--loadingSize);
 }

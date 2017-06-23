@@ -48,56 +48,6 @@ export default {
         ...mapActions(['sendBasket', 'clearBasket'])
     }
 };
-<template>
-    <button
-        class="b-sidebar-validate"
-        :class="statusClasses"
-        @click="validate($event)">
-        <span class="b-sidebar-validate__amount">
-            <currency :value="basketAmount"></currency>
-        </span>
-        <i class="b-icon" v-if="basketStatus === 'WAITING'">done_all</i>
-        <i class="b-icon" v-if="basketStatus === 'DOUBLE'">sync</i>
-        <i class="b-icon" v-if="basketStatus === 'DOING'">query_builder</i>
-        <i class="b-icon" v-if="basketStatus === 'ERROR'">error</i>
-    </button>
-</template>
-
-<script>
-import { mapActions, mapGetters } from 'vuex';
-
-import Currency from './Currency';
-
-export default {
-    components: {
-        Currency
-    },
-
-    computed: {
-        statusClasses() {
-            return {
-                'b-sidebar-validate--doing': this.basketStatus === 'DOING',
-                'b-sidebar-validate--error': this.basketStatus === 'ERROR'
-            };
-        },
-
-        ...mapGetters(['basketStatus', 'basketAmount'])
-    },
-
-    methods: {
-        validate(e) {
-            e.currentTarget.blur();
-
-            if (this.basketStatus === 'DOUBLE') {
-                return;
-            }
-
-            this.sendBasket();
-        },
-
-        ...mapActions(['sendBasket', 'clearBasket'])
-    }
-};
 </script>
 
 <style scoped>

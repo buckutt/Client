@@ -57,65 +57,6 @@ export default {
         this.$el.querySelector('img').src = this.item.image;
     }
 };
-<template>
-    <div
-        class="b-item"
-        :class="{ 'b-item--selected': selectedItem > 0 }"
-        @click="add(item)">
-        <div class="b-item__image">
-            <img height="100%" width="100%" />
-        </div>
-        <div class="b-item__price">
-            <currency :value="item.price.amount"></currency>
-        </div>
-        <div
-            class="b-item__count"
-            v-if="selectedItem > 0">{{ selectedItem }}</div>
-        <div
-            class="b-item__minus"
-            v-if="selectedItem > 0"
-            @click.stop="remove(item)">
-        </div>
-        <div class="b-item__text">{{ item.name }}</div>
-    </div>
-</template>
-
-<script>
-import { mapActions } from 'vuex';
-
-import Currency from './Currency';
-
-export default {
-    props: {
-        item: Object
-    },
-
-    components: {
-        Currency
-    },
-
-    computed: {
-        selectedItem() {
-            return this.$store.state.items
-                .basket
-                .filter(id => id === this.item.id)
-                .length;
-        }
-    },
-
-    methods: mapActions({
-        add   : 'addItemToBasket',
-        remove: 'removeItemFromBasket'
-    }),
-
-    mounted() {
-        this.$el.querySelector('img').src = this.item.image;
-    },
-
-    updated() {
-        this.$el.querySelector('img').src = this.item.image;
-    }
-};
 </script>
 
 <style scoped>

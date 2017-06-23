@@ -27,35 +27,6 @@ export default {
 
     methods: mapActions(['removeReloads'])
 };
-<template>
-    <div class="b-sidebar-reload">
-        <div class="b-sidebar-reload__amount">
-            <span>Rechargement</span>&nbsp;<currency :value="amount"></currency>
-        </div>
-        <div
-            class="b-sidebar-reload__remove"
-            @click="removeReloads">
-            <i class="b-icon">delete</i>
-        </div>
-    </div>
-</template>
-
-<script>
-import { mapActions } from 'vuex';
-
-import Currency from './Currency';
-
-export default {
-    components: {
-        Currency
-    },
-
-    props: {
-        amount: { type: Number, required: true }
-    },
-
-    methods: mapActions(['removeReloads'])
-};
 </script>
 
 <style scoped>
