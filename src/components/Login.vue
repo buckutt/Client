@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="seller.isAuth" class="b-login__card b-login__card--buyerId">
+        <div v-if="seller.isAuth && doubleValidation" class="b-login__card b-login__card--buyerId">
             En attente d'un client
             <div
                 class="b-login__card__lastUser"
@@ -53,7 +53,7 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'lastUser']),
+    computed: mapGetters(['buyer', 'seller', 'lastUser', 'doubleValidation']),
 
     methods: {
         maskPassword(t) {

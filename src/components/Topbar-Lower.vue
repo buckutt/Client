@@ -3,7 +3,7 @@
         <div class="b-lower-bar__tabs">
             <tab
                 v-for="(tab, i) in tabs"
-                v-if="buyer.isAuth && seller.canSell"
+                v-if="!loginState && seller.canSell"
                 :name="tab.name"
                 :id="tab.id"
                 :key="tab.id"
@@ -21,7 +21,7 @@
                 <strong>Point: </strong>
                 <span>{{ point }}</span>
             </div>
-            <div class="b-lower-bar__device__event">
+            <div class="b-lower-bar__device__event" v-if="loginState">
                 <strong>Événement: </strong>
                 <span>{{ event }}</span>
             </div>
@@ -40,7 +40,7 @@ export default {
         seller: { type: Object, required: true }
     },
 
-    computed: mapGetters(['point', 'event', 'tabs']),
+    computed: mapGetters(['point', 'event', 'tabs', 'loginState']),
 
     components: {
         Tab
@@ -78,7 +78,7 @@ export default {
     padding-left: 10px;
 }
 
-.b-lower-bar__device__event {
+.b-lower-bar__device > :last-child {
     margin-right: 10px;
 }
 

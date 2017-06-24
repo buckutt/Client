@@ -7,8 +7,7 @@
             <currency :value="basketAmount"></currency>
         </span>
         <i class="b-icon" v-if="basketStatus === 'WAITING'">done_all</i>
-        <i class="b-icon" v-if="basketStatus === 'DOUBLE'">sync</i>
-        <i class="b-icon" v-if="basketStatus === 'DOING'">query_builder</i>
+        <i class="b-icon" v-if="basketStatus === 'DOING' || basketStatus === 'WAITING_FOR_BUYER'">query_builder</i>
         <i class="b-icon" v-if="basketStatus === 'ERROR'">error</i>
     </button>
 </template>
@@ -26,7 +25,7 @@ export default {
     computed: {
         statusClasses() {
             return {
-                'b-sidebar-validate--doing': this.basketStatus === 'DOING',
+                'b-sidebar-validate--doing': this.basketStatus === 'DOING' || this.basketStatus === 'WAITING_FOR_BUYER',
                 'b-sidebar-validate--error': this.basketStatus === 'ERROR'
             };
         },
@@ -37,10 +36,6 @@ export default {
     methods: {
         validate(e) {
             e.currentTarget.blur();
-
-            if (this.basketStatus === 'DOUBLE') {
-                return;
-            }
 
             this.sendBasket();
         },

@@ -2,7 +2,6 @@
     <div
         class="b-tab"
         :class="{ 'b-tab--selected': selected }"
-        v-show="showCategories"
         @click="selectTab({ index, tab: id })">
         {{ name }}
     </div>
@@ -23,7 +22,7 @@ export default {
             return this.tab === this.index;
         },
 
-        ...mapGetters(['tab', 'showCategories'])
+        ...mapGetters(['tab'])
     },
 
     methods: mapActions(['selectTab'])

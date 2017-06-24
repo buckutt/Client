@@ -186,6 +186,10 @@ export const cleanBasket = (state) => {
 export const basketAmount = (state) => {
     const basket = cleanBasket(state);
 
+    if (!state.ui.dataLoaded) {
+        return 0;
+    }
+
     const items = (basket.items || [])
         .map(item => state.items.items.find(i => i.id === item))
         .map(item => item.price.amount)

@@ -1,5 +1,5 @@
-import axios  from 'axios';
-import q      from '../../utils/q';
+import axios from 'axios';
+import q     from '../../utils/q';
 
 export const setPoint = ({ commit }, payload) => {
     commit('SET_DEVICE', payload);
@@ -25,6 +25,14 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
                 canSell  : res.data.user.canSell,
                 canReload: res.data.user.canReload
             });
+
+            commit('SET_DATA_LOADED', false);
+
+            return dispatch('dataLoader')
+                .then(() => dispatch('filterItems'))
+                .then(() => dispatch('createTabs'))
+                .then(() => dispatch('createTabsItems'))
+                .then(() => commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
             commit('ID_SELLER', '');
@@ -98,10 +106,17 @@ export const buyer = (store, { cardNumber }) => {
             store.commit('SET_DATA_LOADED', false);
 
             store.dispatch('dataLoader')
-                .then(() => store.commit('SET_DATA_LOADED', true))
                 .then(() => store.dispatch('filterItems'))
                 .then(() => store.dispatch('createTabs'))
-                .then(() => store.dispatch('createTabsItems'));
+                .then(() => store.dispatch('createTabsItems'))
+                .then(() => {
+                    if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
+                        return store
+                            .dispatch('sendBasket')
+                            .then(() => store.dispatch('logout'));
+                    }
+                })
+                .then(() => store.commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
             store.commit('ERROR', err);

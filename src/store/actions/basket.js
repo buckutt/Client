@@ -15,11 +15,15 @@ export const clearBasket = ({ commit }) => {
 };
 
 export const sendBasket = (store) => {
-    if (store.state.auth.device.config.doubleValidation) {
-        if (store.state.basket.basketStatus !== 'DOUBLE') {
-            store.commit('SET_BASKET_STATUS', 'DOUBLE');
+    if (!store.state.auth.device.config.doubleValidation) {
+        if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER' && !store.state.auth.buyer.isAuth) {
+            store.commit('SET_BASKET_STATUS', 'WAITING_FOR_BUYER');
             return;
         }
+    }
+
+    if (!store.state.auth.buyer.isAuth) {
+        return;
     }
 
     const fullBasket = store.getters.cleanBasket;

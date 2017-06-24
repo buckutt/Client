@@ -36,10 +36,12 @@ export default {
 
 .b-error__drop {
     @add-mixin modal-drop;
+    z-index: 999999;
 }
 
 .b-error__modal {
     @add-mixin modal 350px;
+    z-index: 9999999;
 
     align-items: flex-start;
     display: flex;

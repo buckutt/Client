@@ -10,7 +10,12 @@ const initialState = {
             name  : null,
             config: {}
         },
-        config: {}
+        config: {
+            alcohol: null,
+            doubleValidation: null,
+            showPicture: null,
+            defaultGroup: null
+        }
     },
     buyer: {
         isAuth   : false,
@@ -42,7 +47,7 @@ const mutations = {
     },
 
     SET_FULL_DEVICE(state, payload) {
-        const keys = ['alcohol', 'doubleValidation', 'realtime', 'refreshInterval', 'showCategories', 'showPicture'];
+        const keys = ['alcohol', 'doubleValidation', 'showPicture', 'defaultGroup'];
 
         keys.forEach((key) => {
             state.device.config[key] = payload[key];
