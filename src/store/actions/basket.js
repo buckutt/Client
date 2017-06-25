@@ -12,6 +12,7 @@ export const removeItemFromBasket = ({ commit }, item) => {
 
 export const clearBasket = ({ commit }) => {
     commit('CLEAR_BASKET');
+    commit('REMOVE_RELOADS');
 };
 
 export const sendBasket = (store) => {

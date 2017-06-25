@@ -49,6 +49,8 @@ export const logout = (store) => {
     } else if (store.state.auth.seller.meanOfLogin.length > 0) {
         store.commit('ID_SELLER', '');
     }
+
+    return store.dispatch('clearBasket');
 };
 
 export const buyer = (store, { cardNumber }) => {

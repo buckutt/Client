@@ -52,7 +52,7 @@ export default {
     align-items: center;
     background-color: var(--green);
     border: 0;
-    color: #fff;
+    color: #000;
     cursor: pointer;
     display: flex;
     height: 55px;

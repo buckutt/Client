@@ -84,6 +84,8 @@ export default {
 
 @media (max-width: 768px) {
     .b-lower-bar__device {
+        font-size: 14px;
+        height: 35px;
         overflow-x: auto;
         touch-action: pan-x;
         white-space: nowrap;
@@ -98,19 +100,13 @@ export default {
     .b-lower-bar__device__event {
         flex: 1;
         border-left: 0;
+        line-height: 35px;
         margin-left: 0;
-    }
-
-    .b-lower-bar__device__event {
-        padding-left: 0;
-        margin-right: 0;
-        margin-left: 10px;
-        padding-right: 10px;
-        text-align: right;
     }
 
     .b-lower-bar__device__seller {
         border-left: 0;
+        line-height: 35px;
         margin-left: 0;
     }
 }

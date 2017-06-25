@@ -5,7 +5,8 @@
         :class="{ 'b-reload--reloadOnly': reloadOnly }">
         <div
             class="b-reload__drop"
-            v-if="!reloadOnly"></div>
+            v-if="!reloadOnly"
+            @click="closeReload"></div>
         <div class="b-reload__modal">
             <div class="b-reload__modal__topbar">
                 <h3 class="b-reload__modal__topbar__title">Rechargement</h3>

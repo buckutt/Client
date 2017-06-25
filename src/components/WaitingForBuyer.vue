@@ -20,7 +20,9 @@ export default {
 
     methods: {
         cancelBuy() {
-
+            this.$store.dispatch('clearBasket').then(() =>
+                this.$store.commit('SET_BASKET_STATUS', 'WAITING')
+            );
         }
     }
 }

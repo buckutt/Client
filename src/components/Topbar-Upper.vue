@@ -23,7 +23,7 @@
                 <i class="b-icon">eject</i>
             </div>
             <div
-                v-if="buyer.isAuth && seller.canReload && seller.canSell"
+                v-if="!loginState && seller.canReload && seller.canSell"
                 class="b-upper-bar__actions__action-reload"
                 @click="openReloadModal">
                 <i class="b-icon">attach_money</i>
@@ -49,7 +49,7 @@ export default {
         LiveTime
     },
 
-    computed: mapGetters(['credit']),
+    computed: mapGetters(['loginState', 'credit']),
 
     methods: mapActions(['openReloadModal', 'logout'])
 };
@@ -105,6 +105,10 @@ export default {
 }
 
 @media (max-width: 768px) {
+    .b-upper-bar {
+        height: 45px;
+    }
+
     .b-upper-bar__buyer {
         font-size: 13px;
         padding-left: 10px;
@@ -112,6 +116,19 @@ export default {
 
     .b-upper-bar__date {
         font-size: 22px;
+        line-height: 45px;
+    }
+
+    .b-upper-bar__actions {
+        line-height: 45px;
+
+        & > div .b-icon {
+            line-height: 45px;
+        }
+
+        & > :last-child > .b-icon {
+            margin-right: 10px;
+        }
     }
 }
 </style>
