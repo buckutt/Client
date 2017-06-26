@@ -19,6 +19,7 @@ module.exports = merge(base, {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
+        new webpack.optimize.ModuleConcatenationPlugin(),
         new OptimizeCSSPlugin(),
         new HtmlWebpackPlugin({
             filename: utils.resolve('dist/index.html'),
