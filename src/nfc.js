@@ -20,7 +20,9 @@ module.exports = class NFC extends EventEmitter {
         });
 
         this.proc.stderr.on('data', (data) => {
-            this.emit('error', Buffer.from(data).toString());
+            const out = Buffer.from(data).toString();
+
+            this.emit('error', out);
         });
 
         this.proc.on('close', () => {

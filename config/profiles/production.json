@@ -11,6 +11,10 @@
     "classic": {
         "fileId": "[255, 243, 0, 5]"
     },
+    "ultralight": {
+        "cardLength": 24,
+        "firstWritablePage": 4
+    },
     "certificate": {
         "path": "\"./buckless-certificate.p12\"",
         "password": "\"foo\""

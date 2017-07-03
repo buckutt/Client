@@ -4,17 +4,18 @@
         @click="refocus">
         <topbar :buyer="buyer" :seller="seller"></topbar>
         <main class="b-main">
-            <login v-show="loginState" ref="login"></login>
-            <items v-if="!loginState && seller.canSell"></items>
-            <sidebar v-if="!loginState && seller.canSell"></sidebar>
+            <login v-if="!buyer.isAuth" ref="login"></login>
+            <items v-if="buyer.isAuth && seller.canSell"></items>
+            <sidebar v-if="buyer.isAuth && seller.canSell"></sidebar>
         </main>
         <reload
-            v-if="!loginState"
+            v-if="buyer.isAuth"
             :reloadOnly="!seller.canSell && seller.canReload"></reload>
-        <loading v-if="loaded === false"></loading>
+        <transition name="b--fade">
+            <loading v-if="loaded === false"></loading>
+        </transition>
         <alcohol-warning></alcohol-warning>
         <error></error>
-        <waiting-for-buyer></waiting-for-buyer>
         <input
             class="b--out-of-screen"
             type="text"
@@ -30,15 +31,14 @@
 import 'normalize.css';
 import { mapActions, mapGetters } from 'vuex';
 
-import Items           from './components/Items';
-import Topbar          from './components/Topbar';
-import Sidebar         from './components/Sidebar';
-import Reload          from './components/Reload';
-import Login           from './components/Login';
-import Loading         from './components/Loading';
-import Error           from './components/Error';
-import AlcoholWarning  from './components/AlcoholWarning';
-import WaitingForBuyer from './components/WaitingForBuyer';
+import Items          from './components/Items';
+import Topbar         from './components/Topbar';
+import Sidebar        from './components/Sidebar';
+import Reload         from './components/Reload';
+import Login          from './components/Login';
+import Loading        from './components/Loading';
+import Error          from './components/Error';
+import AlcoholWarning from './components/AlcoholWarning';
 
 const UPDATE_TEXT = 'Une mise à jour a été effectuée. Recharger pour mettre à jour ? (cela entraînera une déconnexion)';
 
@@ -53,8 +53,7 @@ export default {
         Login,
         Loading,
         Error,
-        AlcoholWarning,
-        WaitingForBuyer
+        AlcoholWarning
     },
 
     data() {
@@ -63,7 +62,7 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'basketStatus', 'loaded', 'loginState', 'waitingForBuyer']),
+    computed: mapGetters(['buyer', 'seller', 'basketStatus', 'loaded']),
 
     methods: {
         refocus() {
@@ -74,8 +73,7 @@ export default {
             const value = this.inputValue;
             this.inputValue = '';
 
-            if (this.waitingForBuyer) {
-                this.$refs.login.validate(value);
+            if (this.basketStatus === 'DOUBLE') {
                 this.sendBasket();
                 return;
             }
@@ -98,6 +96,7 @@ export default {
             });
 
             nfc.on('data', (data) => {
+                console.log(`user id: ${data.data}`);
                 this.inputValue = data.data;
                 this.validate();
             });
