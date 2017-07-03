@@ -1,4 +1,4 @@
-@import 'main';
+@import './main.css';
 
 html, body {
     font-family: 'Roboto', sans-serif;
@@ -20,18 +20,10 @@ input, textarea, keygen, select, button {
 }
 
 #app {
-    color: $black;
+    color: var(--black);
     display: flex;
     flex-direction: column;
     height: 100%;
-}
-
-.b--fade-enter-active, .b--fade-leave-active {
-    transition: opacity .3s ease;
-}
-
-.b--fade-enter, .b--fade-leave-active {
-    opacity: 0;
 }
 
 .b-main {

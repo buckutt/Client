@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="seller.isAuth" class="b-login__card b-login__card--buyerId">
+        <div v-if="seller.isAuth && doubleValidation" class="b-login__card b-login__card--buyerId">
             En attente d'un client
             <div
                 class="b-login__card__lastUser"
@@ -53,7 +53,7 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'lastUser']),
+    computed: mapGetters(['buyer', 'seller', 'lastUser', 'doubleValidation']),
 
     methods: {
         maskPassword(t) {
@@ -147,7 +147,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-login {
@@ -155,14 +155,14 @@ export default {
     font-size: 28px;
     text-align: center;
 
-    > input {
+    & > input {
         opacity: 0.5;
         cursor: default;
     }
 }
 
 .b-login__card {
-    box-shadow: 0 6px 10px rgba($black, 0.3);
+    box-shadow: 0 6px 10px color(var(--black) a(0.3));
     margin: 40px auto;
     max-width: 500px;
     min-height: 100px;
@@ -177,7 +177,7 @@ export default {
 }
 
 .b-login__card__password {
-    border: 1px solid rgba($black, 0.2);
+    border: 1px solid color(var(--black) a(0.2));
     height: 45px;
     line-height: 45px;
     margin: 20px 0;
@@ -189,12 +189,36 @@ export default {
     text-align: left;
     padding: 40px;
 
-    > hr {
+    & > hr {
         border: 0;
-        border-top: 1px solid rgba($black, 0.2);
+        border-top: 1px solid color(var(--black) a(0.2));
         position: relative;
         top: -35px;
         width: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    .b-login {
+        font-size: 22px;
+    }
+
+    .b-login__card {
+        margin: 20px auto;
+        max-width: 280px;
+        min-height: 80px;
+        padding: 15px;
+
+        &--sellerId, &--buyerId {
+            line-height: 80px;
+        }
+    }
+
+    .b-login__card__password {
+        height: 25px;
+        font-size: 18px;
+        line-height: 25px;
+        margin: 10px 0;
     }
 }
 </style>

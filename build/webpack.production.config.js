@@ -1,10 +1,9 @@
-const webpack               = require('webpack');
-const merge                 = require('webpack-merge');
-const utils                 = require('./utils');
-const base                  = require('./webpack.base.config');
-const OptimizeCSSPlugin     = require('optimize-css-assets-webpack-plugin');
-const HtmlWebpackPlugin     = require('html-webpack-plugin')
-const ClosureCompilerPlugin = require('webpack-closure-compiler');
+const webpack           = require('webpack');
+const merge             = require('webpack-merge');
+const utils             = require('./utils');
+const base              = require('./webpack.base.config');
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = merge(base, {
     module: {
@@ -20,6 +19,7 @@ module.exports = merge(base, {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
+        new webpack.optimize.ModuleConcatenationPlugin(),
         new OptimizeCSSPlugin(),
         new HtmlWebpackPlugin({
             filename: utils.resolve('dist/index.html'),

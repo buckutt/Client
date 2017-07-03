@@ -10,16 +10,21 @@ const initialState = {
             name  : null,
             config: {}
         },
-        config: {}
+        config: {
+            alcohol: null,
+            doubleValidation: null,
+            showPicture: null,
+            defaultGroup: null
+        }
     },
     buyer: {
-        isAuth      : false,
-        id          : null,
-        credit      : 0,
-        firstname   : null,
-        lastname    : null,
-        groupPeriods: [],
-        purchases   : []
+        isAuth   : false,
+        id       : null,
+        credit   : 0,
+        firstname: null,
+        lastname : null,
+        groups   : [],
+        purchases: []
     },
     seller: {
         isAuth     : false,
@@ -42,7 +47,7 @@ const mutations = {
     },
 
     SET_FULL_DEVICE(state, payload) {
-        const keys = ['alcohol', 'doubleValidation', 'realtime', 'refreshInterval', 'showCategories', 'showPicture'];
+        const keys = ['alcohol', 'doubleValidation', 'showPicture', 'defaultGroup'];
 
         keys.forEach((key) => {
             state.device.config[key] = payload[key];
@@ -73,7 +78,7 @@ const mutations = {
         state.buyer.credit       = payload.credit;
         state.buyer.firstname    = payload.firstname;
         state.buyer.lastname     = payload.lastname;
-        state.buyer.groupPeriods = payload.groupPeriods;
+        state.buyer.groups       = payload.groups;
         state.buyer.purchases    = payload.purchases;
     },
 

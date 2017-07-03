@@ -51,12 +51,16 @@ export const filterItems = (store) => {
     const pointId = store.state.auth.device.point.id;
     const buyer   = store.state.auth.buyer;
 
-    const groups = buyer.groupPeriods
-        .filter(gP => gP &&
-            new Date(gP.period.start) <= now &&
-            now <= new Date(gP.period.end)
+    let groups = buyer.groups
+        .filter(group => group &&
+            new Date(group._through.period.start) <= now &&
+            now <= new Date(group._through.period.end)
         )
-        .map(gP => gP.group.id);
+        .map(group => group.id);
+
+    if (!buyer.isAuth) {
+        groups = [ store.getters.defaultGroup ];
+    }
 
     const items = extract(store.state.items.items)
         .map(addPointsAndPrices(pointId, groups))

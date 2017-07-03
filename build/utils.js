@@ -7,32 +7,36 @@ const resolve = function (dir) {
 }
 
 const cssLoaders = function (options = {}) {
-    const cssLoader = {
-        loader : 'css-loader',
-        options: {
-            minimize: IS_PROD
+    const cssLoader = [
+        {
+            loader: 'vue-style-loader',
+            options: {
+                sourceMap: true
+            }
+        },
+        {
+            loader : 'css-loader',
+            options: {
+                minimize: IS_PROD,
+                importLoaders: 1,
+                sourceMap: true
+            }
+        },
+        {
+            loader: 'postcss-loader',
+            options: {
+                sourceMap: true,
+                config: {
+                    path: path.join(__dirname, 'postcss.config.js')
+                }
+            }
         }
-    }
-
-    function generateLoaders (loader, loaderOptions) {
-        const loaders = [ cssLoader ];
-
-        if (loader) {
-            loaders.push({
-                loader : loader + '-loader',
-                options: Object.assign({}, loaderOptions)
-            });
-        }
-
-        return ['vue-style-loader'].concat(loaders)
-    }
+    ]
 
     return {
-        css : generateLoaders(),
-        sass: generateLoaders('sass', { indentedSyntax: true }),
-        scss: generateLoaders('sass')
-    }
-}
+        css: cssLoader
+    };
+};
 
 const styleLoaders = function (options) {
     const loaders = cssLoaders(options);
@@ -45,6 +49,6 @@ const styleLoaders = function (options) {
             use : loader
         };
     });
-}
+};
 
 module.exports = { IS_PROD, resolve, cssLoaders, styleLoaders };

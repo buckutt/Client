@@ -1,45 +1,44 @@
 <template>
-    <transition name="b--fade">
+    <div
+        v-if="reloadState !== 'closed' || reloadOnly"
+        class="b-reload"
+        :class="{ 'b-reload--reloadOnly': reloadOnly }">
         <div
-            v-if="reloadState !== 'closed' || reloadOnly"
-            class="b-reload"
-            :class="{ 'b-reload--reloadOnly': reloadOnly }">
-            <div
-                class="b-reload__drop"
-                v-if="!reloadOnly"></div>
-            <div class="b-reload__modal">
-                <div class="b-reload__modal__topbar">
-                    <h3 class="b-reload__modal__topbar__title">Rechargement</h3>
-                    <h3
-                        class="b-reload__modal__topbar__cancel"
-                        v-if="!reloadOnly"
-                        @click="closeReload">
-                        Annuler
-                    </h3>
-                </div>
-                <div class="b-reload__modal__methods">
-                    <methods :disabled="reloadState === 'confirm'"></methods>
-                </div>
-                <div class="b-reload__modal__currency">
-                    <currency :value="reloadAmount"></currency>
-                </div>
-                <div v-show="reloadState === 'opened' || reloadOnly">
-                    <div class="b-reload__modal__numerical-input">
-                        <numerical-input
-                            @changed="updateCurrency"
-                            @validate="confirmReloadModal"
-                            ref="input"></numerical-input>
-                    </div>
-                </div>
-                <div
-                    class="b-reload__modal__buttons"
-                    v-show="reloadState === 'confirm'">
-                    <button @click="reload">Paiement accepté</button>
-                    <button @click="cancelReloadModal">Paiement refusé</button>
+            class="b-reload__drop"
+            v-if="!reloadOnly"
+            @click="closeReload"></div>
+        <div class="b-reload__modal">
+            <div class="b-reload__modal__topbar">
+                <h3 class="b-reload__modal__topbar__title">Rechargement</h3>
+                <h3
+                    class="b-reload__modal__topbar__cancel"
+                    v-if="!reloadOnly"
+                    @click="closeReload">
+                    Annuler
+                </h3>
+            </div>
+            <div class="b-reload__modal__methods">
+                <methods :disabled="reloadState === 'confirm'"></methods>
+            </div>
+            <div class="b-reload__modal__currency">
+                <currency :value="reloadAmount"></currency>
+            </div>
+            <div v-show="reloadState === 'opened' || reloadOnly">
+                <div class="b-reload__modal__numerical-input">
+                    <numerical-input
+                        @changed="updateCurrency"
+                        @validate="confirmReloadModal"
+                        ref="input"></numerical-input>
                 </div>
             </div>
+            <div
+                class="b-reload__modal__buttons"
+                v-show="reloadState === 'confirm'">
+                <button @click="reload">Paiement accepté</button>
+                <button @click="cancelReloadModal">Paiement refusé</button>
+            </div>
         </div>
-    </transition>
+    </div>
 </template>
 
 <script>
@@ -93,22 +92,22 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-reload--reloadOnly {
-    .b-reload__modal {
+    & .b-reload__modal {
         transform: scale(1.2);
         transform-origin: top;
     }
 }
 
 .b-reload__drop {
-    @include modal-drop();
+    @add-mixin modal-drop;
 }
 
 .b-reload__modal {
-    @include modal(450px);
+    @add-mixin modal 450px;
 }
 
 .b-reload__modal__topbar {
@@ -125,7 +124,7 @@ export default {
 }
 
 .b-reload__modal__topbar__cancel {
-    color: $lightblue;
+    color: var(--lightblue);
     cursor: pointer;
     flex: 0;
     font-size: 14px;
@@ -140,7 +139,7 @@ export default {
 }
 
 .b-reload__modal__currency {
-    color: rgba($black, 0.65);
+    color: color(var(--black) a(0.65));
     font-size: 25px;
     margin-bottom: 15px;
     text-align: center;
@@ -156,20 +155,31 @@ export default {
     flex-direction: column;
     padding: 0 40px 20px 40px;
 
-    > button {
+    & > button {
         border: 0;
-        background-color: $green;
+        background-color: var(--green);
         border-radius: 2px;
-        box-shadow: 0 2px 4px rgba($black, 0.25);
+        box-shadow: 0 2px 4px color(var(--black) a(0.25));
         color: #fff;
         cursor: pointer;
         height: 45px;
         text-transform: uppercase;
     }
 
-    > button:last-child {
-        background-color: $lightorange;
+    & > button:last-child {
+        background-color: var(--lightorange);
         margin: 10px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .b-reload__modal {
+        max-width: 310px;
+    }
+
+    .b-reload__modal__methods {
+        flex-wrap: wrap;
+        width: 100%;
     }
 }
 

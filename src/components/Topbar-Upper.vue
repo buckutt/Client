@@ -23,7 +23,7 @@
                 <i class="b-icon">eject</i>
             </div>
             <div
-                v-if="buyer.isAuth && seller.canReload && seller.canSell"
+                v-if="!loginState && seller.canReload && seller.canSell"
                 class="b-upper-bar__actions__action-reload"
                 @click="openReloadModal">
                 <i class="b-icon">attach_money</i>
@@ -49,13 +49,13 @@ export default {
         LiveTime
     },
 
-    computed: mapGetters(['credit']),
+    computed: mapGetters(['loginState', 'credit']),
 
     methods: mapActions(['openReloadModal', 'logout'])
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-upper-bar__buyer {
@@ -84,7 +84,7 @@ export default {
     display: flex;
     line-height: 65px;
 
-    > div .b-icon {
+    & > div .b-icon {
         font-size: 28px;
         line-height: 65px;
         margin-right: 20px;
@@ -100,7 +100,35 @@ export default {
 }
 
 .b-upper-bar__buyer__credit--negative {
-    color: $red;
+    color: var(--red);
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .b-upper-bar {
+        height: 45px;
+    }
+
+    .b-upper-bar__buyer {
+        font-size: 13px;
+        padding-left: 10px;
+    }
+
+    .b-upper-bar__date {
+        font-size: 22px;
+        line-height: 45px;
+    }
+
+    .b-upper-bar__actions {
+        line-height: 45px;
+
+        & > div .b-icon {
+            line-height: 45px;
+        }
+
+        & > :last-child > .b-icon {
+            margin-right: 10px;
+        }
+    }
 }
 </style>

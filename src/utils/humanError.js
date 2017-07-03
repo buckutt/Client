@@ -1,3 +1,5 @@
+import { credit } from '../store/getters/promotions';
+
 export default (state, error) => {
     if (!error) {
         return null;
@@ -27,6 +29,10 @@ export default (state, error) => {
 
     if (error.message.startsWith('Maximum exceeded')) {
         return error.message.replace('Maximum exceeded', 'Crédit maximum');
+    }
+
+    if (error.message === 'Not enough credit') {
+        return `Pas assez de crédit: ${credit(state)}€`;
     }
 
     return error.message;

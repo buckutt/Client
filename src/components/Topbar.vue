@@ -6,14 +6,18 @@
         <upper :buyer="buyer" :seller="seller"></upper>
         <div class="b-header__separator"></div>
         <lower :buyer="buyer" :seller="seller"></lower>
+        <reload v-if="isMobile"></reload>
     </header>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 
+import isMobile from '../utils/isMobile';
+
 import Lower from './Topbar-Lower';
 import Upper from './Topbar-Upper';
+import Reload from './Topbar-Reload';
 
 export default {
     props: {
@@ -23,18 +27,25 @@ export default {
 
     components: {
         Lower,
-        Upper
+        Upper,
+        Reload
     },
 
-    computed: mapGetters(['showBuyerPicture'])
+    computed: {
+        isMobile() {
+            return isMobile();
+        },
+
+        ...mapGetters(['showBuyerPicture'])
+    }
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-header {
-    background-color: $blue;
+    background-color: var(--blue);
     color: #fff;
     height: 112px;
     width: 100%;
@@ -50,5 +61,12 @@ export default {
     background-color: #fff;
     height: 1px;
     opacity: .1;
+}
+
+@media (max-width: 768px) {
+    .b-header {
+        min-height: 81px;
+        height: auto;
+    }
 }
 </style>

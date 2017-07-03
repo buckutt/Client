@@ -1,14 +1,12 @@
-import axios  from 'axios';
-import q      from '../../utils/q';
+import axios from 'axios';
+import q     from '../../utils/q';
 
 export const setPoint = ({ commit }, payload) => {
     commit('SET_DEVICE', payload);
 };
 
-export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
-    commit('SET_DATA_LOADED', false);
-
-    return axios
+export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
+    axios
         .post(`${config.api}/services/login`, {
             meanOfLogin: config.loginMeanOfLogin,
             data       : meanOfLogin,
@@ -28,14 +26,18 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) => {
                 canReload: res.data.user.canReload
             });
 
-            dispatch('dataLoader')
-                .then(() => commit('SET_DATA_LOADED'));
+            commit('SET_DATA_LOADED', false);
+
+            return dispatch('dataLoader')
+                .then(() => dispatch('filterItems'))
+                .then(() => dispatch('createTabs'))
+                .then(() => dispatch('createTabsItems'))
+                .then(() => commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
             commit('ID_SELLER', '');
             commit('ERROR', err.response.data);
         });
-};
 
 export const logout = (store) => {
     if (store.state.auth.buyer.isAuth) {
@@ -47,6 +49,8 @@ export const logout = (store) => {
     } else if (store.state.auth.seller.meanOfLogin.length > 0) {
         store.commit('ID_SELLER', '');
     }
+
+    return store.dispatch('clearBasket');
 };
 
 export const buyer = (store, { cardNumber }) => {
@@ -67,9 +71,10 @@ export const buyer = (store, { cardNumber }) => {
 
     const embedUser = q({
         user: {
-            groupPeriods: {
-                group : true,
-                period: true
+            groups: {
+                _through: {
+                    period: true
+                }
             },
             purchases: {
                 price: {
@@ -92,17 +97,28 @@ export const buyer = (store, { cardNumber }) => {
             }
 
             store.commit('ID_BUYER', {
-                id          : res.data[0].user.id,
-                credit      : res.data[0].user.credit,
-                firstname   : res.data[0].user.firstname,
-                lastname    : res.data[0].user.lastname,
-                groupPeriods: res.data[0].user.groupPeriods,
-                purchases   : res.data[0].user.purchases
+                id       : res.data[0].user.id,
+                credit   : res.data[0].user.credit,
+                firstname: res.data[0].user.firstname,
+                lastname : res.data[0].user.lastname,
+                groups   : res.data[0].user.groups,
+                purchases: res.data[0].user.purchases
             });
 
-            store.dispatch('filterItems')
+            store.commit('SET_DATA_LOADED', false);
+
+            store.dispatch('dataLoader')
+                .then(() => store.dispatch('filterItems'))
                 .then(() => store.dispatch('createTabs'))
-                .then(() => store.dispatch('createTabsItems'));
+                .then(() => store.dispatch('createTabsItems'))
+                .then(() => {
+                    if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
+                        return store
+                            .dispatch('sendBasket')
+                            .then(() => store.dispatch('logout'));
+                    }
+                })
+                .then(() => store.commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
             store.commit('ERROR', err);

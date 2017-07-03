@@ -31,15 +31,17 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-error__drop {
-    @include modal-drop();
+    @add-mixin modal-drop;
+    z-index: 999999;
 }
 
 .b-error__modal {
-    @include modal(350px);
+    @add-mixin modal 350px;
+    z-index: 9999999;
 
     align-items: flex-start;
     display: flex;
@@ -66,7 +68,7 @@ export default {
     width: 100%;
 
     &:active, &:focus, &:hover {
-        background-color: rgba($black, 0.3);
+        background-color: color(var(--black) a(0.3));
     }
 }
 </style>

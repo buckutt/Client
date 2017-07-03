@@ -96,6 +96,7 @@ export default {
             });
 
             nfc.on('data', (data) => {
+                console.log(`user id: ${data.data}`);
                 this.inputValue = data.data;
                 this.validate();
             });
@@ -116,8 +117,8 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import 'app';
+<style>
+@import './app.css';
 
 @font-face {
     font-family: 'Roboto';

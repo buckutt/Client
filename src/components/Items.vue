@@ -21,12 +21,19 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .b-items {
     align-content: flex-start;
+    box-sizing: border-box;
     display: flex;
     flex: 1;
     flex-wrap: wrap;
     padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .b-items {
+        padding-top: 15px;
+    }
 }
 </style>

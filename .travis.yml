@@ -22,7 +22,6 @@ addons:
 
 script:
   - yarn build
-  - yarn lint
 
 env:
   global:

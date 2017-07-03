@@ -29,13 +29,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 @import '../main';
 
 .b-sidebar-reload {
-    background-color: $green;
+    background-color: var(--green);
     border-radius: 2px;
-    box-shadow: 0 3px 2px rgba($black, 0.25);
+    box-shadow: 0 3px 2px color(var(--black) a(0.25));
     color: #fff;
     display: flex;
     font-size: 18px;
