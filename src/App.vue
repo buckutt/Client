@@ -99,10 +99,12 @@ export default {
                 console.log(`user id: ${data.data}`);
                 this.inputValue = data.data;
                 this.validate();
+                nfc.restartNFC();
             });
 
             nfc.on('error', (err) => {
                 console.error(err);
+                nfc.restartNFC();
             });
 
             require('electron').remote.getCurrentWindow().updater.on('update', () => {
