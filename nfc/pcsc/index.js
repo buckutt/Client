@@ -39,7 +39,9 @@ module.exports = class PCSCLite extends EventEmitter {
                     if ((changes & this.reader.SCARD_STATE_EMPTY) && (status.state & this.reader.SCARD_STATE_EMPTY)) {
                         this.disconnect();
                     } else if ((changes & this.reader.SCARD_STATE_PRESENT) && (status.state & this.reader.SCARD_STATE_PRESENT)) {
-                        this.handleCard();
+                        setTimeout(() => {
+                            this.handleCard();
+                        }, 150);
                     }
                 }
             });

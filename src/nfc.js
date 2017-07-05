@@ -11,12 +11,18 @@ module.exports = class NFC extends EventEmitter {
         this.proc = spawn('node', ['./nfc/index']);
 
         this.proc.stdout.on('data', (data) => {
-            const out = JSON.parse(Buffer.from(data).toString());
+            data = Buffer.from(data).toString();
 
-            this.emit(out.type, {
-                data      : out.data,
-                additional: out.additional
-            });
+            data
+                .split('\n')
+                .filter(line => line.length > 0)
+                .map(line => JSON.parse(line))
+                .forEach((out) => {
+                    this.emit(out.type, {
+                        data      : out.data,
+                        additional: out.additional
+                    });
+                });
         });
 
         this.proc.stderr.on('data', (data) => {

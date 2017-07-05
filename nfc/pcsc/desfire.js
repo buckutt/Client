@@ -25,6 +25,7 @@ module.exports.read = (transmit, log, callback) => {
     const keyId  = JSON.parse(config.desfire.keyId);
     const dkey   = JSON.parse(config.desfire.key);
 
+    log(`out: ${wrap(0x5A, appId).toString('hex')}`);
     return transmit(wrap(0x5A, appId), 40)
         .then((data) => {
             log(`res: ${data.toString('hex')}`);
