@@ -1,6 +1,7 @@
 /* eslint-disable no-bitwise */
 
 const EventEmitter = require('events');
+const Promise      = require('bluebird');
 
 let config = require('../../config');
 
@@ -50,11 +51,11 @@ module.exports = class PCSCLite extends EventEmitter {
     }
 
     connect(...args) {
-        return require('util').promisify(this.reader.connect.bind(this.reader))(...args);
+        return Promise.promisify(this.reader.connect.bind(this.reader))(...args);
     }
 
     transmit(buf, size = 255) {
-        return require('util').promisify(this.reader.transmit.bind(this.reader))(buf, size, this.protocol);
+        return Promise.promisify(this.reader.transmit.bind(this.reader))(buf, size, this.protocol);
     }
 
     disconnect() {
