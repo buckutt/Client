@@ -108,7 +108,7 @@ module.exports = class PCSCLite extends EventEmitter {
                 this.emit('atr', this.atr);
                 this.emit('cardtype', this.cardType);
 
-                method.read(
+                return method.read(
                     (...args) => this.transmit(...args),
                     (log) => this.emit('log', log),
                     (data) => {
