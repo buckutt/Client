@@ -7,7 +7,8 @@ const freeREPL = () => {
     inquirer
         .prompt([
             { type: 'input', name: 'adpu', message: 'ADPU to send « FF CA 00 00 00 ».' }
-        ], ({ adpu }) => {
+        ])
+        .then(({ adpu }) => {
             adpu = adpu.split(' ').map(x => parseInt(x, 16))
 
             adpu = Buffer.from(adpu);
@@ -56,7 +57,8 @@ const writeData = () => {
     inquirer
         .prompt([
             { type: 'input', name: 'data', message: 'Data to write' }
-        ], ({ data }) => {
+        ])
+        .then(({ data }) => {
             nfc.pcsc.write(data)
                 .then((newData) => {
                     console.log('old data:', nfc.pcsc.data);
@@ -84,7 +86,8 @@ inquirer
                 'Write data'
             ]
         }
-    ], ({ action }) => {
+    ])
+    .then(({ action }) => {
         if (action === 'Free REPL') {
             freeREPL();
         }
