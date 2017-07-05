@@ -40,6 +40,7 @@ module.exports = class NFC extends EventEmitter {
 
     restartNFC() {
         this.proc.kill();
+        console.log('ok');
 
         setTimeout(() => {
             this.listenNFC();
