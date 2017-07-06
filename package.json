@@ -6,7 +6,7 @@
   "private": true,
   "main": "src/main.js",
   "scripts": {
-    "postinstall": "cd cordova && mkdir -p www && cordova prepare && cd .. && electron-rebuild",
+    "postinstall": "cd cordova && mkdir -p www && cordova prepare && cd .. && electron-rebuild -v $(electron --version | cut -c 2-)",
     "browser": "static dist/browser --port 8081",
     "electron": "electron .",
     "android": "cd cordova && cordova run android --emulator",
