@@ -1,2 +1,5 @@
 node_modules/
 dist/
+cordova/www
+cordova/platforms
+cordova/plugins

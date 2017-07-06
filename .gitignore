@@ -3,3 +3,8 @@ node_modules/
 dist/
 npm-debug.log
 src/config.js
+yarn-debug.log*
+yarn-error.log*
+cordova/www
+cordova/platforms
+cordova/plugins
