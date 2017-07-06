@@ -77,6 +77,11 @@ devMiddleware.waitUntilValid(() => {
   if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
     if (process.env.TARGET === 'electron') {
       process.env.URI = uri
+      // electron-rebuild pwns local electron (that gets rebuilded against old node version)
+      // so we need to force executing global electron
+      // because bin path is added by node itself
+      // TODO: avoid rm
+      shell.rm('./node_modules/.bin/electron');
       shell.exec('electron .', _resolve)
     } else {
       opn(uri)

@@ -13,7 +13,7 @@
 <script>
 import { mapGetters } from 'vuex';
 
-import isMobile from '../../utils/isMobile';
+import isMobile from '../utils/isMobile';
 
 import Lower from './Topbar-Lower';
 import Upper from './Topbar-Upper';

@@ -40,9 +40,6 @@ import Loading        from './components/Loading';
 import Error          from './components/Error';
 import AlcoholWarning from './components/AlcoholWarning';
 
-import NFC            from  '../lib/nfc';
-import updater        from '../lib/updater';
-
 export default {
     name: 'App',
 
@@ -88,13 +85,16 @@ export default {
     },
 
     mounted() {
-        const nfc = new NFC();
+        const remote = require('electron').remote.getCurrentWindow();
+
+        const nfc = remote.nfc.pcsc;
+
         nfc.on('log', (data) => {
             console.log(data);
         });
 
         nfc.on('data', (data) => {
-            this.inputValue = data.data;
+            this.inputValue = data;
             this.validate();
         });
 
@@ -102,7 +102,7 @@ export default {
             console.error(err);
         });
 
-        // updater.init(); TODO
+        // remote.updater.init(); TODO
     }
 };
 </script>

@@ -1,5 +1,5 @@
 import humanError from '../../utils/humanError';
-import isMobile   from '../../../utils/isMobile';
+import isMobile   from '../../utils/isMobile';
 
 export const basketStatus    = state => state.basket.basketStatus;
 export const error           = state => humanError(state, state.ui.error);

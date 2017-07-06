@@ -1,8 +1,11 @@
+process.env.TARGET = 'electron';
+
 const { app, BrowserWindow } = require('electron');
 const path     = require('path');
 const url      = require('url');
 const config   = require('../config');
-// const updater = require('./updater') TODO: updater
+const NFC      = require('./lib/nfc');
+// const updater = require('./lib/updater') TODO: updater
 
 function createWindow() {
     const isDev = (process.env.NODE_ENV && process.env.NODE_ENV.trim() === 'development');
@@ -34,6 +37,7 @@ function createWindow() {
         window = null;
     });
 
+    window.nfc = new NFC();
     // window.updater = updater(); TODO: updater
 
     const opts = {
@@ -41,7 +45,7 @@ function createWindow() {
         password   : JSON.parse(config.certificate.password)
     };
 
-    // app.importCertificate(opts, result => console.log(result));
+    app.importCertificate(opts, result => console.log(result));
 }
 
 app.on('ready', createWindow);
