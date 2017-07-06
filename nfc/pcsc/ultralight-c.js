@@ -39,13 +39,15 @@ module.exports.write = (data, transmit, log, callback, err) => {
         i = i + 4;
     } while (i <= buf.length);
 
-    // Write in sequence
-    const writeAllData = (async function () {
-        let i = 0;
+    let sequence = Promise.resolve();
 
-        for (let page of subs) {
+    // Write in sequence
+    i = 0;
+
+    for (let page of subs) {
+        sequence = sequence.then(() => {
             console.log(Buffer.from([ 0xFF, 0xD6, 0x00, i + config.ultralight.firstWritablePage, 0x04, ...page ]));
-            const res = await transmit(Buffer.from([ 0xFF, 0xD6, 0x00, i + config.ultralight.firstWritablePage, 0x04, ...page ]));
+            const res = transmit(Buffer.from([ 0xFF, 0xD6, 0x00, i + config.ultralight.firstWritablePage, 0x04, ...page ]));
 
             if (res.toString('hex') !== '9000') {
                 throw new Error(`Write failed : ${res.toString('hex')}`);
@@ -53,10 +55,10 @@ module.exports.write = (data, transmit, log, callback, err) => {
             console.log(res.toString('hex'));
 
             i = i + 1;
-        }
-    });
+        });
+    }
 
-    return writeAllData().then(() => newBuf);
+    return sequence.then(() => newBuf);
 };
 
 module.exports.ATR = Buffer.from([ 0x3B, 0x8F, 0x80, 0x01, 0x80, 0x4F, 0x0C, 0xA0, 0x00, 0x00, 0x03, 0x06, 0x03, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x68 ]);
