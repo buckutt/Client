@@ -1,9 +1,13 @@
-const path = require('path');
+const path   = require('path');
+const config = require('./config')
 
 const IS_PROD = process.env.NODE_ENV === 'production';
 
-const resolve = function (dir) {
-    return path.join(__dirname, '..', dir)
+const assetsPath = function (_path) {
+  var assetsSubDirectory = process.env.NODE_ENV === 'production'
+    ? config.build.assetsSubDirectory
+    : config.dev.assetsSubDirectory
+  return path.posix.join(assetsSubDirectory, _path)
 }
 
 const cssLoaders = function (options = {}) {
@@ -51,4 +55,4 @@ const styleLoaders = function (options) {
     });
 };
 
-module.exports = { IS_PROD, resolve, cssLoaders, styleLoaders };
+module.exports = { assetsPath, cssLoaders, styleLoaders };

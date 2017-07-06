@@ -21,7 +21,7 @@ addons:
       - pcscd
 
 script:
-  - yarn build
+  - yarn build:electron
 
 env:
   global:
