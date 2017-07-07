@@ -19,7 +19,7 @@ function createWindow() {
         uri = process.env.URI || 'http://localhost:8080';
     } else {
         uri = url.format({
-            pathname: path.join(__dirname, '..', 'dist', 'electron', 'index.html'),
+            pathname: path.join(__dirname, '..', 'dist', 'index.html'),
             protocol: 'file:',
             slashes: true
         });
