@@ -200,7 +200,7 @@ export const basketAmount = (state) => {
         .map(promo => promo.price.amount)
         .reduce((a, b) => a + b, 0);
 
-    return items - promotions;
+    return items + promotions;
 };
 
 export const credit = (state) => {
