@@ -94,7 +94,7 @@ export default {
         });
 
         nfc.on('data', (data) => {
-            this.inputValue = data;
+            this.inputValue = data.slice(0, 13);
             this.validate();
         });
 
