@@ -19,7 +19,7 @@ function createWindow() {
         uri = process.env.URI || 'http://localhost:8080';
     } else {
         uri = url.format({
-            pathname: path.join(__dirname, '..', 'dist', 'index.html'),
+            pathname: path.join(__dirname, '..', 'dist', 'electron', 'index.html'),
             protocol: 'file:',
             slashes: true
         });
@@ -56,21 +56,3 @@ app.on('certificate-error', (e, webContents, reqUrl, error, certificate, callbac
 });
 
 app.on('window-all-closed', () => app.quit());
-
-// // Wait until the app is ready
-// electron.app.once('ready', function () {
-//   // Create a new window
-
-
-//   // Load a URL in the window to the local index.html path or remote dev server
-//   let uri
-
-
-
-//   window.loadURL(uri)
-
-//   // Show window when page is ready
-//   window.once('ready-to-show', function () {
-//     window.show()
-//   })
-// })
