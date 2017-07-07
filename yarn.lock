@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@pokusew/pcsclite@^0.4.14", "@pokusew/pcsclite@^0.4.17":
+"@pokusew/pcsclite@^0.4.14":
   version "0.4.17"
   resolved "https://registry.yarnpkg.com/@pokusew/pcsclite/-/pcsclite-0.4.17.tgz#cdc2e8fa8c297fa416fbfacf10da5f33d7aef438"
   dependencies:
@@ -4593,12 +4593,6 @@ nested-error-stacks@^1.0.0:
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-1.0.2.tgz#19f619591519f096769a5ba9a86e6eeec823c3cf"
   dependencies:
     inherits "~2.0.1"
-
-nfc-pcsc@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/nfc-pcsc/-/nfc-pcsc-0.5.0.tgz#6c8ea5488608e68358b6979de61e3af7b4941dce"
-  dependencies:
-    "@pokusew/pcsclite" "^0.4.17"
 
 no-case@^2.2.0:
   version "2.3.1"

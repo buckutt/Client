@@ -21,7 +21,6 @@ addons:
       - pcscd
 
 script:
-  - yarn global add electron-rebuild
   - yarn build:electron
 
 env:
