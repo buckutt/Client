@@ -9,6 +9,7 @@ html, body {
 
 *, *:after, *:before {
     box-sizing: border-box;
+    user-select: none;
 }
 
 button, input, optgroup, select, textarea {
