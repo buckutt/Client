@@ -1,9 +1,9 @@
 {
-    "api": "\"https://localhost:3000\"",
+    "api": "\"https://api.buck.utt.fr\"",
     "loginMeanOfLogin": "\"etuId\"",
     "buyerMeanOfLogin": "\"etuId\"",
     "desfire"         : {
-        "key"   : "\"0\"",
+        "key"   : "\"bae03a78a43f7d724d4dcee43456231b\"",
         "keyId" : "[4]",
         "fileId": "[2, 0, 0, 0, 14, 0, 0]",
         "appId" : "[64, 132, 245]"

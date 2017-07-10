@@ -28,7 +28,7 @@ function createWindow() {
     window.loadURL(uri);
     window.setMenu(null);
 
-    if (isDev) {
+    if (true) {
         window.webContents.openDevTools();
     }
 
