@@ -6,7 +6,7 @@ module.exports.read = function classic(transmit, log, callback) {
             const code = data.toString().replace(/\D+/g, '');
 
             if (code.length > 0) {
-                printOut(code);
+                callback(code);
 
                 return true;
             }
