@@ -12,7 +12,7 @@
         "fileId": "[255, 243, 0, 5]"
     },
     "ultralight": {
-        "dataLength": 20,
+        "cardLength": 20,
         "firstWritablePage": 4
     },
     "certificate": {
