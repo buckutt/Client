@@ -1,5 +1,5 @@
 {
-    "api": "\"https://api.buck.utt.fr\"",
+    "api": "\"https://localhost:3000\"",
     "loginMeanOfLogin": "\"etuId\"",
     "buyerMeanOfLogin": "\"etuId\"",
     "desfire"         : {
