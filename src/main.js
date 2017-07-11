@@ -16,7 +16,7 @@ function createWindow() {
     });
 
     if (isDev) {
-        uri = process.env.URI || 'http://localhost:8080';
+        uri = process.env.URI || 'http://localhost:8081';
     } else {
         uri = url.format({
             pathname: path.join(__dirname, '..', 'dist', 'electron', 'index.html'),
