@@ -1,5 +1,5 @@
 {
-    "api": "\"https://api.buck.utt.fr\"",
+    "api": "\"https://localhost:3000\"",
     "loginMeanOfLogin": "\"etuId\"",
     "buyerMeanOfLogin": "\"etuId\"",
     "desfire"         : {
@@ -12,7 +12,7 @@
         "fileId": "[255, 243, 0, 5]"
     },
     "ultralight": {
-        "dataLength": 20,
+        "cardLength": 20,
         "firstWritablePage": 4
     },
     "certificate": {

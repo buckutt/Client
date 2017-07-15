@@ -35,6 +35,7 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
                 .then(() => commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
+            console.log(err);
             commit('ID_SELLER', '');
             commit('ERROR', err.response.data);
         });
@@ -44,13 +45,23 @@ export const logout = (store) => {
         store.commit('LOGOUT_BUYER');
         store.commit('SET_BASKET_STATUS', 'WAITING');
     } else if (store.state.auth.seller.isAuth) {
-        store.commit('LOGOUT_SELLER');
-        store.commit('ID_SELLER', '');
+        store.commit('FIRST_LOGOUT_SELLER');
     } else if (store.state.auth.seller.meanOfLogin.length > 0) {
         store.commit('ID_SELLER', '');
     }
 
     return store.dispatch('clearBasket');
+};
+
+export const pursueLogout = ({ commit }) => {
+    commit('LOGOUT_SELLER');
+    commit('ID_SELLER', '');
+    // Remove disconnect warning
+    commit('REMOVE_LOGOUT_WARNING');
+};
+
+export const cancelLogout = ({ commit }) => {
+    commit('REMOVE_LOGOUT_WARNING');
 };
 
 export const buyer = (store, { cardNumber }) => {

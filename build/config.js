@@ -30,7 +30,7 @@ module.exports = {
         TARGET  : JSON.stringify(process.env.TARGET),
         PLATFORM: JSON.stringify(process.env.PLATFORM)
     },
-    port: 8080,
+    port: 8081,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '',

@@ -27,14 +27,15 @@ const initialState = {
         purchases: []
     },
     seller: {
-        isAuth     : false,
-        meanOfLogin: '',
-        id         : null,
-        token      : null,
-        firstname  : null,
-        lastname   : null,
-        canSell    : false,
-        canReload  : false
+        isAuth           : false,
+        meanOfLogin      : '',
+        id               : null,
+        token            : null,
+        firstname        : null,
+        lastname         : null,
+        canSell          : false,
+        canReload        : false,
+        disconnectWarning: false
     }
 };
 
@@ -84,6 +85,14 @@ const mutations = {
 
     LOGOUT_SELLER(state) {
         state.seller.isAuth = false;
+    },
+
+    FIRST_LOGOUT_SELLER(state) {
+        state.seller.disconnectWarning = true
+    },
+
+    REMOVE_LOGOUT_WARNING(state) {
+        state.seller.disconnectWarning = false
     },
 
     LOGOUT_BUYER(state) {
