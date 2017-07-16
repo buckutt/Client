@@ -28,7 +28,7 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
 
             commit('SET_DATA_LOADED', false);
 
-            return dispatch('dataLoader')
+            return dispatch('dataLoader', true)
                 .then(() => dispatch('filterItems'))
                 .then(() => dispatch('createTabs'))
                 .then(() => dispatch('createTabsItems'))
@@ -118,7 +118,7 @@ export const buyer = (store, { cardNumber }) => {
 
             store.commit('SET_DATA_LOADED', false);
 
-            store.dispatch('dataLoader')
+            store.dispatch('dataLoader', false)
                 .then(() => store.dispatch('filterItems'))
                 .then(() => store.dispatch('createTabs'))
                 .then(() => store.dispatch('createTabsItems'))
