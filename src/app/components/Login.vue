@@ -53,7 +53,7 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'lastUser', 'doubleValidation']),
+    computed: mapGetters(['buyer', 'seller', 'lastUser', 'doubleValidation', 'point']),
 
     methods: {
         maskPassword(t) {
@@ -129,17 +129,19 @@ export default {
                     });
                 }
 
-                this.setPoint({
-                    id   : err.response.headers.device,
-                    point: {
-                        id  : err.response.headers.point,
-                        name: err.response.headers.pointname
-                    },
-                    event: {
-                        id  : err.response.headers.event,
-                        name: err.response.headers.eventname
-                    }
-                });
+                if (!this.point) {
+                    this.setPoint({
+                        id   : err.response.headers.device,
+                        point: {
+                            id  : err.response.headers.point,
+                            name: err.response.headers.pointname
+                        },
+                        event: {
+                            id  : err.response.headers.event,
+                            name: err.response.headers.eventname
+                        }
+                    });
+                }
             });
 
         document.body.addEventListener('click', this.refocus, false);

@@ -27,7 +27,7 @@ const promotionsJoin = {
 
 const setsJoin = { promotions: true, articles: true };
 
-export const dataLoader = (store) => {
+export const dataLoader = (store, reloadDevice) => {
     const token      = store.getters.tokenHeaders;
     const eventId    = store.state.auth.device.event.id;
     const isReloader = !store.getters.seller.canSell && store.getters.seller.canReload;
@@ -35,17 +35,20 @@ export const dataLoader = (store) => {
     const articlesQuery = isReloader ? Promise.resolve() : axios
         .get(`${config.api}/articles/search?q=${notRemoved}&embed=${q(articlesJoin)}`, token)
         .then((res) => {
-            const device = {
-                id   : res.headers.device,
-                point: {
-                    id  : res.headers.point,
-                    name: res.headers.pointname
-                },
-                event : { name: res.headers.eventname, id: res.headers.event },
-                config: {}
-            };
+            if (reloadDevice) {
+                const device = {
+                    id   : res.headers.device,
+                    point: {
+                        id  : res.headers.point,
+                        name: res.headers.pointname
+                    },
+                    event : { name: res.headers.eventname, id: res.headers.event },
+                    config: {}
+                };
 
-            store.commit('SET_DEVICE', device);
+                store.commit('SET_DEVICE', device);
+            }
+
             store.commit('SET_ITEMS', res.data.map(article => filterIsRemovedRecursive(article, articlesJoin)));
         });
 

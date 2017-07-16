@@ -23,8 +23,6 @@ export const tabsItems       = (state) => {
 };
 
 export const loginState = (state) => {
-    console.log('-- called');
-
     if (state.auth.device.config.doubleValidation) {
         return !state.auth.buyer.isAuth;
     } else if (!state.auth.seller.isAuth) {

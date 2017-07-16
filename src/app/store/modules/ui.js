@@ -40,8 +40,7 @@ const mutations = {
     },
 
     ERROR(state, err) {
-        state.dataLoaded = null;
-        state.error      = err;
+        state.error = err;
     }
 };
 

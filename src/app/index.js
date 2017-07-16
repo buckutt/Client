@@ -8,7 +8,7 @@ function init() {
   Vue.config.productionTip = false
 
   /* eslint-disable no-new */
-  new Vue({
+  window.app = new Vue({
     store,
     el: '#app',
     template: '<App/>',

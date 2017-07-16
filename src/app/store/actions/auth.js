@@ -28,7 +28,7 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
 
             commit('SET_DATA_LOADED', false);
 
-            return dispatch('dataLoader')
+            return dispatch('dataLoader', true)
                 .then(() => dispatch('filterItems'))
                 .then(() => dispatch('createTabs'))
                 .then(() => dispatch('createTabsItems'))
@@ -37,6 +37,7 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
         .catch((err) => {
             console.log(err);
             commit('ID_SELLER', '');
+            commit('SET_DATA_LOADED', null);
             commit('ERROR', err.response.data);
         });
 
@@ -118,7 +119,7 @@ export const buyer = (store, { cardNumber }) => {
 
             store.commit('SET_DATA_LOADED', false);
 
-            store.dispatch('dataLoader')
+            store.dispatch('dataLoader', false)
                 .then(() => store.dispatch('filterItems'))
                 .then(() => store.dispatch('createTabs'))
                 .then(() => store.dispatch('createTabsItems'))
@@ -132,6 +133,7 @@ export const buyer = (store, { cardNumber }) => {
                 .then(() => store.commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
+            store.commit('SET_DATA_LOADED', null);
             store.commit('ERROR', err);
         });
 };
