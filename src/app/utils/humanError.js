@@ -32,7 +32,7 @@ export default (state, error) => {
     }
 
     if (error.message === 'Not enough credit') {
-        return `Pas assez de crédit: ${credit(state)}€`;
+        return `Pas assez de crédit: ${(credit(state) / 100).toFixed(2)}€`;
     }
 
     return error.message;

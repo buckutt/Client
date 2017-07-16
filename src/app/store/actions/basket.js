@@ -27,6 +27,16 @@ export const sendBasket = (store) => {
         return;
     }
 
+    if (store.getters.credit < 0) {
+        store.commit('CLEAR_BASKET');
+        store.commit('REMOVE_RELOADS');
+        store.commit('SET_BASKET_STATUS', 'ERROR');
+        store.commit('ERROR', {
+            message: 'Not enough credit'
+        });
+        return;
+    }
+
     const fullBasket = store.getters.cleanBasket;
 
     const basketToSend = [];

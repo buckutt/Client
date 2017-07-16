@@ -37,6 +37,7 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
         .catch((err) => {
             console.log(err);
             commit('ID_SELLER', '');
+            commit('SET_DATA_LOADED', null);
             commit('ERROR', err.response.data);
         });
 
@@ -132,6 +133,7 @@ export const buyer = (store, { cardNumber }) => {
                 .then(() => store.commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
+            store.commit('SET_DATA_LOADED', null);
             store.commit('ERROR', err);
         });
 };
