@@ -71,7 +71,7 @@ export default {
         },
 
         validate() {
-            const value = this.inputValue;
+            const value = this.inputValue.slice(0, 13);
             this.inputValue = '';
 
             if (this.basketStatus === 'DOUBLE') {
@@ -99,7 +99,7 @@ export default {
             });
 
             nfc.on('data', (data) => {
-                this.inputValue = data.slice(0, 13);
+                this.inputValue = data;
                 this.validate();
             });
 
