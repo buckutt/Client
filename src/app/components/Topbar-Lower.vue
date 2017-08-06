@@ -78,7 +78,7 @@ export default {
     padding-left: 10px;
 }
 
-.b-lower-bar__device > :last-child {
+.b-lower-bar__device__event {
     margin-right: 10px;
 }
 
