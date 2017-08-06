@@ -48,11 +48,13 @@ const mutations = {
     },
 
     SET_FULL_DEVICE(state, payload) {
-        const keys = ['alcohol', 'doubleValidation', 'showPicture', 'defaultGroup'];
+        const keys = ['alcohol', 'doubleValidation', 'showPicture'];
 
         keys.forEach((key) => {
             state.device.config[key] = payload[key];
         });
+
+        state.device.DefaultGroup_id = payload.DefaultGroup_id
     },
 
     SET_EVENT(state, payload) {
