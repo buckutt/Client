@@ -17,7 +17,7 @@ export const clearBasket = ({ commit }) => {
 
 export const sendBasket = (store) => {
     if (!store.state.auth.device.config.doubleValidation) {
-        if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER' && !store.state.auth.buyer.isAuth) {
+        if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER') {
             store.commit('SET_BASKET_STATUS', 'WAITING_FOR_BUYER');
             return;
         }
