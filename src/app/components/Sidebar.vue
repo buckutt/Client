@@ -7,6 +7,7 @@
             <sidebar-promotion
                 v-for="promotion in sidebar.promotions"
                 :key="promotion.id"
+                :id="promotion.id"
                 :name="promotion.name"
                 :items="promotion.items"></sidebar-promotion>
             <sidebar-item

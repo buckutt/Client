@@ -18,6 +18,7 @@
     position: absolute;
     top: 150px;
     width: $width;
+    z-index: 10;
 }
 
 @define-mixin modal-drop {
@@ -27,4 +28,5 @@
     position: absolute;
     top: 0;
     width: 100%;
+    z-index: 5;
 }

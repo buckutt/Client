@@ -155,11 +155,15 @@ export const sidebar = (state) => {
 
     const namedBasketPromotions = basketPromotions.map(basketPromotion => (
         {
+            id: basketPromotion.id,
             name: state.items.promotions
                 .find(promotion => promotion.id === basketPromotion.id)
                 .name,
             items: basketPromotion.contents
-                .map(itemId => state.items.items.find(item => item.id === itemId).name)
+                .map(itemId => ({
+                    name: state.items.items.find(item => item.id === itemId).name,
+                    id: itemId
+                }))
         }
     ));
 

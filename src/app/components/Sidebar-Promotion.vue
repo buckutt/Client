@@ -1,6 +1,8 @@
 <template>
     <div class="b-sidebar-promotion" @click="toggleDetails">
         <div class="b-sidebar-promotion__row">
+            <div class="b-sidebar-promotion__minus"
+                 @click.stop="remove()"></div>
             <div class="b-sidebar-promotion__row__name">
                 {{ name }}
             </div>
@@ -15,17 +17,20 @@
             <div
                 v-for="item of items"
                 class="b-sidebar-promotion__row__details__item">
-                {{ item }}
+                {{ item.name }}
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
     props: {
         name : { type: String, required: true },
-        items: { type: Array, required: true }
+        items: { type: Array, required: true },
+        id   : { type: String, required: true }
     },
 
     data() {
@@ -35,7 +40,16 @@ export default {
     methods: {
         toggleDetails() {
             this.toggled = !this.toggled;
-        }
+        },
+
+        remove() {
+            this.items.forEach((content) => {
+                this.removeItemFromBasket(content.id);
+            });
+        },
+
+
+        ...mapActions(['removeItemFromBasket'])
     }
 };
 </script>
@@ -78,10 +92,29 @@ export default {
     width: 30px;
 }
 
-.b-sidebar-promotion__row__details {
+.b-sidebar-promotion__minus {
+    background-color: var(--orange);
+    cursor: pointer;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 10px;
+    position: relative;
+    width: 30px;
+
+    &:after {
+        background-color: #fff;
+        content: ' ';
+        height: 3px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+    }
 }
 
 .b-sidebar-promotion__row__details__item {
+    padding-top: 10px;
     color: color(var(--black) a(0.8));
 }
 </style>
