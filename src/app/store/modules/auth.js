@@ -13,9 +13,9 @@ const initialState = {
         config: {
             alcohol: null,
             doubleValidation: null,
-            showPicture: null,
-            defaultGroup: null
-        }
+            showPicture: null
+        },
+        DefaultGroup_id: null
     },
     buyer: {
         isAuth   : false,
