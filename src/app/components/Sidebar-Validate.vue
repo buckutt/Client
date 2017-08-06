@@ -4,7 +4,7 @@
         :class="statusClasses"
         @click="validate($event)">
         <span class="b-sidebar-validate__amount">
-            <currency :value="basketAmount"></currency>
+            <currency :value="-1 * basketAmount + reloadAmount" :showPlus="true"></currency>
         </span>
         <i class="b-icon" v-if="basketStatus === 'WAITING'">done_all</i>
         <i class="b-icon" v-if="basketStatus === 'DOING' || basketStatus === 'WAITING_FOR_BUYER'">query_builder</i>
@@ -30,7 +30,7 @@ export default {
             };
         },
 
-        ...mapGetters(['basketStatus', 'basketAmount'])
+        ...mapGetters(['basketStatus', 'basketAmount', 'reloadAmount'])
     },
 
     methods: {

@@ -9,7 +9,8 @@ export default {
             type   : Number,
             default: 0
         },
-        input: Array
+        input: Array,
+        showPlus: Boolean
     },
 
     computed: {
@@ -20,7 +21,9 @@ export default {
                 value = parseInt(this.input.join(''), 10) / 100;
             }
 
-            return `${value.toFixed(2)}€`;
+            const plus = this.showPlus && value > 0 ? '+' : '';
+
+            return `${plus}${value.toFixed(2)}€`;
         }
     }
 };

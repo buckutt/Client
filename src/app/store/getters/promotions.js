@@ -207,11 +207,18 @@ export const basketAmount = (state) => {
     return items + promotions;
 };
 
+export const reloadAmount = (state) => {
+    const basket = cleanBasket(state);
+
+    return basket.reloads
+        .map(reload => reload.amount)
+        .reduce((a, b) => a + b, 0);
+};
+
 export const credit = (state) => {
     const initialCredit = state.auth.buyer.credit;
     const basket        = cleanBasket(state);
     const basketCost    = basketAmount(state);
-
 
     const reloads = basket.reloads
         .map(reload => reload.amount)
