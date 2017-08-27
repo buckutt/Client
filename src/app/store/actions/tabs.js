@@ -5,21 +5,8 @@ export const selectTab = ({ commit }, index) => {
 };
 
 export const createTabs = (store) => {
-    const pointId = store.state.auth.device.point.id;
-
     let tabs = store.state.items.items
-        .map((item) => {
-            const category = item.categories.find(c =>
-                c.points.some(point => point.id === pointId)
-            );
-
-            if (!category) {
-                return null;
-            }
-
-            return { id: category.id, name: category.name, priority: category.priority };
-        })
-        .filter(category => category)
+        .map(item => item.category)
         .sort((a, b) => b.priority - a.priority);
 
     // Reverse sort
@@ -41,12 +28,7 @@ export const createTabsItems = (store) => {
     const tabsItems = store.state.ui.tabs
         .map(tab =>
             store.state.items.items
-                .filter(item => item.point && item.price)
-                .filter((item) => {
-                    const category = item.categories.find(c => c.id === tab.id);
-
-                    return Boolean(category);
-                })
+                .filter(item => (item.category.id === tab.id))
         );
 
     store.commit('SET_TABS_ITEMS', tabsItems);

@@ -1,6 +1,5 @@
 const initialState = {
     categories      : [],
-    sets            : [],
     items           : [],
     tabsItems       : [],
     promotions      : [],
@@ -11,10 +10,6 @@ const initialState = {
 const mutations = {
     SET_CATEGORIES(state, payload) {
         state.categories = payload;
-    },
-
-    SET_SETS(state, payload) {
-        state.sets = payload;
     },
 
     SET_ITEMS(state, payload) {
@@ -32,6 +27,22 @@ const mutations = {
     REMOVE_ITEM(state, { id }) {
         const index = state.basket.indexOf(id);
         state.basket.splice(index, 1);
+    },
+
+    CLEAR_ITEMS(state) {
+        state.items = [];
+    },
+
+    CLEAR_CATEGORIES(state) {
+        state.categories = [];
+    },
+
+    CLEAR_TABSITEMS(state) {
+        state.tabsItems = [];
+    },
+
+    CLEAR_PROMOTIONS(state) {
+        state.promotions = [];
     },
 
     CLEAR_BASKET(state) {

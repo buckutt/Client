@@ -77,13 +77,7 @@ export default {
             const value = this.inputValue;
             this.inputValue = '';
 
-            if (this.waitingForBuyer) {
-                this.$refs.login.validate(value);
-                this.sendBasket();
-                return;
-            }
-
-            if (!this.buyer.isAuth || !this.buyer.isAuth) {
+            if (this.waitingForBuyer || !this.buyer.isAuth) {
                 this.$refs.login.validate(value);
             }
         },

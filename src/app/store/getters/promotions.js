@@ -16,7 +16,10 @@ function sanitizePromotions(promotions) {
             return {
                 id      : promotion.id,
                 articles: promotion.articles.map(article => article.id),
-                sets    : promotion.sets.map(set => set.id)
+                sets    : promotion.sets.map(set => ({
+                    id      : set.id,
+                    articles: set.articles.map(article => article.id)
+                }))
             };
         })
         .filter(promotion => promotion.articles.length > 0 || promotion.sets.length > 0);
@@ -36,16 +39,14 @@ function containsArticle(basketCopy, article) {
  * Returns true if article has set; false if article has not the set
  * @param  {Object} state     The view model
  * @param  {String} articleId Article id
- * @param  {String} setId     Set id
+ * @param  {Object} fullSet   Set and its articles
  * @return {Boolean} True if article is in the given set
  */
-function articleIsFromSet(state, articleId, setId) {
+function articleIsFromSet(state, articleId, fullSet) {
     let found = false;
-
-    const fullSet = state.items.sets.find(set => set.id === setId);
-
+    console.log(fullSet);
     fullSet.articles.forEach((article) => {
-        if (article.id === articleId) {
+        if (article === articleId) {
             found = true;
         }
     });
@@ -57,7 +58,7 @@ function articleIsFromSet(state, articleId, setId) {
  * Check if an article is in the basket with the specified set
  * @param  {Object} state      The view model
  * @param  {Array}  basketCopy Basket
- * @param  {String} set        Set id
+ * @param  {Object} set        Set and its articles
  * @return {Number} Index of article in basketCopy
  */
 function containsArticleFromSet(state, basketCopy, set) {
@@ -123,7 +124,7 @@ export const sidebar = (state) => {
             const position     = containsArticleFromSet(state, basketCopy, setPromotion);
 
             if (position > -1) {
-                console.log(`${setPromotion} has the good set`);
+                console.log(`${setPromotion.id} has the good set`);
                 // Get back the article id
                 const articlePromotion = basketCopy[position];
                 // Remove from the temporary basket

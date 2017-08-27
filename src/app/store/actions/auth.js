@@ -28,10 +28,8 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
 
             commit('SET_DATA_LOADED', false);
 
-            return dispatch('dataLoader', true)
-                .then(() => dispatch('filterItems'))
-                .then(() => dispatch('createTabs'))
-                .then(() => dispatch('createTabsItems'))
+            return dispatch('dataLoader')
+                .then(() => dispatch('interfaceLoader'))
                 .then(() => commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
@@ -43,15 +41,18 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
 
 export const logout = (store) => {
     if (store.state.auth.buyer.isAuth) {
+        store.commit('SET_DATA_LOADED', false);
         store.commit('LOGOUT_BUYER');
         store.commit('SET_BASKET_STATUS', 'WAITING');
+        store.dispatch('clearBasket');
+        return store.dispatch('interfaceLoader')
+            .then(() => store.commit('SET_DATA_LOADED', true));
     } else if (store.state.auth.seller.isAuth) {
-        store.commit('FIRST_LOGOUT_SELLER');
+        return store.commit('FIRST_LOGOUT_SELLER');
     } else if (store.state.auth.seller.meanOfLogin.length > 0) {
         store.commit('ID_SELLER', '');
+        return store.dispatch('clearInterface');
     }
-
-    return store.dispatch('clearBasket');
 };
 
 export const pursueLogout = ({ commit }) => {
@@ -81,53 +82,28 @@ export const buyer = (store, { cardNumber }) => {
         eq   : cardNumber.trim()
     });
 
-    const embedUser = q({
-        user: {
-            groups: {
-                _through: {
-                    period: true
-                }
-            },
-            purchases: {
-                price: {
-                    period: true
-                }
-            }
-        }
-    });
-
     const querySearch = `q[]=${molSearchIsRemoved}&q[]=${molSearchType}&q[]=${molSearchData}`;
 
     const token = store.getters.tokenHeaders;
 
     axios
-        .get(`${config.api}/meansoflogin/search?${querySearch}&embed=${embedUser}`, token)
+        .get(`${config.api}/meansoflogin/search?${querySearch}`, token)
         .then((res) => {
             if (res.data.length === 0) {
                 store.commit('ERROR', { message: 'User not found' });
                 return;
             }
 
-            store.commit('ID_BUYER', {
-                id       : res.data[0].user.id,
-                credit   : res.data[0].user.credit,
-                firstname: res.data[0].user.firstname,
-                lastname : res.data[0].user.lastname,
-                groups   : res.data[0].user.groups,
-                purchases: res.data[0].user.purchases
-            });
-
             store.commit('SET_DATA_LOADED', false);
 
-            store.dispatch('dataLoader', false)
-                .then(() => store.dispatch('filterItems'))
-                .then(() => store.dispatch('createTabs'))
-                .then(() => store.dispatch('createTabsItems'))
+            store.dispatch('clearBasket')
+                .then(() => store.dispatch('interfaceLoader', res.data[0].User_id))
                 .then(() => {
                     if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
                         return store
                             .dispatch('sendBasket')
-                            .then(() => store.dispatch('logout'));
+                            .then(() => store.dispatch('logout'))
+                            .then(() => store.dispatch('interfaceLoader'));
                     }
                 })
                 .then(() => store.commit('SET_DATA_LOADED', true));

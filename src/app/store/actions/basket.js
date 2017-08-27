@@ -85,7 +85,6 @@ export const sendBasket = (store) => {
         basketToSend.push({
             Price_id    : promo.price.id,
             Buyer_id    : store.state.auth.buyer.id,
-            Fundation_id: promo.Fundation_id,
             Promotion_id: promo.id,
             articles    : articlesInside,
             cost        : promo.price.amount,

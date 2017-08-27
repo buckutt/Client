@@ -24,6 +24,7 @@ export default {
     methods: {
         clearError() {
             // Show green button after error
+
             this.$store.commit('SET_BASKET_STATUS', 'WAITING');
             this.$store.commit('ERROR', '');
         }
