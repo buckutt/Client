@@ -4,7 +4,7 @@
         :class="{ 'b-item--selected': selectedItem > 0 }"
         @click="add(item)">
         <div class="b-item__image">
-            <img height="100%" width="100%" />
+            <img draggable="false" height="100%" width="100%" />
         </div>
         <div class="b-item__price">
             <currency :value="item.price.amount"></currency>

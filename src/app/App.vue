@@ -4,9 +4,9 @@
         @click="refocus">
         <topbar :buyer="buyer" :seller="seller"></topbar>
         <main class="b-main">
-            <login v-if="!buyer.isAuth" ref="login"></login>
-            <items v-if="buyer.isAuth && seller.canSell"></items>
-            <sidebar v-if="buyer.isAuth && seller.canSell"></sidebar>
+            <login v-show="loginState" ref="login"></login>
+            <items v-if="!loginState && seller.canSell"></items>
+            <sidebar v-if="!loginState && seller.canSell"></sidebar>
         </main>
         <reload
             v-if="buyer.isAuth"
@@ -17,6 +17,7 @@
         <alcohol-warning></alcohol-warning>
         <disconnect-warning :seller="seller"></disconnect-warning>
         <error></error>
+        <waiting-for-buyer></waiting-for-buyer>
         <input
             class="b--out-of-screen"
             type="text"
@@ -41,6 +42,7 @@ import Loading           from './components/Loading';
 import Error             from './components/Error';
 import AlcoholWarning    from './components/AlcoholWarning';
 import DisconnectWarning from './components/DisconnectWarning';
+import WaitingForBuyer   from './components/WaitingForBuyer';
 
 export default {
     name: 'App',
@@ -54,7 +56,8 @@ export default {
         Loading,
         Error,
         AlcoholWarning,
-        DisconnectWarning
+        DisconnectWarning,
+        WaitingForBuyer
     },
 
     data() {
@@ -63,7 +66,7 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'basketStatus', 'loaded']),
+    computed: mapGetters(['buyer', 'seller', 'basketStatus', 'loaded', 'loginState', 'waitingForBuyer']),
 
     methods: {
         refocus() {
@@ -74,12 +77,7 @@ export default {
             const value = this.inputValue.slice(0, 13);
             this.inputValue = '';
 
-            if (this.basketStatus === 'DOUBLE') {
-                this.sendBasket();
-                return;
-            }
-
-            if (!this.buyer.isAuth || !this.buyer.isAuth) {
+            if (this.waitingForBuyer || !this.buyer.isAuth) {
                 this.$refs.login.validate(value);
             }
         },

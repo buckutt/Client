@@ -17,7 +17,7 @@ export const clearBasket = ({ commit }) => {
 
 export const sendBasket = (store) => {
     if (!store.state.auth.device.config.doubleValidation) {
-        if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER' && !store.state.auth.buyer.isAuth) {
+        if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER') {
             store.commit('SET_BASKET_STATUS', 'WAITING_FOR_BUYER');
             return;
         }
@@ -38,6 +38,7 @@ export const sendBasket = (store) => {
     }
 
     const fullBasket = store.getters.cleanBasket;
+    const now        = new Date();
 
     const basketToSend = [];
 
@@ -50,7 +51,6 @@ export const sendBasket = (store) => {
             Buyer_id    : store.state.auth.buyer.id,
             Price_id    : article.price.id,
             Promotion_id: null,
-            Seller_id   : store.state.auth.seller.id,
             articles    : [{
                 id     : article.id,
                 vat    : article.vat,
@@ -58,7 +58,8 @@ export const sendBasket = (store) => {
             }],
             alcohol: article.alcohol,
             cost   : article.price.amount,
-            type   : 'purchase'
+            type   : 'purchase',
+            date   : now
         });
 
         bought += article.price.amount;
@@ -84,12 +85,11 @@ export const sendBasket = (store) => {
         basketToSend.push({
             Price_id    : promo.price.id,
             Buyer_id    : store.state.auth.buyer.id,
-            Fundation_id: promo.Fundation_id,
-            Seller_id   : store.state.auth.seller.id,
             Promotion_id: promo.id,
             articles    : articlesInside,
             cost        : promo.price.amount,
             type        : 'purchase',
+            date        : now,
             alcohol
         });
 
@@ -101,8 +101,8 @@ export const sendBasket = (store) => {
             credit   : reload.amount,
             trace    : reload.trace,
             Buyer_id : store.state.auth.buyer.id,
-            Seller_id: store.state.auth.seller.id,
-            type     : reload.type
+            type     : reload.type,
+            date     : now
         });
 
         reloaded += reload.amount;

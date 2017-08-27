@@ -5,7 +5,7 @@ export const event  = state => state.auth.device.event.name;
 
 export const doubleValidation = state => state.auth.device.config.doubleValidation;
 export const showBuyerPicture = state => state.auth.device.config.showPicture;
-export const defaultGroup     = state => state.auth.device.config.defaultGroup;
+export const defaultGroup     = state => state.auth.device.DefaultGroup_id;
 
 export const tokenHeaders = state => ({
     headers: {

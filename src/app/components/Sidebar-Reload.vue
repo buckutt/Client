@@ -1,13 +1,11 @@
-<<<<<<< HEAD:src/app/components/Sidebar-Reload.vue
 <template>
     <div class="b-sidebar-reload">
-        <div class="b-sidebar-reload__amount">
-            <span>Rechargement</span>&nbsp;<currency :value="amount"></currency>
-        </div>
         <div
             class="b-sidebar-reload__remove"
             @click="removeReloads">
-            <i class="b-icon">delete</i>
+        </div>
+        <div class="b-sidebar-reload__amount">
+            <span>Rechargement</span>&nbsp;<currency :value="amount"></currency>
         </div>
     </div>
 </template>
@@ -34,10 +32,9 @@ export default {
 @import '../main.css';
 
 .b-sidebar-reload {
-    background-color: var(--green);
+    background: #fff;
     border-radius: 2px;
     box-shadow: 0 3px 2px color(var(--black) a(0.25));
-    color: #fff;
     display: flex;
     font-size: 18px;
     margin: 10px;
@@ -55,69 +52,23 @@ export default {
 }
 
 .b-sidebar-reload__remove {
+    background-color: var(--orange);
     cursor: pointer;
-    line-height: 0;
-}
-</style>
-=======
-<template>
-    <div class="b-sidebar-reload">
-        <div class="b-sidebar-reload__amount">
-            <span>Rechargement</span>&nbsp;<currency :value="amount"></currency>
-        </div>
-        <div
-            class="b-sidebar-reload__remove"
-            @click="removeReloads">
-            <i class="b-icon">delete</i>
-        </div>
-    </div>
-</template>
+    height: 30px;
+    line-height: 30px;
+    margin-right: 5px;
+    position: relative;
+    width: 30px;
 
-<script>
-import { mapActions } from 'vuex';
-
-import Currency from './Currency';
-
-export default {
-    components: {
-        Currency
-    },
-
-    props: {
-        amount: { type: Number, required: true }
-    },
-
-    methods: mapActions(['removeReloads'])
-};
-</script>
-
-<style scoped>
-@import '../main';
-
-.b-sidebar-reload {
-    background-color: var(--green);
-    border-radius: 2px;
-    box-shadow: 0 3px 2px color(var(--black) a(0.25));
-    color: #fff;
-    display: flex;
-    font-size: 18px;
-    margin: 10px;
-    padding: 10px;
-
-    &:not(:first-child) {
-        margin-top: 0;
+    &:after {
+        background-color: #fff;
+        content: ' ';
+        height: 3px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
     }
 }
-
-.b-sidebar-reload__amount {
-    display: flex;
-    flex: 1;
-    align-items: center;
-}
-
-.b-sidebar-reload__remove {
-    cursor: pointer;
-    line-height: 0;
-}
 </style>
->>>>>>> master:src/components/Sidebar-Reload.vue
