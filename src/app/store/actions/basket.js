@@ -16,6 +16,10 @@ export const clearBasket = ({ commit }) => {
 };
 
 export const sendBasket = (store) => {
+    if (store.state.basket.basketStatus === 'DOING') {
+        return;
+    }
+
     if (!store.state.auth.device.config.doubleValidation) {
         if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER') {
             store.commit('SET_BASKET_STATUS', 'WAITING_FOR_BUYER');
@@ -36,6 +40,8 @@ export const sendBasket = (store) => {
         });
         return;
     }
+
+    store.commit('SET_BASKET_STATUS', 'DOING');
 
     const fullBasket = store.getters.cleanBasket;
     const now        = new Date();
@@ -107,8 +113,6 @@ export const sendBasket = (store) => {
 
         reloaded += reload.amount;
     });
-
-    store.commit('SET_BASKET_STATUS', 'DOING');
 
     axios
         .post(`${config.api}/services/basket`, basketToSend, store.getters.tokenHeaders)
