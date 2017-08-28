@@ -50,11 +50,11 @@ export default {
     }),
 
     mounted() {
-        this.$el.querySelector('img').src = this.item.image;
+        this.$el.querySelector('img').src = `${config.api}/services/articleImage?id=${this.item.id}`;
     },
 
     updated() {
-        this.$el.querySelector('img').src = this.item.image;
+        this.$el.querySelector('img').src = `${config.api}/services/articleImage?id=${this.item.id}`;
     }
 };
 </script>
