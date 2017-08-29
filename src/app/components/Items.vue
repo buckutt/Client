@@ -28,6 +28,7 @@ export default {
     display: flex;
     flex: 1;
     flex-wrap: wrap;
+    overflow-y: auto;
     padding: 10px;
 }
 
