@@ -1,5 +1,6 @@
 {
     "api": "\"https://localhost:3000\"",
+    "images": "\"http://localhost:3400\"",
     "loginMeanOfLogin": "\"etuId\"",
     "buyerMeanOfLogin": "\"etuId\"",
     "desfire"         : {

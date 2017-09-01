@@ -45,16 +45,29 @@ export default {
     },
 
     methods: mapActions({
-        add   : 'addItemToBasket',
-        remove: 'removeItemFromBasket'
+        add     : 'addItemToBasket',
+        remove  : 'removeItemFromBasket',
+        getImage: 'getImage'
     }),
 
     mounted() {
-        this.$el.querySelector('img').src = `${config.api}/services/articleImage?id=${this.item.id}`;
+        this.getImage(this.item.id)
+            .then(image => {
+                this.$el.querySelector('img').src = image;
+            })
+            .catch(() => {
+                this.$el.querySelector('img').src = null;
+            });
     },
 
     updated() {
-        this.$el.querySelector('img').src = `${config.api}/services/articleImage?id=${this.item.id}`;
+        this.getImage(this.item.id)
+            .then(image => {
+                this.$el.querySelector('img').src = image;
+            })
+            .catch(() => {
+                this.$el.querySelector('img').src = null;
+            });
     }
 };
 </script>

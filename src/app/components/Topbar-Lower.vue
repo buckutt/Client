@@ -74,12 +74,7 @@ export default {
     height: 100%;
     line-height: 46px;
     border-left: 1px solid rgba(255, 255, 255, 0.1);
-    margin-left: 10px;
-    padding-left: 10px;
-}
-
-.b-lower-bar__device__event {
-    margin-right: 10px;
+    padding: 0 10px;
 }
 
 @media (max-width: 768px) {
