@@ -126,7 +126,7 @@ export default {
 }
 
 .b-item__text {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.85);
     bottom: 0;
     height: 33px;
     line-height: 33px;
