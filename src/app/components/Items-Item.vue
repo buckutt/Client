@@ -58,16 +58,6 @@ export default {
             .catch(() => {
                 this.$el.querySelector('img').src = null;
             });
-    },
-
-    updated() {
-        this.getImage(this.item.id)
-            .then(image => {
-                this.$el.querySelector('img').src = image;
-            })
-            .catch(() => {
-                this.$el.querySelector('img').src = null;
-            });
     }
 };
 </script>
