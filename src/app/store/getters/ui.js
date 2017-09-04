@@ -19,7 +19,16 @@ export const tabsItems       = (state) => {
         return [].concat(...state.items.tabsItems);
     }
 
-    return state.items.tabsItems[state.ui.currentTab];
+    let items = state.items.tabsItems[state.ui.currentTab];
+
+    if (items) {
+        items = items.sort((a, b) => {
+            console.log(a, b);
+            return a.name.localeCompare(b.name);
+        });
+    }
+
+    return items;
 };
 
 export const loginState = (state) => {
