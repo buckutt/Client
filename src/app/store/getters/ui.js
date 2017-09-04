@@ -11,7 +11,7 @@ export const meansOfPayment  = state => state.reload.meansOfPayment;
 export const reloadState     = state => state.reload.reloadState;
 export const reloadSum       = state => state.reload.reloads.reduce((a, b) => a + b.amount, 0);
 export const tab             = state => state.ui.currentTab;
-export const tabs            = state => state.ui.tabs.sort((a, b) => a.name.localeCompare(b.name));
+export const tabs            = state => state.ui.tabs.slice().sort((a, b) => a.name.localeCompare(b.name));
 export const waitingForBuyer = state => state.basket.basketStatus === 'WAITING_FOR_BUYER';
 export const tabsItems       = (state) => {
     if (isMobile()) {
@@ -22,7 +22,7 @@ export const tabsItems       = (state) => {
     let items = state.items.tabsItems[state.ui.currentTab];
 
     if (items) {
-        items = items.sort((a, b) => a.name.localeCompare(b.name));
+        items = items.slice().sort((a, b) => a.name.localeCompare(b.name));
     }
 
     return items;
