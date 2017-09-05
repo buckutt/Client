@@ -44,11 +44,22 @@ export default {
         }
     },
 
-    methods: mapActions({
-        add     : 'addItemToBasket',
-        remove  : 'removeItemFromBasket',
-        getImage: 'getImage'
-    }),
+    methods: {
+        add(item) {
+            console.log('click');
+            if (this.$el.parentElement.classList.contains('b--dragging')) {
+                return;
+            }
+
+            return this.addItemToBasket(item);
+        },
+
+        ...mapActions({
+            addItemToBasket: 'addItemToBasket',
+            remove         : 'removeItemFromBasket',
+            getImage       : 'getImage'
+        })
+    },
 
     mounted() {
         this.getImage(this.item.id)
