@@ -91,7 +91,3 @@ export const buyer = (store, { cardNumber }) => {
 export const sellerId = ({ commit }, meanOfLogin) => {
     commit('ID_SELLER', meanOfLogin);
 };
-
-export const sellerId = ({ commit }, meanOfLogin) => {
-    commit('ID_SELLER', meanOfLogin);
-};
