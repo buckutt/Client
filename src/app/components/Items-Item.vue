@@ -44,23 +44,24 @@ export default {
         }
     },
 
-    methods: mapActions({
-        add     : 'addItemToBasket',
-        remove  : 'removeItemFromBasket',
-        getImage: 'getImage'
-    }),
+    methods: {
+        add(item) {
+            console.log('click');
+            if (this.$el.parentElement.classList.contains('b--dragging')) {
+                return;
+            }
 
-    mounted() {
-        this.getImage(this.item.id)
-            .then(image => {
-                this.$el.querySelector('img').src = image;
-            })
-            .catch(() => {
-                this.$el.querySelector('img').src = null;
-            });
+            return this.addItemToBasket(item);
+        },
+
+        ...mapActions({
+            addItemToBasket: 'addItemToBasket',
+            remove         : 'removeItemFromBasket',
+            getImage       : 'getImage'
+        })
     },
 
-    updated() {
+    mounted() {
         this.getImage(this.item.id)
             .then(image => {
                 this.$el.querySelector('img').src = image;
@@ -136,7 +137,7 @@ export default {
 }
 
 .b-item__text {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.85);
     bottom: 0;
     height: 33px;
     line-height: 33px;

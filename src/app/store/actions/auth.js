@@ -67,51 +67,29 @@ export const cancelLogout = ({ commit }) => {
 };
 
 export const buyer = (store, { cardNumber }) => {
-    const molSearchIsRemoved = q({
-        field: 'isRemoved',
-        eq   : false
-    });
-
-    const molSearchType = q({
-        field: 'type',
-        eq   : config.buyerMeanOfLogin
-    });
-
-    const molSearchData = q({
-        field: 'data',
-        eq   : cardNumber.trim().slice(0, 13)
-    });
-
-    const querySearch = `q[]=${molSearchIsRemoved}&q[]=${molSearchType}&q[]=${molSearchData}`;
-
     const token = store.getters.tokenHeaders;
 
-    axios
-        .get(`${config.api}/meansoflogin/search?${querySearch}`, token)
-        .then((res) => {
-            if (res.data.length === 0) {
-                store.commit('ERROR', { message: 'User not found' });
-                return;
+    store.commit('SET_DATA_LOADED', false);
+
+    store.dispatch('clearBasket')
+        .then(() => store.dispatch('interfaceLoader', { type: config.buyerMeanOfLogin, mol: cardNumber.trim().slice(0, 13) }))
+        .then(() => {
+            if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
+                return store
+                    .dispatch('sendBasket')
+                    .then(() => store.dispatch('logout'))
+                    .then(() => store.dispatch('interfaceLoader'));
             }
-
-            store.commit('SET_DATA_LOADED', false);
-
-            store.dispatch('clearBasket')
-                .then(() => store.dispatch('interfaceLoader', res.data[0].User_id))
-                .then(() => {
-                    if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
-                        return store
-                            .dispatch('sendBasket')
-                            .then(() => store.dispatch('logout'))
-                            .then(() => store.dispatch('interfaceLoader'));
-                    }
-                })
-                .then(() => store.commit('SET_DATA_LOADED', true));
         })
+        .then(() => store.commit('SET_DATA_LOADED', true))
         .catch((err) => {
             store.commit('SET_DATA_LOADED', null);
             store.commit('ERROR', err);
         });
+};
+
+export const sellerId = ({ commit }, meanOfLogin) => {
+    commit('ID_SELLER', meanOfLogin);
 };
 
 export const sellerId = ({ commit }, meanOfLogin) => {
