@@ -25,7 +25,7 @@ export const createTabs = (store) => {
 };
 
 export const createTabsItems = (store) => {
-    const tabsItems = store.state.ui.tabs
+    const tabsItems = store.getters.tabs
         .map(tab =>
             store.state.items.items
                 .filter(item => (item.category.id === tab.id))
