@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-export const interfaceLoader = (store, buyerId) => {
+export const interfaceLoader = (store, obj) => {
     const token = store.getters.tokenHeaders;
     let params  = '';
-    if (buyerId) {
-        params = `?buyer=${buyerId}`;
+
+    if (obj) {
+        params = `?buyer=${obj.mol}&molType=${obj.type}`;
     }
 
     return axios
