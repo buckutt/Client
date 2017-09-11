@@ -75,7 +75,13 @@ export const buyer = (store, { cardNumber }) => {
 
     store.commit('SET_DATA_LOADED', false);
 
-    store.dispatch('clearBasket')
+    let initialPromise = Promise.resolve();
+
+    if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER') {
+        initialPromise = store.dispatch('clearBasket');
+    }
+
+    initialPromise
         .then(() => store.dispatch('interfaceLoader', { type: config.buyerMeanOfLogin, mol: cardNumber.trim() }))
         .then(() => {
             if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
