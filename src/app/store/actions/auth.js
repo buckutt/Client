@@ -51,15 +51,19 @@ export const logout = (store) => {
         return store.commit('FIRST_LOGOUT_SELLER');
     } else if (store.state.auth.seller.meanOfLogin.length > 0) {
         store.commit('ID_SELLER', '');
-        return store.dispatch('clearInterface');
+        return store.dispatch('updatePoint', true)
+            .then(() => store.dispatch('clearInterface'));
     }
 };
 
-export const pursueLogout = ({ commit }) => {
+export const pursueLogout = ({ commit, dispatch }) => {
     commit('LOGOUT_SELLER');
     commit('ID_SELLER', '');
     // Remove disconnect warning
     commit('REMOVE_LOGOUT_WARNING');
+
+    return dispatch('updatePoint', true)
+        .then(() => dispatch('clearInterface'));
 };
 
 export const cancelLogout = ({ commit }) => {

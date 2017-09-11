@@ -101,48 +101,23 @@ export default {
         },
 
         ...mapActions({
-            sellerId: 'sellerId',
-            setBuyer: 'buyer',
-            login   : 'login',
-            setPoint: 'setPoint'
+            sellerId   : 'sellerId',
+            setBuyer   : 'buyer',
+            login      : 'login',
+            updatePoint: 'updatePoint'
         })
     },
 
     mounted() {
         this.timeout = 0;
 
-        axios
-            .get(config.api)
-            // Not found error
-            .catch((err) => {
-                console.log(err);
-                if (err.message === 'Network Error') {
-                    this.$store.commit('ERROR', {
-                        message: 'Server not reacheable'
-                    });
-                    return;
-                }
+        this.updatePoint();
 
-                if (err.response && err.response.data.message === 'Device not found') {
-                    this.$store.commit('ERROR', {
-                        message: 'Device not found'
-                    });
-                }
-
-                if (!this.point) {
-                    this.setPoint({
-                        id   : err.response.headers.device,
-                        point: {
-                            id  : err.response.headers.point,
-                            name: err.response.headers.pointname
-                        },
-                        event: {
-                            id  : err.response.headers.event,
-                            name: err.response.headers.eventname
-                        }
-                    });
-                }
-            });
+        setInterval(() => {
+            if (!this.seller.isAuth) {
+                this.updatePoint(true);
+            }
+        }, 60 * 1000);
 
         document.body.addEventListener('click', this.refocus, false);
     }
