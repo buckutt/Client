@@ -45,19 +45,10 @@ export default {
     },
 
     methods: {
-        add(item) {
-            console.log('click');
-            if (this.$el.parentElement.classList.contains('b--dragging')) {
-                return;
-            }
-
-            return this.addItemToBasket(item);
-        },
-
         ...mapActions({
-            addItemToBasket: 'addItemToBasket',
-            remove         : 'removeItemFromBasket',
-            getImage       : 'getImage'
+            add     : 'addItemToBasket',
+            remove  : 'removeItemFromBasket',
+            getImage: 'getImage'
         })
     },
 

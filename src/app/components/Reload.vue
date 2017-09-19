@@ -65,7 +65,7 @@ export default {
         };
     },
 
-    computed: mapGetters(['reloadState']),
+    computed: mapGetters(['reloadState', 'buyer', 'doubleValidation']),
 
     methods: {
         updateCurrency(amount) {
@@ -84,10 +84,16 @@ export default {
                 trace : ''
             });
 
-            this.closeReload();
+            let initialPromise = Promise.resolve();
+
+            if (this.reloadOnly) {
+                initialPromise = this.sendBasket();
+            }
+
+            initialPromise.then(() => this.closeReload());
         },
 
-        ...mapActions(['confirmReloadModal', 'closeReloadModal', 'addReload', 'cancelReloadModal'])
+        ...mapActions(['confirmReloadModal', 'closeReloadModal', 'addReload', 'cancelReloadModal', 'sendBasket'])
     }
 };
 </script>
@@ -99,6 +105,7 @@ export default {
     & .b-reload__modal {
         transform: scale(1.2);
         transform-origin: top;
+        z-index: 4;
     }
 }
 

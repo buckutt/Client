@@ -9,7 +9,7 @@
             <sidebar v-if="!loginState && seller.canSell"></sidebar>
         </main>
         <reload
-            v-if="buyer.isAuth"
+            v-if="!loginState"
             :reloadOnly="!seller.canSell && seller.canReload"></reload>
         <transition name="b--fade">
             <loading v-if="loaded === false"></loading>
