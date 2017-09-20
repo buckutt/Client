@@ -49,10 +49,10 @@ export const logout = (store) => {
             .then(() => store.commit('SET_DATA_LOADED', true));
     } else if (store.state.auth.seller.isAuth) {
         return store.commit('FIRST_LOGOUT_SELLER');
-    } else if (store.state.auth.seller.meanOfLogin.length > 0) {
+    } else {
+        // called on eject before login seller
+        store.commit('LOGOUT_SELLER', '');
         store.commit('ID_SELLER', '');
-        return store.dispatch('updatePoint', true)
-            .then(() => store.dispatch('clearInterface'));
     }
 };
 

@@ -15,7 +15,7 @@
             class="b-sidebar-promotion__row__details"
             v-if="toggled">
             <div
-                v-for="item of items"
+                v-for="item of content"
                 class="b-sidebar-promotion__row__details__item">
                 {{ item.name }}
             </div>
@@ -28,9 +28,9 @@ import { mapActions } from 'vuex';
 
 export default {
     props: {
-        name : { type: String, required: true },
-        items: { type: Array, required: true },
-        id   : { type: String, required: true }
+        name   : { type: String, required: true },
+        content: { type: Array, required: true },
+        id     : { type: String, required: true }
     },
 
     data() {
@@ -43,7 +43,7 @@ export default {
         },
 
         remove() {
-            this.items.forEach((content) => {
+            this.content.forEach((content) => {
                 this.removeItemFromBasket(content.id);
             });
         },

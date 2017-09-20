@@ -1,3 +1,3 @@
 export * from './ui';
 export * from './auth';
-export * from './promotions';
+export * from './items';

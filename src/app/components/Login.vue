@@ -21,14 +21,7 @@
         </div>
         <div v-if="seller.isAuth && doubleValidation" class="b-login__card b-login__card--buyerId">
             En attente d'un client
-            <div
-                class="b-login__card__lastUser"
-                v-if="lastUser.name">
-                <hr/>
-                Dernier client: <strong><span class="b--capitalized">{{ lastUser.name }}</span></strong><br/>
-                Achats: <strong><currency :value="lastUser.bought || 0"></currency></strong><br/>
-                Rechargement: <strong><currency :value="lastUser.reload || 0"></currency></strong>
-            </div>
+            <Ticket v-if="lastUser.name" :inline="true" :user="lastUser"></Ticket>
         </div>
     </div>
 </template>
@@ -37,13 +30,13 @@
 import axios                      from 'axios';
 import { mapActions, mapGetters } from 'vuex';
 
-import Currency                   from './Currency';
-import NumericalInput             from './NumericalInput';
+import Ticket         from './Ticket';
+import NumericalInput from './NumericalInput';
 
 export default {
     components: {
-        Currency,
-        NumericalInput
+        NumericalInput,
+        Ticket
     },
 
     data() {
@@ -158,21 +151,6 @@ export default {
     height: 45px;
     line-height: 45px;
     margin: 20px 0;
-}
-
-.b-login__card__lastUser {
-    font-size: 18px;
-    line-height: 1.5;
-    text-align: left;
-    padding: 40px;
-
-    & > hr {
-        border: 0;
-        border-top: 1px solid color(var(--black) a(0.2));
-        position: relative;
-        top: -35px;
-        width: 50px;
-    }
 }
 
 @media (max-width: 768px) {
