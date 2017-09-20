@@ -12,8 +12,8 @@
                 :content="promotion.content"></sidebar-promotion>
             <sidebar-item
                 v-for="item in sidebarItems"
-                :key="item.guid"
-                :id="item.guid"
+                :key="item.id"
+                :id="item.id"
                 :name="item.name"
                 :count="item.count"></sidebar-item>
         </div>
