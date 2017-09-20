@@ -9,7 +9,7 @@
                 :key="promotion.id"
                 :id="promotion.id"
                 :name="promotion.name"
-                :items="promotion.items"></sidebar-promotion>
+                :content="promotion.content"></sidebar-promotion>
             <sidebar-item
                 v-for="item in sidebarItems"
                 :key="item.guid"
@@ -25,6 +25,8 @@
 import countBy from 'lodash.countby';
 import { mapGetters, mapState } from 'vuex';
 
+window.countBy = countBy;
+
 import SidebarItem      from './Sidebar-Item';
 import SidebarPromotion from './Sidebar-Promotion';
 import SidebarReload    from './Sidebar-Reload';
@@ -35,17 +37,15 @@ export default {
          ...mapGetters(['sidebar', 'reloadSum']),
          ...mapState(['items']),
          sidebarItems() {
-             const fullCountBy = countBy(this.sidebar.full);
+            const counts = countBy(this.sidebar.items.map(item => item.id));
 
-             return Object.keys(fullCountBy).map((id) => {
-                 const count = fullCountBy[id];
-
-                 return {
-                     name: this.items.items.find(i => i.id === id).name,
-                     count,
-                     id
-                 };
-             });
+            return Object.keys(counts).map((id) => {
+                return {
+                    id: id,
+                    name: this.sidebar.items.find(item => item.id === id).name,
+                    count: counts[id]
+                }
+            });
          }
      },
 

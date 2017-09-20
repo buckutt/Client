@@ -41,7 +41,8 @@ export default {
         selectedItem() {
             return this.$store.state.items
                 .basket
-                .filter(id => id === this.item.id)
+                .itemList
+                .filter(article => article.id === this.item.id)
                 .length;
         }
     },

@@ -1,10 +1,17 @@
+import promotions from '../../utils/promotions';
+
 const initialState = {
     categories      : [],
     items           : [],
     tabsItems       : [],
     promotions      : [],
-    basket          : [],
-    promotionsBasket: []
+    basket          : {
+        itemList: [],
+        sidebar: {
+            items: [],
+            promotions: []
+        }
+    }
 };
 
 const mutations = {
@@ -20,13 +27,18 @@ const mutations = {
         state.promotions = payload;
     },
 
-    ADD_ITEM(state, { id }) {
-        state.basket.push(id);
+    ADD_ITEM(state, item) {
+        state.basket.itemList.push(item);
+
+        state.basket.sidebar = promotions(state.basket.itemList.slice(), state.promotions.slice());
     },
 
     REMOVE_ITEM(state, { id }) {
-        const index = state.basket.indexOf(id);
-        state.basket.splice(index, 1);
+        const index = state.basket.itemList.findIndex(item => item.id === id);
+
+        state.basket.itemList.splice(index, 1);
+
+        state.basket.sidebar = promotions(state.basket.itemList.slice(), state.promotions.slice());
     },
 
     CLEAR_ITEMS(state) {
@@ -46,24 +58,23 @@ const mutations = {
     },
 
     CLEAR_BASKET(state) {
-        state.basket = [];
-    },
-
-    ADD_PROMOTION(state, payload) {
-        state.promotionsBasket.push(payload);
-    },
-
-    REMOVE_PROMOTION(state, { id }) {
-        const index = state.basket
-            .map(promo => promo.id)
-            .indexOf(id);
-
-        state.promotionsBasket.splice(index, 1);
+        state.basket = {
+            itemList: [],
+            sidebar: {
+                items: [],
+                promotions: []
+            }
+        };
     },
 
     LOGOUT_BUYER(state) {
-        state.basket           = [];
-        state.promotionsBasket = [];
+        state.basket = {
+            itemList: [],
+            sidebar: {
+                items: [],
+                promotions: []
+            }
+        };
     },
 
     SET_TABS_ITEMS(state, tabsItems) {

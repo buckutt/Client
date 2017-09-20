@@ -1,4 +1,4 @@
-import { credit } from '../store/getters/promotions';
+import { credit } from '../store/getters/items';
 
 export default (state, error) => {
     if (!error) {
