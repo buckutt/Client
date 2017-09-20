@@ -46,8 +46,8 @@ export const alcoholAmount = (state) => {
         .map(p => p.alcohol)
         .reduce((a, b) => a + b, 0);
 
-    const fromBasket = state.items.basket
-        .map(id => state.items.items.find(item => item.id === id).alcohol)
+    const fromBasket = state.items.basket.itemList
+        .map(item => item.alcohol)
         .reduce((a, b) => a + b, 0);
 
     return fromPurchases + fromBasket;

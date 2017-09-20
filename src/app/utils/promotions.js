@@ -8,29 +8,25 @@ export default (basket, promotions) => {
         promotionsMatching = 0;
 
         promotions.forEach((promotion) => {
+            const container = new Container(basket);
 
             // Get articles that are in basket
             const matchArticles = promotion.articles
-                .map(article => hasArticle(basket, article));
+                .map(article => container.pickArticle(article));
 
             // Get sets that have one item in basket
             const matchSets = promotion.sets
-                .map(set => hasSet(basket, set.articles));
+                .map(set => container.pickSet(set.articles));
 
             // If promotion match
-            if (allTrue(matchArticles) && allTrue(matchSets)) {
-                const content = [
-                    ...matchArticles,
-                    ...matchSets
-                ];
-
+            if (allMatch(matchArticles) && allMatch(matchSets)) {
                 // remove content from basket
-                basket = removeFromBasket(basket, content);
+                basket = container.database;
 
                 // push to promotions array
                 basketPromotions.push({
                     ...promotion,
-                    content
+                    content: container.content
                 });
 
                 promotionsMatching = promotionsMatching + 1;
@@ -43,6 +39,37 @@ export default (basket, promotions) => {
         items: basket,
         promotions: basketPromotions
     };
+}
+
+class Container {
+    constructor(database) {
+        this.database = database.slice();
+        this.content  = [];
+    }
+
+    pickArticle(article) {
+        if (hasArticle(this.database, article)) {
+            this.database = removeFromBasket(this.database, [ article ]);
+            this.content.push(article);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    pickSet(set) {
+        const articleMatched = hasSet(this.database, set);
+
+        if (articleMatched) {
+            this.database = removeFromBasket(this.database, [ articleMatched ]);
+            this.content.push(articleMatched);
+
+            return true;
+        }
+
+        return false;
+    }
 }
 
 function hasArticle(basket, article) {
@@ -85,6 +112,6 @@ function removeFromBasket(basket, articles) {
     })
 }
 
-function allTrue(arr) {
+function allMatch(arr) {
     return arr.reduce((a, b) => a && b, true);
 }
