@@ -43,16 +43,16 @@ export const sendBasket = (store) => {
 
     store.commit('SET_BASKET_STATUS', 'DOING');
 
-    const fullBasket = store.getters.cleanBasket;
-    const now        = new Date();
+    const basket  = store.getters.sidebar;
+    const reloads = store.getters.reloads;
+    const now     = new Date();
 
     const basketToSend = [];
 
     let bought   = 0;
     let reloaded = 0;
 
-    fullBasket.items.forEach((articleId) => {
-        const article = store.state.items.items.find(i => i.id === articleId);
+    basket.items.forEach((article) => {
         basketToSend.push({
             Buyer_id    : store.state.auth.buyer.id,
             Price_id    : article.price.id,
@@ -71,38 +71,35 @@ export const sendBasket = (store) => {
         bought += article.price.amount;
     });
 
-    fullBasket.promotions.forEach((basketPromo) => {
-        const promoId        = basketPromo.id;
+    basket.promotions.forEach((promotion) => {
         const articlesInside = [];
         let alcohol          = 0;
-        const promo          = store.state.items.promotions.find(p => p.id === promoId);
 
-        basketPromo.contents.forEach((articleInside) => {
-            const fullArticleInside = store.state.items.items.find(i => i.id === articleInside);
+        promotion.content.forEach((articleInside) => {
             articlesInside.push({
-                id   : articleInside,
-                vat  : fullArticleInside.vat,
-                price: fullArticleInside.price.id
+                id   : articleInside.id,
+                vat  : articleInside.vat,
+                price: articleInside.price.id
             });
 
-            alcohol += fullArticleInside.alcohol;
+            alcohol += articleInside.alcohol;
         });
 
         basketToSend.push({
-            Price_id    : promo.price.id,
+            Price_id    : promotion.price.id,
             Buyer_id    : store.state.auth.buyer.id,
-            Promotion_id: promo.id,
+            Promotion_id: promotion.id,
             articles    : articlesInside,
-            cost        : promo.price.amount,
+            cost        : promotion.price.amount,
             type        : 'purchase',
             date        : now,
             alcohol
         });
 
-        bought += promo.price.amount;
+        bought += promotion.price.amount;
     });
 
-    fullBasket.reloads.forEach((reload) => {
+    reloads.forEach((reload) => {
         basketToSend.push({
             credit   : reload.amount,
             trace    : reload.trace,

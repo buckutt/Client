@@ -1,5 +1,7 @@
 export const sidebar = (state) => state.items.basket.sidebar;
 
+export const reloads = (state) => state.reload.reloads;
+
 export const basketAmount = (state) => {
     const basket = state.items.basket.sidebar;
 
