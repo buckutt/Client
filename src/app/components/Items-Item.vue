@@ -17,12 +17,14 @@
             v-if="selectedItem > 0"
             @click.stop="remove(item)">
         </div>
-        <div class="b-item__text">{{ item.name }}</div>
+        <div class="b-item__text" ref="name">{{ item.name }}</div>
     </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
+
+import textSize from '../utils/textSize';
 
 import Currency from './Currency';
 
@@ -53,6 +55,16 @@ export default {
     },
 
     mounted() {
+        const initialFontSize = 16;
+
+        const $name = this.$refs.name;
+        const size = textSize(this.item.name);
+        const maxSize = 130;
+
+        if (size > maxSize) {
+            $name.style.fontSize = `${initialFontSize * (maxSize / size)}px`;
+        }
+
         this.getImage(this.item.id)
             .then(image => {
                 this.$el.querySelector('img').src = image;
@@ -135,7 +147,6 @@ export default {
     overflow: hidden;
     padding: 0 10px;
     position: absolute;
-    text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
 }
