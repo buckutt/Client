@@ -18,6 +18,7 @@
         <disconnect-warning :seller="seller"></disconnect-warning>
         <error></error>
         <waiting-for-buyer></waiting-for-buyer>
+        <Ticket v-if="lastUser.name && !loginState && !doubleValidation" :user="lastUser"></Ticket>
         <input
             class="b--out-of-screen"
             type="text"
@@ -43,6 +44,7 @@ import Error             from './components/Error';
 import AlcoholWarning    from './components/AlcoholWarning';
 import DisconnectWarning from './components/DisconnectWarning';
 import WaitingForBuyer   from './components/WaitingForBuyer';
+import Ticket            from './components/Ticket';
 
 export default {
     name: 'App',
@@ -57,7 +59,8 @@ export default {
         Error,
         AlcoholWarning,
         DisconnectWarning,
-        WaitingForBuyer
+        WaitingForBuyer,
+        Ticket
     },
 
     data() {
@@ -66,7 +69,7 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'basketStatus', 'loaded', 'loginState', 'waitingForBuyer']),
+    computed: mapGetters(['buyer', 'seller', 'basketStatus', 'loaded', 'loginState', 'waitingForBuyer', 'lastUser', 'doubleValidation']),
 
     methods: {
         refocus() {

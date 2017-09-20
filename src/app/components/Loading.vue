@@ -18,6 +18,7 @@
     width: 100%;
     height: 100%;
     background-color: color(var(--black) a(0.75));
+    z-index: 100;
 }
 
 .b-loading__icon {
