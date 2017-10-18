@@ -54,9 +54,9 @@ export const sendBasket = (store) => {
 
     basket.items.forEach((article) => {
         basketToSend.push({
-            Buyer_id    : store.state.auth.buyer.id,
-            Price_id    : article.price.id,
-            Promotion_id: null,
+            buyer_id    : store.state.auth.buyer.id,
+            price_id    : article.price.id,
+            promotion_id: null,
             articles    : [{
                 id     : article.id,
                 vat    : article.vat,
@@ -86,9 +86,9 @@ export const sendBasket = (store) => {
         });
 
         basketToSend.push({
-            Price_id    : promotion.price.id,
-            Buyer_id    : store.state.auth.buyer.id,
-            Promotion_id: promotion.id,
+            price_id    : promotion.price.id,
+            buyer_id    : store.state.auth.buyer.id,
+            promotion_id: promotion.id,
             articles    : articlesInside,
             cost        : promotion.price.amount,
             type        : 'purchase',
@@ -103,7 +103,7 @@ export const sendBasket = (store) => {
         basketToSend.push({
             credit   : reload.amount,
             trace    : reload.trace,
-            Buyer_id : store.state.auth.buyer.id,
+            buyer_id : store.state.auth.buyer.id,
             type     : reload.type,
             date     : now
         });

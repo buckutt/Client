@@ -1,14 +1,11 @@
 import axios from 'axios';
-import q     from '../../utils/q';
-
-const notRemoved = q({ field: 'isRemoved', eq: false });
 
 export const dataLoader = (store) => {
     const token   = store.getters.tokenHeaders;
     const eventId = store.state.auth.device.event.id;
 
     const meansOfPaymentQuery = axios
-        .get(`${config.api}/meansofpayment/search?q=${notRemoved}`, token)
+        .get(`${config.api}/meansofpayment`, token)
         .then((res) => {
             const device = {
                 id   : res.headers.device,
@@ -26,7 +23,7 @@ export const dataLoader = (store) => {
         });
 
     const devicesQuery = axios
-        .get(`${config.api}/devices/search?q=${notRemoved}`, token)
+        .get(`${config.api}/devices`, token)
         .then(res => res.data);
 
     const eventQuery = axios
