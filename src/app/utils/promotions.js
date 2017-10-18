@@ -10,16 +10,12 @@ export default (basket, promotions) => {
         promotions.forEach((promotion) => {
             const container = new Container(basket);
 
-            // Get articles that are in basket
-            const matchArticles = promotion.articles
-                .map(article => container.pickArticle(article));
-
             // Get sets that have one item in basket
             const matchSets = promotion.sets
                 .map(set => container.pickSet(set.articles));
 
             // If promotion match
-            if (allMatch(matchArticles) && allMatch(matchSets)) {
+            if (allMatch(matchSets)) {
                 // remove content from basket
                 basket = container.database;
 
@@ -47,22 +43,11 @@ class Container {
         this.content  = [];
     }
 
-    pickArticle(article) {
-        if (hasArticle(this.database, article)) {
-            this.database = removeFromBasket(this.database, [ article ]);
-            this.content.push(article);
-
-            return true;
-        }
-
-        return false;
-    }
-
     pickSet(set) {
         const articleMatched = hasSet(this.database, set);
 
         if (articleMatched) {
-            this.database = removeFromBasket(this.database, [ articleMatched ]);
+            this.database = removeFromBasket(this.database, articleMatched);
             this.content.push(articleMatched);
 
             return true;
@@ -89,27 +74,23 @@ function hasSet(basket, set) {
 /**
  * const set = [ { id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }, { id: 'c' } ]
  *
- * removeFromBasket(set, [ { id: 'b' }, { id: 'c' } ])
+ * removeFromBasket(set, { id: 'c' })
  *
- * > [ { id: 'a' }, { id: 'd' }, { id: 'c' } ]
+ * > [ { id: 'a' }, { id: 'b' }, { id: 'd' }, { id: 'c' } ]
  */
-function removeFromBasket(basket, articles) {
-    const removed = {}
-
-    articles.forEach((article) => {
-        removed[article.id] = false;
-    });
+function removeFromBasket(basket, articleToRemove) {
+    let removed = false
 
     return basket.filter((article) => {
         // remove if in articles and if not already removed
-        if (hasArticle(articles, article) && !removed[article.id]) {
-            removed[article.id] = true;
+        if (article.id === articleToRemove.id && !removed) {
+            removed = true;
 
             return false;
         }
 
         return true;
-    })
+    });
 }
 
 function allMatch(arr) {
