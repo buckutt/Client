@@ -118,14 +118,18 @@ export default {
 
             const nfc = new NFC();
 
+            nfc.on('log', (data) => {
+                console.log(data);
+            });
+
             // data contained in cards is etu id
             nfc.on('data', (data) => {
                 this.inputValue = data;
                 this.validate();
             });
 
-            nfc.on('data', (data) => {
-                // update user credit based on this one
+            nfc.on('error', (err) => {
+                console.error(err);
             });
         }
     }
