@@ -122,8 +122,9 @@ export default {
 
             const nfc = new NFC();
 
-            nfc.on('uid', (uid) => {
-                this.inputValue = uid;
+            // data contained in cards is etu id
+            nfc.on('data', (data) => {
+                this.inputValue = data;
                 this.validate();
             });
 
