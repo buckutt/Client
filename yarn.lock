@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@buckless/signed-number@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@buckless/signed-number/-/signed-number-1.0.0.tgz#9c8471a314a9c21d5636b8516eaf8a680c976a22"
+
 "@pokusew/pcsclite@^0.4.14":
   version "0.4.17"
   resolved "https://registry.yarnpkg.com/@pokusew/pcsclite/-/pcsclite-0.4.17.tgz#cdc2e8fa8c297fa416fbfacf10da5f33d7aef438"
