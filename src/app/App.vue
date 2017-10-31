@@ -24,6 +24,7 @@
             type="text"
             ref="input"
             v-model="inputValue"
+            :disabled="isCordova"
             autofocus
             @keyup.enter="validate"/>
     </div>
@@ -65,7 +66,8 @@ export default {
 
     data() {
         return {
-            inputValue: ''
+            inputValue: '',
+            isCordova: process.env.TARGET === 'cordova'
         };
     },
 
@@ -93,15 +95,19 @@ export default {
         if (process.env.TARGET === 'electron') {
             const remote = require('electron').remote.getCurrentWindow();
 
-            const nfc = remote.nfc.pcsc;
+            const nfc = remote.nfc;
 
             nfc.on('log', (data) => {
                 console.log(data);
             });
 
-            nfc.on('data', (data) => {
+            nfc.on('uid', (data) => {
                 this.inputValue = data;
                 this.validate();
+            });
+
+            nfc.on('data', (data) => {
+                // update user credit based on this one
             });
 
             nfc.on('error', (err) => {
@@ -109,6 +115,21 @@ export default {
             });
 
             // remote.updater.init(); TODO
+        }
+
+        if (process.env.TARGET === 'cordova') {
+            const NFC = require('../lib/nfc');
+
+            const nfc = new NFC();
+
+            nfc.on('uid', (uid) => {
+                this.inputValue = uid;
+                this.validate();
+            });
+
+            nfc.on('data', (data) => {
+                // update user credit based on this one
+            });
         }
     }
 };

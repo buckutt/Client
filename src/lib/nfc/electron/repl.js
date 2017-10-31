@@ -54,14 +54,60 @@ const getAllData = () => {
     });
 };
 
+const getCredit = () => {
+    const nfc = new NFC();
+
+    nfc.pcsc.on('data', (data) => {
+        const { decode }     = require('@buckless/signed-number');
+        const signingKey     = require('../../../../config/profiles/production').signingKey;
+        const { creditSize } = require('../../../../config/profiles/production').ultralight;
+        const cipher = data.slice(0, creditSize * 2);
+
+        console.log(decode(cipher, signingKey));
+
+        process.exit(0);
+    });
+};
+
+const writeCredit = () => {
+    const nfc = new NFC();
+
+    inquirer
+        .prompt([
+            { type: 'input', name: 'credit', message: 'Credit (in cts)' }
+        ])
+        .then(({ credit }) => {
+            const { encode }     = require('@buckless/signed-number');
+            const signingKey     = require('../../../../config/profiles/production').signingKey;
+            const { creditSize } = require('../../../../config/profiles/production').ultralight;
+
+            const cipher = encode(credit, signingKey, creditSize);
+
+            nfc.pcsc.write(cipher)
+                .then((newData) => {
+                    console.log('\\o/');
+                    process.exit(0);
+                })
+                .catch((err) => {
+                    console.error(err);
+                    process.exit(1);
+                });
+        })
+};
+
 const writeData = () => {
     const nfc = new NFC();
 
     inquirer
         .prompt([
-            { type: 'input', name: 'data', message: 'Data to write' }
+            { type: 'input', name: 'data', message: 'Data to write' },
+            { type: 'confirm', name: 'isHex', message: 'Raw hex ?' }
         ])
-        .then(({ data }) => {
+        .then(({ data, isHex }) => {
+            data = isHex ? Buffer.from(data, 'hex') : data
+
+            console.log('input:', data)
+
             nfc.pcsc.write(data)
                 .then((newData) => {
                     console.log('old data:', nfc.pcsc.data);
@@ -85,6 +131,8 @@ inquirer
                 'Free REPL',
                 'Get UID',
                 'Get ATR / Card Type',
+                'Read credit',
+                'Write credit',
                 'Get all data',
                 'Write data'
             ]
@@ -101,6 +149,14 @@ inquirer
 
         if (action === 'Get ATR / Card Type') {
             getAtr();
+        }
+
+        if (action === 'Read credit') {
+            getCredit();
+        }
+
+        if (action === 'Write credit') {
+            writeCredit();
         }
 
         if (action === 'Get all data') {

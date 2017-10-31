@@ -58,7 +58,7 @@ let base = {
   }
 }
 
-if (process.env.TARGET === 'browser' ||process.env.TARGET === 'cordova') {
+if (process.env.TARGET === 'browser' || process.env.TARGET === 'cordova') {
   base.target = 'web'
 } else if (process.env.TARGET === 'electron') {
   base.target = 'electron-renderer'
