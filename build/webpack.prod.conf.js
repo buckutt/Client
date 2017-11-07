@@ -101,7 +101,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         shell.cd(path.join(__dirname, '..', 'cordova'))
 
         if  (process.env.PLATFORM === 'android') {
-          shell.exec('cordova build android')
+          shell.exec('cordova build android --release')
         }
       }
     })

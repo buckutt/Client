@@ -26,5 +26,4 @@
     </platform>
     <engine name="android" spec="^6.2.3" />
     <plugin name="cordova-plugin-mifare-ultralight" spec="git+https://github.com/buckless-team/cordova-plugin-mifare-ultralight.git" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
 </widget>
