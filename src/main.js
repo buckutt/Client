@@ -38,14 +38,26 @@ function createWindow() {
     });
 
     window.nfc = new NFC();
+
+    app.on('select-client-certificate', (_, __, ___, list, callback) => {
+        client_cert = list.find(cert => cert.subject.commonName.indexOf("Client") === 0);
+        if (client_cert) {
+            window.setFullScreen(false);
+            window.setKiosk(false);
+        }
+        callback(client_cert);
+    });
+
     // window.updater = updater(); TODO: updater
 
-    const opts = {
-        certificate: JSON.parse(config.certificate.path),
-        password   : JSON.parse(config.certificate.password)
-    };
+    if (typeof app.importCertificate === 'function') {
+        const opts = {
+            certificate: JSON.parse(config.certificate.path),
+            password   : JSON.parse(config.certificate.password)
+        };
 
-    app.importCertificate(opts, result => console.log(result));
+        app.importCertificate(opts, result => console.log(result));
+    }
 }
 
 app.on('ready', createWindow);
