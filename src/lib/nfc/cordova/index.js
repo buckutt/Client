@@ -1,5 +1,6 @@
-import { EventEmitter } from 'events';
-import NFCReader from './nfc';
+const { EventEmitter }   = require('events');
+const NFCReader          = require('./nfc');
+const { encode, decode } = require('@buckless/signed-number');
 
 module.exports = class NFC extends EventEmitter {
     constructor() {
@@ -18,5 +19,13 @@ module.exports = class NFC extends EventEmitter {
 
     write(data) {
         return this.nfc.write(data);
+    }
+
+    dataToCredit(data, signingKey) {
+        return decode(data, signingKey);
+    }
+
+    creditToData(credit, signingKey) {
+        return encode(credit, signingKey);
     }
 }

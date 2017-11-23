@@ -1,9 +1,9 @@
 {
-    "api": "\"https://server:3000\"",
-    "images": "\"http://images:3400\"",
+    "api": "\"https://localhost:3000\"",
+    "images": "\"http://localhost:3400\"",
     "loginMeanOfLogin": "\"etuId\"",
     "buyerMeanOfLogin": "\"etuId\"",
-    "signingKey": "buckless",
+    "signingKey": "\"buckless\"",
     "desfire"         : {
         "key"   : "\"0\"",
         "keyId" : "[4]",

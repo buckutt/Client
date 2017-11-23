@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import axios  from 'axios';
+import axios from 'axios';
 
 export const addItemToBasket = ({ commit }, item) => {
     commit('ADD_ITEM', item);
@@ -32,8 +32,7 @@ export const sendBasket = (store) => {
     }
 
     if (store.getters.credit < 0) {
-        store.commit('CLEAR_BASKET');
-        store.commit('REMOVE_RELOADS');
+        store.dispatch('clearBasket');
         store.commit('SET_BASKET_STATUS', 'ERROR');
         store.commit('ERROR', {
             message: 'Not enough credit'

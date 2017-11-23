@@ -8,3 +8,4 @@ yarn-error.log*
 cordova/www
 cordova/platforms
 cordova/plugins
+config/profiles/*.json

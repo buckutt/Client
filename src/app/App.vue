@@ -2,23 +2,23 @@
     <div
         id="app"
         @click="refocus">
-        <topbar :buyer="buyer" :seller="seller"></topbar>
+        <topbar :buyer="buyer" :seller="seller" />
         <main class="b-main">
-            <login v-show="loginState" ref="login"></login>
-            <items v-if="!loginState && seller.canSell"></items>
-            <sidebar v-if="!loginState && seller.canSell"></sidebar>
+            <login v-show="loginState" ref="login" />
+            <items v-if="!loginState && seller.canSell" />
+            <sidebar v-if="!loginState && seller.canSell" />
         </main>
         <reload
             v-if="!loginState"
-            :reloadOnly="!seller.canSell && seller.canReload"></reload>
+            :reloadOnly="!seller.canSell && seller.canReload" />
         <transition name="b--fade">
-            <loading v-if="loaded === false"></loading>
+            <loading v-if="loaded === false" />
         </transition>
-        <alcohol-warning></alcohol-warning>
-        <disconnect-warning :seller="seller"></disconnect-warning>
+        <alcohol-warning />
+        <disconnect-warning :seller="seller" />
         <error></error>
-        <waiting-for-buyer></waiting-for-buyer>
-        <Ticket v-if="lastUser.name && !loginState && !doubleValidation" :user="lastUser"></Ticket>
+        <waiting-for-buyer />
+        <Ticket v-if="lastUser.name && !loginState && !doubleValidation" :user="lastUser" />
         <input
             class="b--out-of-screen"
             type="text"
@@ -26,7 +26,7 @@
             v-model="inputValue"
             :disabled="isCordova"
             autofocus
-            @keyup.enter="validate"/>
+            @keyup.enter="validate" />
     </div>
 </template>
 
@@ -71,7 +71,16 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'basketStatus', 'loaded', 'loginState', 'waitingForBuyer', 'lastUser', 'doubleValidation']),
+    computed: mapGetters([
+        'buyer',
+        'seller',
+        'basketStatus',
+        'loaded',
+        'loginState',
+        'waitingForBuyer',
+        'lastUser',
+        'doubleValidation'
+    ]),
 
     methods: {
         refocus() {
@@ -91,46 +100,35 @@ export default {
     },
 
     mounted() {
+        let nfc;
+
         // TODO : require('./lib/nfc')
         if (process.env.TARGET === 'electron') {
             const remote = require('electron').remote.getCurrentWindow();
 
-            const nfc = remote.nfc;
-
-            nfc.on('log', (data) => {
-                console.log(data);
-            });
-
-            nfc.on('uid', (data) => {
-                this.inputValue = data;
-                this.validate();
-            });
-
-            nfc.on('data', (data) => {
-                // update user credit based on this one
-            });
-
-            nfc.on('error', (err) => {
-                console.error(err);
-            });
-
-            // remote.updater.init(); TODO
-        }
-
-        if (process.env.TARGET === 'cordova') {
+            nfc = remote.nfc;
+        } else if (process.env.TARGET === 'cordova') {
             const NFC = require('../lib/nfc');
 
-            const nfc = new NFC();
-
-            nfc.on('uid', (uid) => {
-                this.inputValue = uid;
-                this.validate();
-            });
-
-            nfc.on('data', (data) => {
-                // update user credit based on this one
-            });
+            nfc = new NFC();
         }
+
+        nfc.on('log', (data) => {
+            console.log(data);
+        });
+
+        nfc.on('uid', (data) => {
+            this.inputValue = data.toString();
+            this.validate();
+        });
+
+        nfc.on('data', (data) => {
+            // update user credit based on this one
+        });
+
+        nfc.on('error', (err) => {
+            console.error(err);
+        });
     }
 };
 </script>

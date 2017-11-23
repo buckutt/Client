@@ -2,6 +2,7 @@ const fs           = require('fs');
 const path         = require('path');
 const EventEmitter = require('events');
 const PCSCReader   = require('./pcsc');
+const { encode, decode } = require('@buckless/signed-number');
 
 class NFC extends EventEmitter {
     constructor() {
@@ -21,6 +22,14 @@ class NFC extends EventEmitter {
 
     write(data) {
         return this.pcsc.write(data);
+    }
+
+    dataToCredit(data, signingKey) {
+        return decode(data, signingKey);
+    }
+
+    creditToData(credit, signingKey) {
+        return encode(credit, signingKey);
     }
 }
 

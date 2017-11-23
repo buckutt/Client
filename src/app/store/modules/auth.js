@@ -58,7 +58,11 @@ const mutations = {
     },
 
     SET_EVENT(state, payload) {
-        state.device.event.config = payload.config;
+        const keys = ['maxAlcohol'];
+
+        keys.forEach((key) => {
+            state.device.event.config[key] = payload[key];
+        });
     },
 
     ID_SELLER(state, meanOfLogin) {

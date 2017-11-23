@@ -61,9 +61,8 @@ const getCredit = () => {
         const { decode }     = require('@buckless/signed-number');
         const signingKey     = require('../../../../config/profiles/production').signingKey;
         const { creditSize } = require('../../../../config/profiles/production').ultralight;
-        const cipher = data.slice(0, creditSize * 2);
 
-        console.log(decode(cipher, signingKey));
+        console.log(decode(data, signingKey));
 
         process.exit(0);
     });
