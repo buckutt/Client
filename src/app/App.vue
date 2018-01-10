@@ -117,13 +117,14 @@ export default {
             console.log(data);
         });
 
-        nfc.on('uid', (data) => {
-            this.inputValue = data.toString();
-            this.validate();
-        });
+        // nfc.on('uid', (data) => {
+        //     this.inputValue = data.toString();
+        //     this.validate();
+        // });
 
         nfc.on('data', (data) => {
-            // update user credit based on this one
+            this.inputValue = data.toString();
+            this.validate();
         });
 
         nfc.on('error', (err) => {
