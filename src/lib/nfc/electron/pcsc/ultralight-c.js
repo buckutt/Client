@@ -1,7 +1,10 @@
 const config = require('../../../../../config');
 
 module.exports.read = (transmit, log, callback, err) => {
-    return transmit(Buffer.from([ 0xFF, 0xB0, 0x00, 0x00, config.ultralight.cardLength ]))
+    const readBuf = Buffer.from([ 0xFF, 0xB0, 0x00, 0x00, config.ultralight.cardLength ]);
+
+    log(`out: ${readBuf.toString('hex')}`);
+    return transmit(readBuf)
         .then((data) => {
             // remove first pages (uid, etc.) and success code
             data = data.slice(config.ultralight.firstWritablePage * 4, -2).toString('hex');
@@ -15,7 +18,7 @@ module.exports.write = (data, transmit, log, callback, err) => {
 
     const buf    = Buffer.from(data);
     const newBuf = Buffer.alloc(dataLength, 0);
-    const subs   = []
+    const subs   = [];
 
     // Copy data inside our fixed-length buffer (length must be divisible by 4)
     for (let i = 0; i < dataLength; ++i) {
@@ -45,17 +48,23 @@ module.exports.write = (data, transmit, log, callback, err) => {
     i = 0;
 
     for (let page of subs) {
-        sequence = sequence.then(() => {
-            console.log(Buffer.from([ 0xFF, 0xD6, 0x00, i + config.ultralight.firstWritablePage, 0x04, ...page ]));
-            const res = transmit(Buffer.from([ 0xFF, 0xD6, 0x00, i + config.ultralight.firstWritablePage, 0x04, ...page ]));
+        sequence = sequence
+            .then(() => {
+                const writeBuf = Buffer.from([ 0xFF, 0xD6, 0x00, i + config.ultralight.firstWritablePage, 0x04, ...page ]);
+                log(`out: ${writeBuf.toString('hex')}`);
+                return transmit(writeBuf);
+            })
+            .then((res) => {
+                log(`res: ${res.toString('hex')}`);
+                if (res.toString('hex') !== '9000') {
+                    throw new Error(`Write failed : ${res.toString('hex')}`);
+                }
 
-            if (res.toString('hex') !== '9000') {
-                throw new Error(`Write failed : ${res.toString('hex')}`);
-            }
-            console.log(res.toString('hex'));
-
-            i = i + 1;
-        });
+                i = i + 1;
+            })
+            .catch((err) => {
+                throw new Error(`Write failed : ${err}`);
+            });
     }
 
     return sequence.then(() => newBuf);

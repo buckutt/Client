@@ -95,13 +95,13 @@ var webpackConfig = merge(baseWebpackConfig, {
       }
     ]),
     new PostCompile(() => {
-      if (env.TARGET === 'cordova') {
+      if (process.env.TARGET === 'cordova') {
         shell.rm('-r', path.join(__dirname, '..', 'cordova', 'www'))
         shell.cp('-r', path.join(__dirname, '..', 'dist', process.env.TARGET), path.join(__dirname, '..', 'cordova', 'www'))
         shell.cd(path.join(__dirname, '..', 'cordova'))
 
-        if  (PLATFORM === 'android') {
-          shell.exec('cordova build android')
+        if  (process.env.PLATFORM === 'android') {
+          shell.exec('cordova build android --release')
         }
       }
     })

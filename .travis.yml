@@ -21,6 +21,7 @@ addons:
       - pcscd
 
 script:
+  - cp config/profiles/production.json.example config/profiles/production.json
   - yarn build:electron
 
 env:

@@ -1,63 +1,35 @@
-const fs         = require('fs');
-const path       = require('path');
-const shell      = require('shelljs');
-const PCSCReader = require('./pcsc');
+const fs           = require('fs');
+const path         = require('path');
+const EventEmitter = require('events');
+const PCSCReader   = require('./pcsc');
+const { encode, decode } = require('@buckless/signed-number');
 
-const OUTPUT_FILE = path.join(__dirname, '..', 'nfc.out');
-
-class NFC {
+class NFC extends EventEmitter {
     constructor() {
+        super();
+
         this.pcsc = new PCSCReader();
         this.nfc  = null; // new NFCReader();
 
-        shell.rm('-rf', OUTPUT_FILE);
-        this.file = fs.createWriteStream(OUTPUT_FILE, { flags: 'a' });
-
-        this.pcsc.on('log', (log) => this.printLog(log));
-        this.pcsc.on('cardtype', (type) => this.printOut('cardtype', type));
-        this.pcsc.on('uid', (uid) => this.printOut('uid', uid.toString('hex')));
-        this.pcsc.on('data', (data) => this.printOut('data', data));
-        this.pcsc.on('error', (err) => this.printErr(err.name, err.message));
+        this.pcsc.on('log', (log) => this.emit('log', log))
+        this.pcsc.on('error', (err) => this.emit('error', err));
+        this.pcsc.on('reader', () => this.emit('reader'));
+        this.pcsc.on('uid', (uid) => this.emit('uid', uid));
+        this.pcsc.on('atr', (atr) => this.emit('atr', atr));
+        this.pcsc.on('cardType', (cardType) => this.emit('cardType', cardType));
+        this.pcsc.on('data', (data) => this.emit('data', data));
     }
 
     write(data) {
         return this.pcsc.write(data);
     }
 
-    printErr(name, message) {
-        const out = JSON.stringify({ type: 'error', name, message });
-
-        if (process.env.NFC_TO_FILE) {
-            this.file.write(out + '\n', 'utf8');
-        }
-
-        if (process.env.NFC_TO_CONSOLE) {
-            console.log(out);
-        }
+    dataToCredit(data, signingKey) {
+        return decode(data, signingKey);
     }
 
-    printOut(type = 'data', data) {
-        const out = JSON.stringify({ type, data });
-
-        if (process.env.NFC_TO_FILE) {
-            this.file.write(out + '\n', 'utf8');
-        }
-
-        if (process.env.NFC_TO_CONSOLE) {
-            console.log(out);
-        }
-    }
-
-    printLog(data) {
-        const out = JSON.stringify({ type: 'log', data });
-
-        if (process.env.NFC_TO_FILE) {
-            this.file.write(out + '\n', 'utf8');
-        }
-
-        if (process.env.NFC_TO_CONSOLE) {
-            console.log(out);
-        }
+    creditToData(credit, signingKey) {
+        return encode(credit, signingKey);
     }
 }
 

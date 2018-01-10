@@ -20,6 +20,7 @@
     "build:android": "cross-env TARGET=cordova PLATFORM=android node build/build.js"
   },
   "dependencies": {
+    "@buckless/signed-number": "^1.1.1",
     "@pokusew/pcsclite": "^0.4.14",
     "async": "^2.2.0",
     "axios": "^0.16.2",

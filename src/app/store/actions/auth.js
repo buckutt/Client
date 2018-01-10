@@ -41,19 +41,16 @@ export const login = ({ commit, dispatch }, { meanOfLogin, password }) =>
 
 export const logout = (store) => {
     if (store.state.auth.buyer.isAuth) {
-        store.commit('SET_DATA_LOADED', false);
         store.commit('LOGOUT_BUYER');
-        store.commit('SET_BASKET_STATUS', 'WAITING');
-        store.dispatch('clearBasket');
-        return store.dispatch('interfaceLoader')
-            .then(() => store.commit('SET_DATA_LOADED', true));
+        return store.dispatch('clearBasket');
     } else if (store.state.auth.seller.isAuth) {
-        return store.commit('FIRST_LOGOUT_SELLER');
+        store.commit('FIRST_LOGOUT_SELLER');
     } else {
         // called on eject before login seller
         store.commit('LOGOUT_SELLER', '');
         store.commit('ID_SELLER', '');
     }
+    return Promise.resolve();
 };
 
 export const pursueLogout = ({ commit, dispatch }) => {
@@ -78,10 +75,11 @@ export const buyer = (store, { cardNumber }) => {
     let initialPromise = Promise.resolve();
 
     if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER') {
+        console.log('clear basket')
         initialPromise = store.dispatch('clearBasket');
     }
 
-    initialPromise
+    return initialPromise
         .then(() => store.dispatch('interfaceLoader', { type: config.buyerMeanOfLogin, mol: cardNumber.trim().slice(0, 13) }))
         .then(() => {
             if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
@@ -94,7 +92,7 @@ export const buyer = (store, { cardNumber }) => {
         .then(() => store.commit('SET_DATA_LOADED', true))
         .catch((err) => {
             store.commit('SET_DATA_LOADED', null);
-            store.commit('ERROR', err);
+            store.commit('ERROR', err.response.Data);
         });
 };
 

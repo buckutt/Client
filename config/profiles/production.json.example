@@ -1,8 +1,9 @@
 {
-    "api": "\"https://localhost:3000\"",
-    "images": "\"http://localhost:3400\"",
+    "api": "\"https://server:3000\"",
+    "images": "\"http://images:3400\"",
     "loginMeanOfLogin": "\"etuId\"",
     "buyerMeanOfLogin": "\"etuId\"",
+    "signingKey": "\"buckless\"",
     "desfire"         : {
         "key"   : "\"0\"",
         "keyId" : "[4]",
@@ -13,8 +14,9 @@
         "fileId": "[255, 243, 0, 5]"
     },
     "ultralight": {
-        "cardLength": 20,
-        "firstWritablePage": 4
+        "cardLength": 60,
+        "firstWritablePage": 4,
+        "creditSize": 23
     },
     "certificate": {
         "path": "\"./buckless-certificate.p12\"",
