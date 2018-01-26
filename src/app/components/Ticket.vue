@@ -4,7 +4,7 @@
             <hr v-if="inline"/>
 
             Dernier client :
-            <strong><span class="b--capitalized">{{ user.name }}</span></strong>
+            <strong v-if="user.name"><span class="b--capitalized">{{ user.name }}</span></strong>
 
             <br/>
 

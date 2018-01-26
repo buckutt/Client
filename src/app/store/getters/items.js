@@ -5,7 +5,7 @@ export const reloads = (state) => state.reload.reloads;
 export const basketAmount = (state) => {
     const basket = state.items.basket.sidebar;
 
-    if (!state.ui.dataLoaded) {
+    if (!basket.items && !basket.promotions) {
         return 0;
     }
 

@@ -1,4 +1,4 @@
-import axios  from 'axios';
+import axios from 'axios';
 
 export const openReloadModal = ({ commit }) => {
     commit('OPEN_RELOAD_MODAL');
@@ -27,4 +27,9 @@ export const addReload = ({ commit }, reload) => {
 
 export const removeReloads = ({ commit }) => {
     commit('REMOVE_RELOADS');
+};
+
+export const setMeansOfPayment = ({ commit }, meansOfPayment) => {
+    window.localStorage.setItem('meansOfPayment', JSON.stringify(meansOfPayment));
+    commit('SET_MEANS_OF_PAYMENT', meansOfPayment);
 };

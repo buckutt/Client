@@ -59,7 +59,7 @@ const getCredit = () => {
 
     nfc.pcsc.on('data', (data) => {
         const { decode }     = require('@buckless/signed-number');
-        const signingKey     = require('../../../../config/profiles/production').signingKey;
+        const signingKey     = JSON.parse(require('../../../../config/profiles/production').signingKey);
         const { creditSize } = require('../../../../config/profiles/production').ultralight;
 
         console.log(decode(data, signingKey));
@@ -77,10 +77,10 @@ const writeCredit = () => {
         ])
         .then(({ credit }) => {
             const { encode }     = require('@buckless/signed-number');
-            const signingKey     = require('../../../../config/profiles/production').signingKey;
+            const signingKey     = JSON.parse(require('../../../../config/profiles/production').signingKey);
             const { creditSize } = require('../../../../config/profiles/production').ultralight;
 
-            const cipher = encode(credit, signingKey, creditSize);
+            const cipher = encode(parseInt(credit, 10), signingKey, creditSize);
 
             nfc.pcsc.write(cipher)
                 .then((newData) => {

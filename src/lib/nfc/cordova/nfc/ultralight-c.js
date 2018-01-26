@@ -9,6 +9,7 @@ module.exports = class UltralightC extends EventEmitter {
 
         document.addEventListener('mifareTagDiscovered', (tag) => {
             this.emit('uid', tag.tag.map((dec) => dec.toString(16)).join(''));
+            this.emit('log', tag.tag.map((dec) => dec.toString(16)).join(''));
             this.emit('atr', module.exports.ATR);
             this.emit('cardType', 'ultralightC');
 
@@ -53,6 +54,7 @@ module.exports = class UltralightC extends EventEmitter {
                             resolve();
                         },
                         (err) => {
+                            console.log('err', err);
                             reject(err);
                         });
                 });
@@ -102,20 +104,21 @@ module.exports = class UltralightC extends EventEmitter {
                     return new Promise((resolve, reject) => {
                         window.mifare.write(
                             i + config.ultralight.firstWritablePage,
-                            page,
+                            Array.from(page).map(int => int.toString(16)),
                             (res) => resolve(res),
                             (err) => reject(err));
                     });
                 })
                 .then((res) => {
                     i = i + 1;
-                })
-                .catch((err) => {
-                    throw new Error(`Write failed : ${err}`);
                 });
         }
 
-        return sequence.then(() => newBuf);
+        return sequence
+            .then(() => newBuf)
+            .catch((err) => {
+                throw new Error(`Write failed : ${err}`);
+            });
     }
 }
 

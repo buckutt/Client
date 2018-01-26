@@ -5,4 +5,5 @@ export * from './getImage';
 export * from './tabs';
 export * from './reload';
 export * from './auth';
-export * from './updatePoint';
+export * from './online';
+export * from './updateEssentials';

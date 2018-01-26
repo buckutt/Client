@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 import memoize from 'lodash.memoize';
 
 const cachedGetImage = memoize(

@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import axios                      from 'axios';
 import { mapActions, mapGetters } from 'vuex';
 
 import Ticket         from './Ticket';
@@ -64,15 +63,23 @@ export default {
             }, 500);
         },
 
-        validate(cardNumber) {
+        validate(cardNumber, credit) {
             if (!this.seller.isAuth && this.seller.meanOfLogin.length === 0) {
                 this.sellerId(cardNumber);
             }
 
+            console.log('login-validate', cardNumber, credit)
             if (this.seller.isAuth) {
-                this.setBuyer({
-                    cardNumber
-                });
+                if (credit || credit === 0) {
+                    this.setBuyer({
+                        cardNumber,
+                        credit
+                    });
+                } else {
+                    this.setBuyer({
+                        cardNumber
+                    });
+                }
             }
         },
 
@@ -94,21 +101,23 @@ export default {
         },
 
         ...mapActions({
-            sellerId   : 'sellerId',
-            setBuyer   : 'buyer',
-            login      : 'login',
-            updatePoint: 'updatePoint'
+            sellerId        : 'sellerId',
+            setBuyer        : 'buyer',
+            login           : 'login',
+            updateEssentials: 'updateEssentials'
         })
     },
 
     mounted() {
         this.timeout = 0;
 
-        this.updatePoint();
+        this.updateEssentials();
 
         setInterval(() => {
             if (!this.seller.isAuth) {
-                this.updatePoint(true);
+                this.updateEssentials(true);
+            } else {
+                this.updateEssentials();
             }
         }, 60 * 1000);
 
