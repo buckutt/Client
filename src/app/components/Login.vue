@@ -133,6 +133,7 @@ export default {
     flex: 1;
     font-size: 28px;
     text-align: center;
+    background-color: #f3f3f3;
 
     & > input {
         opacity: 0.5;
@@ -141,7 +142,8 @@ export default {
 }
 
 .b-login__card {
-    box-shadow: 0 6px 10px color(var(--black) a(0.3));
+    background-color: #fff;
+    box-shadow: 0 2px 4px color(var(--black) a(0.3));
     margin: 40px auto;
     max-width: 500px;
     min-height: 100px;
