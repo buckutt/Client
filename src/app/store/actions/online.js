@@ -34,20 +34,20 @@ export const setupSocket = (store) => {
 };
 
 export const reconnect = (store) => {
-    if (!store.getters.seller.isAuth || !store.getters.online) {
+    if (!store.state.auth.seller.isAuth || !store.state.online.status) {
         return;
     }
 
-    const storedRequests = store.getters.pendingRequests;
-    const offlineDate    = store.getters.offlineDate;
+    const storedRequests = store.state.online.pendingRequests;
+    const offlineDate    = store.state.online.dateToSend;
     const failedRequests = [];
 
     store.commit('SET_SYNCING', true);
 
     const credentials = {
         meanOfLogin: config.loginMeanOfLogin,
-        data       : store.getters.seller.meanOfLogin,
-        pin        : store.getters.seller.pin
+        data       : store.state.auth.seller.meanOfLogin,
+        pin        : store.state.auth.seller.pin
     };
 
     let promise = (store.state.auth.seller.token) ?
@@ -97,11 +97,11 @@ export const setDefaultItems = (store, payload) => {
 
 export const addPendingRequest = (store, payload) => {
     store.commit('ADD_PENDING_REQUEST', payload);
-    window.localStorage.setItem('pendingRequests', JSON.stringify(store.getters.pendingRequests));
+    window.localStorage.setItem('pendingRequests', JSON.stringify(store.state.online.pendingRequests));
 };
 
 export const setPendingRequests = (store, payload) => {
-    window.localStorage.setItem('pendingRequests', JSON.stringify(store.getters.pendingRequests));
+    window.localStorage.setItem('pendingRequests', JSON.stringify(store.state.online.pendingRequests));
     if (payload.length > 0) {
         store.commit('SET_PENDING_REQUESTS', payload);
     } else {

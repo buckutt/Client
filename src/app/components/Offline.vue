@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     computed: {
@@ -20,11 +20,11 @@ export default {
             return this.syncing ? { 'b-offline-syncing': true } : {}
         },
 
-        ...mapGetters([
-            'online',
-            'syncing',
-            'syncProgress'
-        ])
+        ...mapState({
+            online: state => state.online.status,
+            syncing: state => state.online.syncing,
+            syncProgress: state => state.online.syncProgress,
+        })
     }
 }
 </script>

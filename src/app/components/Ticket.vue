@@ -29,7 +29,13 @@
 import Currency from './Currency';
 
 export default {
-    props: ['inline', 'user'],
+    props: {
+        inline: Boolean,
+        user: {
+            type: Object,
+            required: true
+        }
+    },
 
     components: {
         Currency

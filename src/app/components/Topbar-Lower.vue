@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import Tab from './Topbar-Lower-Tab';
 
@@ -40,7 +40,14 @@ export default {
         seller: { type: Object, required: true }
     },
 
-    computed: mapGetters(['point', 'event', 'tabs', 'loginState']),
+    computed: {
+        ...mapState({
+            point: state => state.auth.device.point.name,
+            event: state => state.auth.device.event.name
+        }),
+
+        ...mapGetters(['tabs', 'loginState'])
+    },
 
     components: {
         Tab

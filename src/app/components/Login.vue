@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 import Ticket         from './Ticket';
 import NumericalInput from './NumericalInput';
@@ -45,7 +45,13 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'lastUser', 'doubleValidation', 'point']),
+    computed: mapState({
+        buyer           : state => state.auth.buyer,
+        seller          : state => state.auth.seller,
+        lastUser        : state => state.ui.lastUser,
+        doubleValidation: state => state.auth.device.config.doubleValidation,
+        point           : state => state.auth.device.point.name
+    }),
 
     methods: {
         maskPassword(t) {
@@ -91,13 +97,14 @@ export default {
             this.authingSeller = true;
             this.passwordMask  = '';
 
-            this.login({
-                meanOfLogin: this.seller.meanOfLogin,
-                password
-            })
-            .then(() => {
-                this.authingSeller = false;
-            });
+            this
+                .login({
+                    meanOfLogin: this.seller.meanOfLogin,
+                    password
+                })
+                .then(() => {
+                    this.authingSeller = false;
+                });
         },
 
         ...mapActions({

@@ -34,7 +34,7 @@
 <script>
 /* global IS_ELECTRON */
 import 'normalize.css';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 import hasEssentials from './utils/offline/hasEssentials';
 
@@ -76,18 +76,21 @@ export default {
         };
     },
 
-    computed: mapGetters([
-        'buyer',
-        'seller',
-        'basketStatus',
-        'loaded',
-        'loginState',
-        'waitingForBuyer',
-        'lastUser',
-        'doubleValidation',
-        'useCardData',
-        'online'
-    ]),
+    computed: {
+        ...mapState({
+            buyer           : state => state.auth.buyer,
+            seller          : state => state.auth.seller,
+            basketStatus    : state => state.basket.basketStatus,
+            loaded          : state => state.ui.dataLoaded,
+            waitingForBuyer : state => state.basket.basketStatus === 'WAITING_FOR_BUYER',
+            lastUser        : state => state.ui.lastUser,
+            doubleValidation: state => state.auth.device.config.doubleValidation,
+            useCardData     : state => state.auth.device.event.config.useCardData,
+            online          : state => state.online.status
+        }),
+
+        ...mapGetters(['loginState'])
+    },
 
     methods: {
         refocus() {

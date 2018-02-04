@@ -18,16 +18,16 @@ export const setEvent = ({ commit }, payload) => {
     commit('SET_EVENT', payload);
 };
 
-export const login = ({ commit, dispatch, getters }, { meanOfLogin, password }) => {
+export const login = ({ commit, dispatch, state }, { meanOfLogin, password }) => {
     const credentials = {
         meanOfLogin: config.loginMeanOfLogin,
         data       : meanOfLogin,
         pin        : password
     };
 
-    const initialPromise = (getters.online) ?
+    const initialPromise = (state.online.status) ?
         axios.post(`${config.api}/services/login`, credentials) :
-        offlineLogin(getters.deviceSellers, credentials);
+        offlineLogin(state.online.offline.sellers, credentials);
 
     return initialPromise
         .then((res) => {
@@ -55,6 +55,8 @@ export const login = ({ commit, dispatch, getters }, { meanOfLogin, password }) 
                 .then(() => commit('SET_DATA_LOADED', true));
         })
         .catch((err) => {
+            console.error(err);
+
             commit('ID_SELLER', '');
             commit('SET_DATA_LOADED', null);
             commit('ERROR', err.response.data);
@@ -128,7 +130,7 @@ export const buyer = (store, { cardNumber, credit }) => {
             .then(() => store.commit('SET_BUYER_MOL', cardNumber));
     }
 
-    if (shouldWriteCredit && store.getters.useCardData) {
+    if (shouldWriteCredit && store.state.auth.device.event.config.useCardData) {
         initialPromise = initialPromise.then(() => {
             const credit = window.nfc.creditToData(store.state.ui.lastUser.credit, config.signingKey);
             window.nfc.write(credit);

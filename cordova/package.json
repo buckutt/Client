@@ -1,7 +1,7 @@
 {
-  "name": "io.cordova.hellocordova",
+  "name": "io.buckless.client",
   "version": "1.0.0",
-  "displayName": "HelloCordova",
+  "displayName": "Buckless Client",
   "cordova": {
     "platforms": [
       "android"

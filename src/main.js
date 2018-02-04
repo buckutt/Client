@@ -29,7 +29,7 @@ function createWindow() {
     window.loadURL(uri);
     window.setMenu(null);
 
-    if (isDev) {
+    if (isDev || process.env.DEVTOOLS) {
         window.webContents.openDevTools();
     }
 

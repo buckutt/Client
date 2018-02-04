@@ -5,7 +5,7 @@ export const updateEssentials = (store, force) => {
     return axios
         .get(`${config.api}/services/deviceEssentials`)
         .then((res) => {
-            if (!store.getters.point || force) {
+            if (!store.state.auth.device.point || force) {
                 store.dispatch('setPoint', {
                     id   : res.headers.device,
                     point: {

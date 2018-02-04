@@ -34,7 +34,7 @@ export const sendBasket = (store, payload = {}) => {
         return;
     }
 
-    if (store.getters.buyer.isAuth && store.getters.credit < 0) {
+    if (store.state.auth.buyer.isAuth && store.getters.credit < 0) {
         return Promise.reject({ response: { data: { message: 'Not enough credit' } } });
     }
 
@@ -43,8 +43,8 @@ export const sendBasket = (store, payload = {}) => {
 
     store.commit('SET_BASKET_STATUS', 'DOING');
 
-    const basket  = store.getters.sidebar;
-    const reloads = store.getters.reloads;
+    const basket  = store.state.items.basket.sidebar;
+    const reloads = store.state.reload.reloads;
 
     const basketToSend = [];
 
@@ -113,11 +113,11 @@ export const sendBasket = (store, payload = {}) => {
 
     let initialPromise;
 
-    if (!store.getters.online) {
+    if (!store.state.online.status) {
         const newCredit = payload.credit - bought + reloaded;
 
         if (newCredit >= 0) {
-            transactionToSend.seller = store.getters.seller.id;
+            transactionToSend.seller = store.state.auth.seller.id;
             store.dispatch('addPendingRequest', transactionToSend);
 
             initialPromise = Promise.resolve({ data: { credit: newCredit } });

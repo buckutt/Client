@@ -13,10 +13,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
-    computed: mapGetters(['waitingForBuyer']),
+    computed: mapState({
+        waitingForBuyer: state => state.basket.basketStatus === 'WAITING_FOR_BUYER'
+    }),
 
     methods: {
         cancelBuy() {

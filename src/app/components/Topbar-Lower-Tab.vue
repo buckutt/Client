@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     props: {
@@ -22,7 +22,9 @@ export default {
             return this.tab === this.index;
         },
 
-        ...mapGetters(['tab'])
+        ...mapState({
+            tab: state => state.ui.currentTab
+        })
     },
 
     methods: mapActions(['selectTab'])

@@ -1,6 +1,6 @@
 <template>
     <header class="b-header">
-        <div class="b-header__user-image" v-if="buyer.isAuth && showBuyerPicture">
+        <div class="b-header__user-image" v-if="buyer.isAuth && showPicture">
             <img src="../assets/placeholder.jpg" height="112" width="112" />
         </div>
         <upper :buyer="buyer" :seller="seller"></upper>
@@ -11,9 +11,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 import isMobile from '../utils/isMobile';
+
+console.log(isMobile)
 
 import Lower from './Topbar-Lower';
 import Upper from './Topbar-Upper';
@@ -36,7 +38,9 @@ export default {
             return isMobile();
         },
 
-        ...mapGetters(['showBuyerPicture'])
+        ...mapState({
+            showPicture: state => state.auth.device.config.showPicture
+        })
     }
 };
 </script>

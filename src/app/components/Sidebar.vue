@@ -2,8 +2,8 @@
     <div class="b-sidebar">
         <div class="b-sidebar__items">
             <sidebar-reload
-                v-if="reloadSum > 0"
-                :amount="reloadSum"></sidebar-reload>
+                v-if="reloadAmount > 0"
+                :amount="reloadAmount"></sidebar-reload>
             <sidebar-promotion
                 v-for="promotion in sidebar.promotions"
                 :key="promotion.id"
@@ -25,8 +25,6 @@
 import countBy from 'lodash.countby';
 import { mapGetters, mapState } from 'vuex';
 
-window.countBy = countBy;
-
 import SidebarItem      from './Sidebar-Item';
 import SidebarPromotion from './Sidebar-Promotion';
 import SidebarReload    from './Sidebar-Reload';
@@ -34,8 +32,12 @@ import SidebarValidate  from './Sidebar-Validate';
 
 export default {
     computed: {
-         ...mapGetters(['sidebar', 'reloadSum']),
-         ...mapState(['items']),
+         ...mapGetters(['reloadAmount']),
+
+         ...mapState({
+            sidebar: state => state.items.basket.sidebar
+         }),
+
          sidebarItems() {
             const counts = countBy(this.sidebar.items.map(item => item.id));
 

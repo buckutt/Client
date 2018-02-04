@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const dataLoader = (store) => {
-    if (!store.getters.online) {
+    if (!store.state.online.status) {
         return Promise.resolve();
     }
 

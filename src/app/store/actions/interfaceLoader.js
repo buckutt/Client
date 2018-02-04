@@ -8,7 +8,7 @@ export const interfaceLoader = (store, obj) => {
         params = `?buyer=${obj.mol.trim()}&molType=${obj.type}`;
     }
 
-    const initialPromise = (store.getters.online) ?
+    const initialPromise = (store.state.online.status) ?
         axios.get(`${config.api}/services/items${params}`, token) :
         Promise.resolve({ data: store.state.online.offline.defaultItems });
 
