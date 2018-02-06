@@ -20,7 +20,7 @@ export default (state, error) => {
     }
 
     if (error.message === 'Server not reacheable') {
-        return 'Serveur injoignable';
+        return 'Serveur injoignable, mode hors ligne actif';
     }
 
     if (error.message.startsWith('Can not reload less than')) {

@@ -5,6 +5,7 @@ const path     = require('path');
 const url      = require('url');
 const config   = require('../config');
 const NFC      = require('./lib/nfc');
+const io       = require('./lib/socket');
 // const updater = require('./lib/updater') TODO: updater
 
 function createWindow() {
@@ -28,7 +29,7 @@ function createWindow() {
     window.loadURL(uri);
     window.setMenu(null);
 
-    if (isDev) {
+    if (isDev || process.env.DEVTOOLS) {
         window.webContents.openDevTools();
     }
 
@@ -38,6 +39,7 @@ function createWindow() {
     });
 
     window.nfc = new NFC();
+    window.io  = io;
     // window.updater = updater(); TODO: updater
 
     const opts = {

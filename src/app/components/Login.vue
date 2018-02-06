@@ -27,8 +27,7 @@
 </template>
 
 <script>
-import axios                      from 'axios';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 import Ticket         from './Ticket';
 import NumericalInput from './NumericalInput';
@@ -46,7 +45,13 @@ export default {
         };
     },
 
-    computed: mapGetters(['buyer', 'seller', 'lastUser', 'doubleValidation', 'point']),
+    computed: mapState({
+        buyer           : state => state.auth.buyer,
+        seller          : state => state.auth.seller,
+        lastUser        : state => state.ui.lastUser,
+        doubleValidation: state => state.auth.device.config.doubleValidation,
+        point           : state => state.auth.device.point.name
+    }),
 
     methods: {
         maskPassword(t) {
@@ -64,15 +69,23 @@ export default {
             }, 500);
         },
 
-        validate(cardNumber) {
+        validate(cardNumber, credit) {
             if (!this.seller.isAuth && this.seller.meanOfLogin.length === 0) {
                 this.sellerId(cardNumber);
             }
 
+            console.log('login-validate', cardNumber, credit)
             if (this.seller.isAuth) {
-                this.setBuyer({
-                    cardNumber
-                });
+                if (credit || credit === 0) {
+                    this.setBuyer({
+                        cardNumber,
+                        credit
+                    });
+                } else {
+                    this.setBuyer({
+                        cardNumber
+                    });
+                }
             }
         },
 
@@ -84,31 +97,34 @@ export default {
             this.authingSeller = true;
             this.passwordMask  = '';
 
-            this.login({
-                meanOfLogin: this.seller.meanOfLogin,
-                password
-            })
-            .then(() => {
-                this.authingSeller = false;
-            });
+            this
+                .login({
+                    meanOfLogin: this.seller.meanOfLogin,
+                    password
+                })
+                .then(() => {
+                    this.authingSeller = false;
+                });
         },
 
         ...mapActions({
-            sellerId   : 'sellerId',
-            setBuyer   : 'buyer',
-            login      : 'login',
-            updatePoint: 'updatePoint'
+            sellerId        : 'sellerId',
+            setBuyer        : 'buyer',
+            login           : 'login',
+            updateEssentials: 'updateEssentials'
         })
     },
 
     mounted() {
         this.timeout = 0;
 
-        this.updatePoint();
+        this.updateEssentials();
 
         setInterval(() => {
             if (!this.seller.isAuth) {
-                this.updatePoint(true);
+                this.updateEssentials(true);
+            } else {
+                this.updateEssentials();
             }
         }, 60 * 1000);
 
@@ -124,6 +140,7 @@ export default {
     flex: 1;
     font-size: 28px;
     text-align: center;
+    background-color: #f3f3f3;
 
     & > input {
         opacity: 0.5;
@@ -132,7 +149,8 @@ export default {
 }
 
 .b-login__card {
-    box-shadow: 0 6px 10px color(var(--black) a(0.3));
+    background-color: #fff;
+    box-shadow: 0 2px 4px color(var(--black) a(0.3));
     margin: 40px auto;
     max-width: 500px;
     min-height: 100px;

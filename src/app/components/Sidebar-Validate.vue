@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 import Currency from './Currency';
 
@@ -30,7 +30,11 @@ export default {
             };
         },
 
-        ...mapGetters(['basketStatus', 'basketAmount', 'reloadAmount'])
+        ...mapState({
+            basketStatus: state => state.basket.basketStatus,
+        }),
+
+        ...mapGetters(['basketAmount', 'reloadAmount'])
     },
 
     methods: {

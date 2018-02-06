@@ -14,4 +14,8 @@ module.exports = class NFCReader extends EventEmitter {
         this.ultralightC.on('atr', atr => this.emit('atr', atr));
         this.ultralightC.on('data', data => this.emit('data', data));
     }
+
+    write(data) {
+        return this.ultralightC.write(data);
+    }
 }

@@ -11,6 +11,7 @@ import items  from './modules/items';
 import reload from './modules/reload';
 import ui     from './modules/ui';
 import basket from './modules/basket';
+import online from './modules/online';
 
 Vue.use(Vuex);
 
@@ -30,7 +31,8 @@ export default new Vuex.Store({
         items,
         reload,
         ui,
-        basket
+        basket,
+        online
     },
     strict : debug,
     plugins: debug ? [createLogger()] : []

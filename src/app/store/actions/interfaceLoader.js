@@ -5,11 +5,14 @@ export const interfaceLoader = (store, obj) => {
     let params  = '';
 
     if (obj) {
-        params = `?buyer=${obj.mol}&molType=${obj.type}`;
+        params = `?buyer=${obj.mol.trim()}&molType=${obj.type}`;
     }
 
-    return axios
-        .get(`${config.api}/services/items${params}`, token)
+    const initialPromise = (store.state.online.status) ?
+        axios.get(`${config.api}/services/items${params}`, token) :
+        Promise.resolve({ data: store.state.online.offline.defaultItems });
+
+    return initialPromise
         .then((res) => {
             if (res.data.buyer) {
                 store.commit('ID_BUYER', {
@@ -19,6 +22,13 @@ export const interfaceLoader = (store, obj) => {
                     lastname : res.data.buyer.lastname,
                     groups   : res.data.buyer.groups,
                     purchases: res.data.buyer.purchases
+                });
+            } else {
+                // This will be call at least once when seller logs in
+                // It will stores default items in case of disconnection
+                store.dispatch('setDefaultItems', {
+                    articles: res.data.articles,
+                    promotions: res.data.promotions
                 });
             }
 

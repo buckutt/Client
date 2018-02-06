@@ -15,11 +15,13 @@ export const clearBasket = ({ commit }) => {
     commit('REMOVE_RELOADS');
 };
 
-export const sendBasket = (store) => {
+export const sendBasket = (store, payload = {}) => {
+    // avoid sending multiple requests
     if (store.state.basket.basketStatus === 'DOING') {
         return;
     }
 
+    // quick mode = wait for card for writing
     if (!store.state.auth.device.config.doubleValidation) {
         if (store.state.basket.basketStatus !== 'WAITING_FOR_BUYER') {
             store.commit('SET_BASKET_STATUS', 'WAITING_FOR_BUYER');
@@ -27,24 +29,22 @@ export const sendBasket = (store) => {
         }
     }
 
-    if (!store.state.auth.buyer.isAuth) {
+    // no buyer = can't send request
+    if (!store.state.auth.buyer.isAuth && !payload.cardNumber) {
         return;
     }
 
-    if (store.getters.credit < 0) {
-        store.dispatch('clearBasket');
-        store.commit('SET_BASKET_STATUS', 'ERROR');
-        store.commit('ERROR', {
-            message: 'Not enough credit'
-        });
-        return;
+    if (store.state.auth.buyer.isAuth && store.getters.credit < 0) {
+        return Promise.reject({ response: { data: { message: 'Not enough credit' } } });
     }
+
+    const now        = payload.now || new Date();
+    const cardNumber = payload.cardNumber || store.state.auth.buyer.meanOfLogin;
 
     store.commit('SET_BASKET_STATUS', 'DOING');
 
-    const basket  = store.getters.sidebar;
-    const reloads = store.getters.reloads;
-    const now     = new Date();
+    const basket  = store.state.items.basket.sidebar;
+    const reloads = store.state.reload.reloads;
 
     const basketToSend = [];
 
@@ -53,18 +53,16 @@ export const sendBasket = (store) => {
 
     basket.items.forEach((article) => {
         basketToSend.push({
-            buyer_id    : store.state.auth.buyer.id,
             price_id    : article.price.id,
             promotion_id: null,
             articles    : [{
-                id     : article.id,
-                vat    : article.vat,
-                price  : article.price.id
+                id   : article.id,
+                vat  : article.vat,
+                price: article.price.id
             }],
             alcohol: article.alcohol,
             cost   : article.price.amount,
-            type   : 'purchase',
-            date   : now
+            type   : 'purchase'
         });
 
         bought += article.price.amount;
@@ -86,12 +84,10 @@ export const sendBasket = (store) => {
 
         basketToSend.push({
             price_id    : promotion.price.id,
-            buyer_id    : store.state.auth.buyer.id,
             promotion_id: promotion.id,
             articles    : articlesInside,
             cost        : promotion.price.amount,
             type        : 'purchase',
-            date        : now,
             alcohol
         });
 
@@ -102,23 +98,52 @@ export const sendBasket = (store) => {
         basketToSend.push({
             credit   : reload.amount,
             trace    : reload.trace,
-            buyer_id : store.state.auth.buyer.id,
-            type     : reload.type,
-            date     : now
+            type     : reload.type
         });
 
         reloaded += reload.amount;
     });
 
-    axios
-        .post(`${config.api}/services/basket`, basketToSend, store.getters.tokenHeaders)
-        .then(() => {
+    const transactionToSend = {
+        buyer  : cardNumber,
+        molType: config.buyerMeanOfLogin,
+        date   : now,
+        basket : basketToSend
+    };
+
+    let initialPromise;
+
+    if (!store.state.online.status) {
+        const newCredit = payload.credit - bought + reloaded;
+
+        if (newCredit >= 0) {
+            transactionToSend.seller = store.state.auth.seller.id;
+            store.dispatch('addPendingRequest', transactionToSend);
+
+            initialPromise = Promise.resolve({ data: { credit: newCredit } });
+        } else {
+            initialPromise = Promise.reject({ response: { data: { message: 'Not enough credit' } } });
+        }
+    } else {
+        initialPromise = axios.post(`${config.api}/services/basket`, transactionToSend, store.getters.tokenHeaders)
+    }
+
+    return initialPromise
+        .then((lastBuyer) => {
+            store.commit('ID_BUYER', {
+                id       : lastBuyer.data.id,
+                credit   : lastBuyer.data.credit,
+                firstname: lastBuyer.data.firstname,
+                lastname : lastBuyer.data.lastname
+            });
             store.commit('CLEAR_BASKET');
             store.commit('REMOVE_RELOADS');
             store.commit('SET_BASKET_STATUS', 'WAITING');
             store.commit('SET_LAST_USER', {
-                name  : `${store.state.auth.buyer.firstname} ${store.state.auth.buyer.lastname}`,
-                credit: (store.state.auth.buyer.credit - bought) + reloaded,
+                name  : (store.state.auth.buyer.firstname) ?
+                    `${store.state.auth.buyer.firstname} ${store.state.auth.buyer.lastname}` :
+                    null,
+                credit: store.state.auth.buyer.credit,
                 reload: reloaded,
                 bought
             });
@@ -128,5 +153,7 @@ export const sendBasket = (store) => {
         .catch((err) => {
             store.commit('SET_BASKET_STATUS', 'ERROR');
             store.commit('ERROR', err.response.data);
+
+            return Promise.reject(err);
         });
 };

@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 import Currency       from './Currency';
 import Methods        from './Reload-Methods';
@@ -65,7 +65,11 @@ export default {
         };
     },
 
-    computed: mapGetters(['reloadState', 'buyer', 'doubleValidation']),
+    computed: mapState({
+        reloadState     : state => state.reload.reloadState,
+        buyer           : state => state.auth.buyer,
+        doubleValidation: state => state.auth.device.config.doubleValidation
+    }),
 
     methods: {
         updateCurrency(amount) {

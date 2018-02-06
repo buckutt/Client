@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="b-lower-bar__reload" v-if="reloadSum > 0">
+        <div class="b-lower-bar__reload" v-if="reloadAmount > 0">
             <div class="b-lower-bar__reload__chip">
-                Rechargement:&nbsp;<currency :value="reloadSum"></currency>
+                Rechargement:&nbsp;<currency :value="reloadAmount"></currency>
                 <span
                     class="b-lower-bar__reload__chip__remove"
                     @click="removeReloads">
@@ -23,7 +23,7 @@ export default {
         Currency
     },
 
-    computed: mapGetters(['reloadSum']),
+    computed: mapGetters(['reloadAmount']),
 
     methods: mapActions(['removeReloads'])
 }

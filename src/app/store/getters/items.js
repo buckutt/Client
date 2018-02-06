@@ -1,11 +1,24 @@
-export const sidebar = (state) => state.items.basket.sidebar;
+import isMobile from '../../utils/isMobile';
 
-export const reloads = (state) => state.reload.reloads;
+export const tabsItems = (state) => {
+    if (isMobile()) {
+        // flatten all tabs on mobile
+        return [].concat(...state.items.tabsItems);
+    }
+
+    let items = state.items.tabsItems[state.ui.currentTab];
+
+    if (items) {
+        items = items.slice().sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    return items;
+};
 
 export const basketAmount = (state) => {
     const basket = state.items.basket.sidebar;
 
-    if (!state.ui.dataLoaded) {
+    if (!basket.items && !basket.promotions) {
         return 0;
     }
 

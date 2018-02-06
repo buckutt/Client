@@ -4,7 +4,7 @@
             <hr v-if="inline"/>
 
             Dernier client :
-            <strong><span class="b--capitalized">{{ user.name }}</span></strong>
+            <strong v-if="user.name"><span class="b--capitalized">{{ user.name }}</span></strong>
 
             <br/>
 
@@ -29,7 +29,13 @@
 import Currency from './Currency';
 
 export default {
-    props: ['inline', 'user'],
+    props: {
+        inline: Boolean,
+        user: {
+            type: Object,
+            required: true
+        }
+    },
 
     components: {
         Currency

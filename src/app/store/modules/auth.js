@@ -18,17 +18,19 @@ const initialState = {
         DefaultGroup_id: null
     },
     buyer: {
-        isAuth   : false,
-        id       : null,
-        credit   : 0,
-        firstname: null,
-        lastname : null,
-        groups   : [],
-        purchases: []
+        isAuth     : false,
+        id         : null,
+        credit     : 0,
+        firstname  : null,
+        lastname   : null,
+        groups     : [],
+        purchases  : [],
+        meanOfLogin: ''
     },
     seller: {
         isAuth           : false,
         meanOfLogin      : '',
+        pin              : null,
         id               : null,
         token            : null,
         firstname        : null,
@@ -57,8 +59,12 @@ const mutations = {
         state.device.DefaultGroup_id = payload.DefaultGroup_id
     },
 
+    DISABLE_DOUBLE_VALIDATION(state) {
+        state.device.config.doubleValidation = false;
+    },
+
     SET_EVENT(state, payload) {
-        const keys = ['maxAlcohol'];
+        const keys = ['maxAlcohol', 'maxPerAccount', 'minReload', 'useCardData'];
 
         keys.forEach((key) => {
             state.device.event.config[key] = payload[key];
@@ -69,14 +75,24 @@ const mutations = {
         state.seller.meanOfLogin = meanOfLogin;
     },
 
+    SET_BUYER_MOL(state, payload) {
+        state.buyer.meanOfLogin = payload;
+    },
+
     AUTH_SELLER(state, payload) {
-        state.seller.isAuth    = true;
-        state.seller.id        = payload.id;
-        state.seller.token     = payload.token;
-        state.seller.firstname = payload.firstname;
-        state.seller.lastname  = payload.lastname;
-        state.seller.canSell   = payload.canSell;
-        state.seller.canReload = payload.canReload;
+        state.seller.isAuth      = true;
+        state.seller.meanOfLogin = payload.meanOfLogin;
+        state.seller.pin         = payload.pin;
+        state.seller.id          = payload.id;
+        state.seller.token       = payload.token;
+        state.seller.firstname   = payload.firstname;
+        state.seller.lastname    = payload.lastname;
+        state.seller.canSell     = payload.canSell;
+        state.seller.canReload   = payload.canReload;
+    },
+
+    UPDATE_TOKEN(state, token) {
+        state.seller.token = token;
     },
 
     ID_BUYER(state, payload) {
@@ -88,7 +104,6 @@ const mutations = {
         state.buyer.groups       = payload.groups;
         state.buyer.purchases    = payload.purchases;
     },
-
     LOGOUT_SELLER(state) {
         state.seller.isAuth = false;
     },

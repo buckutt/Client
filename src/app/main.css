@@ -14,9 +14,10 @@
     border-radius: 2px;
     box-shadow: 0 2px 4px rgba(34, 34, 34, .3);
     left: 50%;
-    margin-left: calc(-1 * $width / 2);
+    padding: 0 5px;
     position: absolute;
     top: 150px;
+    transform: translateX(-50%);
     width: $width;
     z-index: 10;
 }

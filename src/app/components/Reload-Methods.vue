@@ -11,14 +11,17 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
     props: {
         disabled: { type: Boolean, default: false }
     },
 
-    computed: mapGetters(['meansOfPayment', 'meanOfPayment']),
+    computed: mapState({
+        meanOfPayment : state => state.reload.meanOfPayment,
+        meansOfPayment: state => state.reload.meansOfPayment
+    }),
 
     methods: {
         buttonClasses(mean) {

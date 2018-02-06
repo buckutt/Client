@@ -1,10 +1,11 @@
-import axios from 'axios'
+import axios         from 'axios';
+import hasEssentials from '../../utils/offline/hasEssentials';
 
-export const updatePoint = (store, force) => {
+export const updateEssentials = (store, force) => {
     return axios
-        .get(config.api)
+        .get(`${config.api}/services/deviceEssentials`)
         .then((res) => {
-            if (!store.getters.point || force) {
+            if (!store.state.auth.device.point || force) {
                 store.dispatch('setPoint', {
                     id   : res.headers.device,
                     point: {
@@ -17,15 +18,19 @@ export const updatePoint = (store, force) => {
                     }
                 });
             }
+
+            store.dispatch('setSellers', res.data);
         })
         .catch((err) => {
             console.log(err);
 
             if (err.message === 'Network Error') {
-                store.commit('ERROR', {
-                    message: 'Server not reacheable'
-                });
+                if (!hasEssentials()) {
+                    store.commit('ERROR', { message: 'This device doesn\'t meet the minimal requirements to run offline.' });
+                    return;
+                }
+
                 return;
             }
         });
-}
+};

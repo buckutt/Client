@@ -1,7 +1,7 @@
 <template>
     <div class="b-sidebar-item">
         <div class="b-sidebar-item__minus"
-             @click.stop="remove({ id })"></div>
+             @click.stop="removeItemFromBasket({ id })"></div>
         <div class="b-sidebar-item__name">
             {{ name }}
         </div>
@@ -17,9 +17,7 @@ import { mapActions } from 'vuex';
 export default {
     props: ['id', 'name', 'count'],
 
-    methods: mapActions({
-        remove: 'removeItemFromBasket'
-    })
+    methods: mapActions(['removeItemFromBasket'])
 };
 </script>
 

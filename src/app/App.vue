@@ -16,9 +16,10 @@
         </transition>
         <alcohol-warning />
         <disconnect-warning :seller="seller" />
-        <error></error>
+        <offline />
+        <error />
         <waiting-for-buyer />
-        <Ticket v-if="lastUser.name && !loginState && !doubleValidation" :user="lastUser" />
+        <Ticket v-if="lastUser.credit && !loginState && !doubleValidation" :user="lastUser" />
         <input
             class="b--out-of-screen"
             type="text"
@@ -33,7 +34,9 @@
 <script>
 /* global IS_ELECTRON */
 import 'normalize.css';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
+
+import hasEssentials from './utils/offline/hasEssentials';
 
 import Items             from './components/Items';
 import Topbar            from './components/Topbar';
@@ -42,6 +45,7 @@ import Reload            from './components/Reload';
 import Login             from './components/Login';
 import Loading           from './components/Loading';
 import Error             from './components/Error';
+import Offline           from './components/Offline';
 import AlcoholWarning    from './components/AlcoholWarning';
 import DisconnectWarning from './components/DisconnectWarning';
 import WaitingForBuyer   from './components/WaitingForBuyer';
@@ -58,6 +62,7 @@ export default {
         Login,
         Loading,
         Error,
+        Offline,
         AlcoholWarning,
         DisconnectWarning,
         WaitingForBuyer,
@@ -71,61 +76,109 @@ export default {
         };
     },
 
-    computed: mapGetters([
-        'buyer',
-        'seller',
-        'basketStatus',
-        'loaded',
-        'loginState',
-        'waitingForBuyer',
-        'lastUser',
-        'doubleValidation'
-    ]),
+    computed: {
+        ...mapState({
+            buyer           : state => state.auth.buyer,
+            seller          : state => state.auth.seller,
+            basketStatus    : state => state.basket.basketStatus,
+            loaded          : state => state.ui.dataLoaded,
+            waitingForBuyer : state => state.basket.basketStatus === 'WAITING_FOR_BUYER',
+            lastUser        : state => state.ui.lastUser,
+            doubleValidation: state => state.auth.device.config.doubleValidation,
+            useCardData     : state => state.auth.device.event.config.useCardData,
+            online          : state => state.online.status
+        }),
+
+        ...mapGetters(['loginState'])
+    },
 
     methods: {
         refocus() {
             this.$refs.input.focus();
         },
 
-        validate() {
+        validate(credit = null) {
             const value = this.inputValue.slice(0, 13);
+
             this.inputValue = '';
 
             if (this.waitingForBuyer || !this.buyer.isAuth) {
-                this.$refs.login.validate(value);
+                this.$refs.login.validate(value, credit);
             }
         },
 
-        ...mapActions(['sendBasket'])
+        ...mapActions([
+            'setupSocket',
+            'setSellers',
+            'setPoint',
+            'setMeansOfPayment',
+            'setFullDevice',
+            'setEvent',
+            'setDefaultItems',
+            'setPendingRequests'
+        ])
     },
 
     mounted() {
-        let nfc;
+        this.setupSocket();
 
-        // TODO : require('./lib/nfc')
+        if (hasEssentials()) {
+            this.setPoint(JSON.parse(window.localStorage.getItem('headers')));
+            this.setSellers(JSON.parse(window.localStorage.getItem('sellers')));
+            this.setMeansOfPayment(JSON.parse(window.localStorage.getItem('meansOfPayment')));
+            this.setFullDevice(JSON.parse(window.localStorage.getItem('fullDevice')));
+            this.setEvent(JSON.parse(window.localStorage.getItem('event')));
+            this.setDefaultItems(JSON.parse(window.localStorage.getItem('defaultItems')));
+        }
+
+        if (window.localStorage.getItem('pendingRequests')) {
+            this.setPendingRequests(JSON.parse(window.localStorage.getItem('pendingRequests')));
+        }
+
+        let uid = null;
+        let nfc = {
+            on() {}
+        };
+
         if (process.env.TARGET === 'electron') {
             const remote = require('electron').remote.getCurrentWindow();
-
             nfc = remote.nfc;
-        } else if (process.env.TARGET === 'cordova') {
+        } else {
             const NFC = require('../lib/nfc');
-
             nfc = new NFC();
         }
 
+        window.nfc = nfc;
+
         nfc.on('log', (data) => {
+            debugger;
             console.log(data);
         });
 
-        // nfc.on('uid', (data) => {
-        //     this.inputValue = data.toString();
-        //     this.validate();
-        // });
+        if (this.useCardData) {
+            // Not working with buckutt student cards
+            nfc.on('uid', (data) => {
+                uid = data.toString();
+            });
 
-        nfc.on('data', (data) => {
-            this.inputValue = data.toString();
-            this.validate();
-        });
+            nfc.on('data', (data) => {
+                // set input value to previous uid
+                this.inputValue = uid;
+                // adds data/credit to validate
+                this.validate(nfc.dataToCredit(data.toLowerCase(), config.signingKey));
+            });
+        } else {
+            // nfc.on('uid', (data) => {
+            //     this.inputValue = data.toString();
+            //     this.validate();
+            // });
+
+            // To work with buckutt student cards
+            nfc.on('data', (data) => {
+                this.inputValue = data.toString();
+                this.validate();
+            });
+        }
 
         nfc.on('error', (err) => {
             console.error(err);
