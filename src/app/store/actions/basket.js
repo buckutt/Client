@@ -113,7 +113,7 @@ export const sendBasket = (store, payload = {}) => {
 
     let initialPromise;
 
-    if (!store.state.online.status) {
+    if (store.getters.isDegradedModeActive) {
         const newCredit = payload.credit - bought + reloaded;
 
         if (newCredit >= 0) {
@@ -152,7 +152,12 @@ export const sendBasket = (store, payload = {}) => {
         })
         .catch((err) => {
             store.commit('SET_BASKET_STATUS', 'ERROR');
-            store.commit('ERROR', err.response.data);
+
+            if (err.message === 'Network Error') {
+                store.commit('ERROR', { message: 'Server not reacheable' });
+            } else {
+                store.commit('ERROR', err.response.data);
+            }
 
             return Promise.reject(err);
         });

@@ -61,7 +61,7 @@ export default {
     font-size: 18px;
     line-height: 1.5;
     text-align: left;
-    padding: 40px;
+    padding: 40px !important;
 
     & > hr {
         border: 0;

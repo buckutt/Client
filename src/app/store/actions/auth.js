@@ -18,14 +18,14 @@ export const setEvent = ({ commit }, payload) => {
     commit('SET_EVENT', payload);
 };
 
-export const login = ({ commit, dispatch, state }, { meanOfLogin, password }) => {
+export const login = ({ commit, dispatch, state, getters }, { meanOfLogin, password }) => {
     const credentials = {
         meanOfLogin: config.loginMeanOfLogin,
         data       : meanOfLogin,
         pin        : password
     };
 
-    const initialPromise = (state.online.status) ?
+    const initialPromise = (!getters.isDegradedModeActive) ?
         axios.post(`${config.api}/services/login`, credentials) :
         offlineLogin(state.online.offline.sellers, credentials);
 
@@ -50,15 +50,21 @@ export const login = ({ commit, dispatch, state }, { meanOfLogin, password }) =>
 
             dispatch('reconnect');
 
-            return dispatch('dataLoader')
-                .then(() => dispatch('interfaceLoader'))
-                .then(() => commit('SET_DATA_LOADED', true));
+            return dispatch('dataLoader');
         })
+        .then(() => dispatch('interfaceLoader'))
+        .then(() => commit('SET_DATA_LOADED', true))
         .catch((err) => {
             console.error(err);
 
             commit('ID_SELLER', '');
             commit('SET_DATA_LOADED', null);
+
+            if (err.message === 'Network Error') {
+                commit('ERROR', { message: 'Server not reacheable' });
+                return;
+            }
+
             commit('ERROR', err.response.data);
         });
 };
@@ -145,9 +151,17 @@ export const buyer = (store, { cardNumber, credit }) => {
         .then(() => store.dispatch('interfaceLoader', interfaceLoaderCredentials))
         .catch((err) => {
             console.log(err);
+
+            if (err.message === 'Network Error') {
+                store.commit('ERROR', { message: 'Server not reacheable' });
+                return;
+            }
+
             store.commit('ERROR', err.response.data);
         })
         .then(() => store.commit('SET_DATA_LOADED', true));
+
+    return initialPromise;
 };
 
 export const sellerId = ({ commit }, meanOfLogin) => {

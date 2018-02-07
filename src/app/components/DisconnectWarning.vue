@@ -38,7 +38,7 @@ export default {
 @import '../main.css';
 
 .b-disconnect-warning__modal {
-    padding: 15px;
+    padding: 15px !important;
     position: absolute;
     z-index: 2;
 

@@ -23,10 +23,7 @@ export const setupSocket = (store) => {
     });
 
     socket.on('disconnect', () => {
-        if (store.state.auth.device.event.config.useCardData) {
-            store.commit('SET_OFFLINE');
-        }
-
+        store.commit('SET_OFFLINE');
         store.commit('ERROR', {
             message: 'Server not reacheable'
         });
@@ -36,7 +33,7 @@ export const setupSocket = (store) => {
 };
 
 export const reconnect = (store) => {
-    if (!store.state.auth.seller.isAuth || !store.state.online.status) {
+    if (!store.state.auth.seller.isAuth || !store.getters.isDegradedModeActive) {
         return;
     }
 
@@ -103,10 +100,10 @@ export const addPendingRequest = (store, payload) => {
 };
 
 export const setPendingRequests = (store, payload) => {
-    window.localStorage.setItem('pendingRequests', JSON.stringify(store.state.online.pendingRequests));
     if (payload.length > 0) {
         store.commit('SET_PENDING_REQUESTS', payload);
     } else {
         store.commit('CLEAR_PENDING_REQUESTS');
     }
+    window.localStorage.setItem('pendingRequests', JSON.stringify(store.state.online.pendingRequests));
 };

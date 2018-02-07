@@ -85,8 +85,7 @@ export default {
             waitingForBuyer : state => state.basket.basketStatus === 'WAITING_FOR_BUYER',
             lastUser        : state => state.ui.lastUser,
             doubleValidation: state => state.auth.device.config.doubleValidation,
-            useCardData     : state => state.auth.device.event.config.useCardData,
-            online          : state => state.online.status
+            useCardData     : state => state.auth.device.event.config.useCardData
         }),
 
         ...mapGetters(['loginState'])

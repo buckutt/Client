@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const dataLoader = (store) => {
-    if (!store.state.online.status) {
+    if (store.getters.isDegradedModeActive) {
         return Promise.resolve();
     }
 
@@ -46,6 +46,11 @@ export const dataLoader = (store) => {
             store.dispatch('setFullDevice', device);
         })
         .catch((err) => {
+            if (err.message === 'Network Error') {
+                commit('ERROR', { message: 'Server not reacheable' });
+                return;
+            }
+
             store.commit('ERROR', err.response.data);
         });
 };
