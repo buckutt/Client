@@ -16,8 +16,9 @@
         </transition>
         <alcohol-warning />
         <disconnect-warning :seller="seller" />
-        <offline />
         <error />
+        <alert v-if="alert" />
+        <offline />
         <waiting-for-buyer />
         <Ticket v-if="lastUser.credit && !loginState && !doubleValidation" :user="lastUser" />
         <input
@@ -45,6 +46,7 @@ import Reload            from './components/Reload';
 import Login             from './components/Login';
 import Loading           from './components/Loading';
 import Error             from './components/Error';
+import Alert             from './components/Alert';
 import Offline           from './components/Offline';
 import AlcoholWarning    from './components/AlcoholWarning';
 import DisconnectWarning from './components/DisconnectWarning';
@@ -62,6 +64,7 @@ export default {
         Login,
         Loading,
         Error,
+        Alert,
         Offline,
         AlcoholWarning,
         DisconnectWarning,
@@ -85,7 +88,8 @@ export default {
             waitingForBuyer : state => state.basket.basketStatus === 'WAITING_FOR_BUYER',
             lastUser        : state => state.ui.lastUser,
             doubleValidation: state => state.auth.device.config.doubleValidation,
-            useCardData     : state => state.auth.device.event.config.useCardData
+            useCardData     : state => state.auth.device.event.config.useCardData,
+            alert           : state => state.auth.alert
         }),
 
         ...mapGetters(['loginState'])

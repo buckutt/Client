@@ -1,4 +1,5 @@
 const initialState = {
+    alert: null,
     device: {
         id   : null,
         point: {
@@ -118,6 +119,14 @@ const mutations = {
 
     LOGOUT_BUYER(state) {
         state.buyer.isAuth = false;
+    },
+
+    SET_ALERT(state, alert) {
+        state.alert = alert;
+    },
+
+    CLOSE_ALERT(state) {
+        state.alert = null;
     }
 };
 

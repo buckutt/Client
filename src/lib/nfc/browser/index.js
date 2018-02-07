@@ -1,6 +1,6 @@
-import { EventEmitter } from 'events';
+const { EventEmitter } = require('events');
 
-export default class NFC extends EventEmitter {
+module.exports = class NFC extends EventEmitter {
     constructor() {
         super();
         console.warn('NFC is not available in browser');

@@ -4,22 +4,44 @@ import ioClient       from 'socket.io-client';
 import { sendBasket } from './basket';
 import q              from '../../utils/q';
 
-let socket = null;
+let socket;
 
-export const setupSocket = (store) => {
-    if (!socket) {
-        if (process.env.TARGET === 'electron') {
-            socket = require('electron').remote.getCurrentWindow().io();
-        } else {
-            console.log('branche else', config.api)
-            socket = ioClient(config.api, { rejectUnauthorized: false });
-        }
+export const setupSocket = (store, token) => {
+    if (socket) {
+       socket.off('disconnect');
+       socket.close();
+    }
+
+    let opts = {};
+
+    if (token) {
+        opts = {
+            transportOptions: {
+                polling: {
+                    extraHeaders: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            }
+        };
+    }
+
+    if (process.env.TARGET === 'electron') {
+        socket = require('electron').remote.getCurrentWindow().io(opts);
+    } else {
+        console.log('branche else', config.api);
+        socket = ioClient(config.api, { rejectUnauthorized: false, ...opts });
     }
 
     socket.on('connect', () => {
         store.commit('SET_ONLINE');
         store.dispatch('updateEssentials');
         store.dispatch('reconnect');
+        socket.emit('alert');
+    });
+
+    socket.on('alert', (alert) => {
+        store.commit('SET_ALERT', alert);
     });
 
     socket.on('disconnect', () => {
@@ -27,8 +49,6 @@ export const setupSocket = (store) => {
         store.commit('ERROR', {
             message: 'Server not reacheable'
         });
-
-        //store.commit('DISABLE_DOUBLE_VALIDATION');
     });
 };
 

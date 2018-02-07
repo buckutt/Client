@@ -47,7 +47,7 @@ export const login = ({ commit, dispatch, state, getters }, { meanOfLogin, passw
             });
 
             commit('SET_DATA_LOADED', false);
-
+            dispatch('setupSocket', res.data.token);
             dispatch('reconnect');
 
             return dispatch('dataLoader');
@@ -72,6 +72,7 @@ export const login = ({ commit, dispatch, state, getters }, { meanOfLogin, passw
 export const logout = (store) => {
     if (store.state.auth.buyer.isAuth) {
         store.commit('LOGOUT_BUYER');
+        store.dispatch('setupSocket');
         return store.dispatch('clearBasket')
             .then(() => store.dispatch('interfaceLoader'));
     } else if (store.state.auth.seller.isAuth) {
@@ -166,4 +167,12 @@ export const buyer = (store, { cardNumber, credit }) => {
 
 export const sellerId = ({ commit }, meanOfLogin) => {
     commit('ID_SELLER', meanOfLogin);
+};
+
+export const alert = ({ commit }, alert) => {
+    commit('ALERT', alert);
+};
+
+export const closeAlert = ({ commit }) => {
+    commit('CLOSE_ALERT');
 };
