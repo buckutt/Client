@@ -31,7 +31,7 @@ export const login = ({ commit, dispatch, state, getters }, { meanOfLogin, passw
 
     return initialPromise
         .then((res) => {
-            if (!res.data.user.canSell && !res.data.user.canReload) {
+            if (!res.data.user.canSell && !res.data.user.canReload && !res.data.user.canAssign) {
                 return Promise.reject({ response: { data: { message: 'Not enough rights' } } });
             }
 
@@ -43,17 +43,21 @@ export const login = ({ commit, dispatch, state, getters }, { meanOfLogin, passw
                 firstname  : res.data.user.firstname,
                 lastname   : res.data.user.lastname,
                 canSell    : res.data.user.canSell,
-                canReload  : res.data.user.canReload
+                canReload  : res.data.user.canReload,
+                canAssign  : res.data.user.canAssign
             });
 
-            commit('SET_DATA_LOADED', false);
-            dispatch('setupSocket', res.data.token);
-            dispatch('reconnect');
+            if (!res.data.user.canAssign) {
+                commit('SET_DATA_LOADED', false);
 
-            return dispatch('dataLoader');
+                return dispatch('dataLoader')
+                    .then(() => dispatch('interfaceLoader'))
+                    .then(() => commit('SET_DATA_LOADED', true));
+            } else {
+                return dispatch('loadGroups');
+            }
         })
-        .then(() => dispatch('interfaceLoader'))
-        .then(() => commit('SET_DATA_LOADED', true))
+        .then(() => dispatch('setupSocket', state.auth.seller.token))
         .catch((err) => {
             console.error(err);
 
@@ -103,6 +107,11 @@ export const buyer = (store, { cardNumber, credit }) => {
     store.commit('SET_DATA_LOADED', false);
 
     let initialPromise = Promise.resolve();
+
+    if (store.getters.seller.canAssign) {
+        store.commit('SET_DATA_LOADED', true);
+        return;
+    }
 
     let interfaceLoaderCredentials;
     let shouldSendBasket = false;

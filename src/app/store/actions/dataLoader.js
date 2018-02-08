@@ -54,3 +54,22 @@ export const dataLoader = (store) => {
             store.commit('ERROR', err.response.data);
         });
 };
+
+export const loadGroups = (store) => {
+    if (!store.state.online.status) {
+        if (window.localStorage.hasOwnProperty('groups')) {
+            return Promise.resolve(JSON.parse(window.localStorage.getItem('groups')));
+        }
+
+        return Promise.resolve();
+    }
+
+    const token = store.getters.tokenHeaders;
+
+    axios
+        .get(`${config.api}/groups`, token)
+        .then((res) => {
+            store.commit('SET_GROUPS', res.data);
+            window.localStorage.setItem('groups', JSON.stringify(res.data));
+        });
+};

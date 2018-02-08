@@ -118,7 +118,10 @@ export const sendBasket = (store, payload = {}) => {
 
         if (newCredit >= 0) {
             transactionToSend.seller = store.state.auth.seller.id;
-            store.dispatch('addPendingRequest', transactionToSend);
+            store.dispatch('addPendingRequest', {
+                url: `${config.api}/services/basket`,
+                data: transactionToSend
+            });
 
             initialPromise = Promise.resolve({ data: { credit: newCredit } });
         } else {

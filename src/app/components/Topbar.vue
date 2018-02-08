@@ -15,8 +15,6 @@ import { mapState } from 'vuex';
 
 import isMobile from '../utils/isMobile';
 
-console.log(isMobile)
-
 import Lower from './Topbar-Lower';
 import Upper from './Topbar-Upper';
 import Reload from './Topbar-Reload';

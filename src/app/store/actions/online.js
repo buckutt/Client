@@ -29,7 +29,6 @@ export const setupSocket = (store, token) => {
     if (process.env.TARGET === 'electron') {
         socket = require('electron').remote.getCurrentWindow().io(opts);
     } else {
-        console.log('branche else', config.api);
         socket = ioClient(config.api, { rejectUnauthorized: false, ...opts });
     }
 
@@ -74,17 +73,17 @@ export const reconnect = (store) => {
         axios.post(`${config.api}/services/login`, credentials, store.getters.tokenHeaders)
             .then(res => store.commit('UPDATE_TOKEN', res.data.token));
 
-    storedRequests.forEach((transactionToSend) => {
+    storedRequests.forEach((request) => {
         promise = promise
             .then(() =>
-                axios.post(`${config.api}/services/basket`, transactionToSend, store.getters.tokenHeaders)
+                axios.post(request.url, request.body, store.getters.tokenHeaders)
             )
             .then(() => new Promise((resolve) => {
                     setTimeout(() => resolve(), 150);
                 })
             )
             .catch((err) => {
-                failedRequests.push(transactionToSend);
+                failedRequests.push(request);
                 console.error('Error while resending basket : ', err);
             // })
             // .then(() => {
@@ -125,5 +124,6 @@ export const setPendingRequests = (store, payload) => {
     } else {
         store.commit('CLEAR_PENDING_REQUESTS');
     }
+
     window.localStorage.setItem('pendingRequests', JSON.stringify(store.state.online.pendingRequests));
 };

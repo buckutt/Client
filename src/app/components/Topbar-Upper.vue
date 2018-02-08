@@ -17,7 +17,7 @@
         </div>
         <div class="b-upper-bar__actions">
             <div
-                v-if="seller.isAuth || seller.meanOfLogin.length > 0"
+                v-if="!loginState"
                 class="b-upper-bar__actions__action-eject"
                 @click="logout">
                 <i class="b-icon">eject</i>
