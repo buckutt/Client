@@ -83,7 +83,8 @@ export default {
         },
 
         ...mapState({
-            online: state => state.online.status
+            online     : state => state.online.status,
+            useCardData: state => state.auth.device.event.config.useCardData
         }),
 
         ...mapGetters(['tokenHeaders'])
@@ -108,7 +109,7 @@ export default {
                         }, this.tokenHeaders)
                     )
                     .then(() => {
-                        window.nfc.write(
+                        this.useCardData && window.nfc.write(
                             window.nfc.creditToData(this.assignModalCredit, config.signingKey)
                         );
 
@@ -117,7 +118,7 @@ export default {
                     .catch((err) => {
                         if (err.response.data.message === 'Duplicate Entry') {
                             // ignore duplicate entry, write to card anyway
-                            window.nfc.write(
+                            this.useCardData && window.nfc.write(
                                 window.nfc.creditToData(this.assignModalCredit, config.signingKey)
                             );
 
@@ -140,7 +141,7 @@ export default {
                     }
                 });
 
-                window.nfc.write(
+                this.useCardData && window.nfc.write(
                     window.nfc.creditToData(this.assignModalCredit, config.signingKey)
                 );
 

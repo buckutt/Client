@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import Modal          from './History-Modal';
-import Currency       from './Currency';
+import { mapActions, mapState } from 'vuex';
+import Modal                    from './History-Modal';
+import Currency                 from './Currency';
 
 export default {
     components: {
@@ -58,7 +58,11 @@ export default {
             return this.$store.state.history.history
                 .filter(e => e.cardNumber === this.cardNumber)
                 .map(e => this.resume(e));
-        }
+        },
+
+        ...mapState({
+            useCardData: state => state.auth.device.event.config.useCardData
+        })
     },
 
     methods: {
@@ -88,9 +92,11 @@ export default {
 
                     this.removeFromHistory(this.selectedEntry);
 
-                    window.nfc.write(
-                        window.nfc.creditToData(newCredit, config.signingKey)
-                    );
+                    if (this.useCardData) {
+                        window.nfc.write(
+                            window.nfc.creditToData(newCredit, config.signingKey)
+                        );
+                    }
 
                     this.$refs.modal.ok();
 
