@@ -6,7 +6,15 @@ module.exports = class NFC extends EventEmitter {
         console.warn('NFC is not available in browser');
     }
 
-    listenNFC() {
-        console.log('Listening on NFC');
+    write(data) {
+        console.warn('nfc-write-disabled', data);
+    }
+
+    dataToCredit(data, signingKey) {
+        console.warn('nfc-data-to-credit-disabled', data);
+    }
+
+    creditToData(credit, signingKey) {
+        console.warn('nfc-credit-to-data-disabled', credit);
     }
 }
