@@ -108,7 +108,7 @@ export const buyer = (store, { cardNumber, credit }) => {
 
     let initialPromise = Promise.resolve();
 
-    if (store.getters.seller.canAssign) {
+    if (store.state.auth.seller.canAssign) {
         store.commit('SET_DATA_LOADED', true);
         return;
     }
