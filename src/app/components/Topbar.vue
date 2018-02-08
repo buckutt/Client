@@ -3,10 +3,10 @@
         <div class="b-header__user-image" v-if="buyer.isAuth && showPicture">
             <img src="../assets/placeholder.jpg" height="112" width="112" />
         </div>
-        <upper :buyer="buyer" :seller="seller"></upper>
+        <upper :buyer="buyer" :seller="seller" />
         <div class="b-header__separator"></div>
-        <lower :buyer="buyer" :seller="seller"></lower>
-        <reload v-if="isMobile"></reload>
+        <lower :buyer="buyer" :seller="seller" />
+        <reload />
     </header>
 </template>
 

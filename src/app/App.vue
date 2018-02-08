@@ -5,9 +5,10 @@
         <topbar :buyer="buyer" :seller="seller" />
         <main class="b-main">
             <login v-show="loginState" ref="login" />
-            <items v-if="!loginState && seller.canSell" />
-            <sidebar v-if="!loginState && seller.canSell" />
-            <assigner v-if="!loginState && seller.canAssign" ref="assign" />
+            <history v-if="!loginState && history" ref="history" />
+            <items v-if="!loginState && seller.canSell && !history" />
+            <sidebar v-if="!loginState && seller.canSell && !history" />
+            <assigner v-if="!loginState && seller.canAssign && !history" ref="assign" />
         </main>
         <reload
             v-if="!loginState"
@@ -55,6 +56,7 @@ import AlcoholWarning    from './components/AlcoholWarning';
 import DisconnectWarning from './components/DisconnectWarning';
 import WaitingForBuyer   from './components/WaitingForBuyer';
 import Ticket            from './components/Ticket';
+import History           from './components/History';
 
 export default {
     name: 'App',
@@ -73,7 +75,8 @@ export default {
         AlcoholWarning,
         DisconnectWarning,
         WaitingForBuyer,
-        Ticket
+        Ticket,
+        History
     },
 
     data() {
@@ -93,6 +96,8 @@ export default {
             lastUser        : state => state.ui.lastUser,
             doubleValidation: state => state.auth.device.config.doubleValidation,
             useCardData     : state => state.auth.device.event.config.useCardData,
+            online          : state => state.online.status,
+            history         : state => state.history.opened,
             alert           : state => state.auth.alert
         }),
 
@@ -109,7 +114,9 @@ export default {
             this.inputValue = '';
 
             if (this.waitingForBuyer || !this.buyer.isAuth) {
-                if (this.seller.canAssign) {
+                if (this.history) {
+                    this.$refs.history.onCard(value, credit);
+                } else if (this.seller.canAssign) {
                     this.$refs.assign.onBarcode(value);
                 } else {
                     this.$refs.login.validate(value, credit);
@@ -119,7 +126,7 @@ export default {
 
         hideVirtualKeyboard() {
             if (process.env.TARGET === 'cordova') {
-                setTimeout(() => { Keyboard.hide(); })
+                setTimeout(() => Keyboard.hide())
             }
         },
 

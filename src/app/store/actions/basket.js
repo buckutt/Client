@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import axios from 'axios';
+import axios    from 'axios';
+import uniqueId from 'lodash.uniqueid';
 
 export const addItemToBasket = ({ commit }, item) => {
     commit('ADD_ITEM', item);
@@ -117,13 +118,22 @@ export const sendBasket = (store, payload = {}) => {
         const newCredit = payload.credit - bought + reloaded;
 
         if (newCredit >= 0) {
+            const transactionIds = uniqueId('offline-transaction-id');
+
             transactionToSend.seller = store.state.auth.seller.id;
+            transactionToSend.offlineTransactionId = transactionIds;
+
             store.dispatch('addPendingRequest', {
                 url: `${config.api}/services/basket`,
                 data: transactionToSend
             });
 
-            initialPromise = Promise.resolve({ data: { credit: newCredit } });
+            initialPromise = Promise.resolve({
+                data: {
+                    transactionIds,
+                    credit: newCredit
+                }
+            });
         } else {
             initialPromise = Promise.reject({ response: { data: { message: 'Not enough credit' } } });
         }
@@ -133,6 +143,14 @@ export const sendBasket = (store, payload = {}) => {
 
     return initialPromise
         .then((lastBuyer) => {
+            // store last lastBuyer + transactionIds
+            store.commit('ADD_HISTORY_TRANSACTION', {
+                cardNumber,
+                basketToSend,
+                date: new Date(),
+                transactionIds: lastBuyer.data.transactionIds
+            });
+
             store.commit('ID_BUYER', {
                 id       : lastBuyer.data.id,
                 credit   : lastBuyer.data.credit,
@@ -154,6 +172,7 @@ export const sendBasket = (store, payload = {}) => {
             store.commit('LOGOUT_BUYER');
         })
         .catch((err) => {
+            console.log(err);
             store.commit('SET_BASKET_STATUS', 'ERROR');
 
             if (err.message === 'Network Error') {

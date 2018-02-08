@@ -22,6 +22,8 @@ export const warnAlcohol = (state) => {
 };
 
 export const alcoholAmount = (state) => {
+    return 0;
+
     if (!state.auth.buyer.id || !state.auth.seller.id) {
         return false;
     }

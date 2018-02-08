@@ -4,7 +4,7 @@ import ioClient       from 'socket.io-client';
 import { sendBasket } from './basket';
 import q              from '../../utils/q';
 
-let socket;
+let socket = null;
 
 export const setupSocket = (store, token) => {
     if (socket) {
@@ -78,6 +78,14 @@ export const reconnect = (store) => {
             .then(() =>
                 axios.post(request.url, request.body, store.getters.tokenHeaders)
             )
+            .then((res) => {
+                const transactionId = transactionToSend.offlineTransactionId;
+
+                store.commit('UPDATE_HISTORY_ENTRY', {
+                    transactionId,
+                    basketData: res.data
+                });
+            })
             .then(() => new Promise((resolve) => {
                     setTimeout(() => resolve(), 150);
                 })
@@ -90,6 +98,8 @@ export const reconnect = (store) => {
             //     store.commit('PUSH_REQUEST');
             });
     });
+
+    promise = promise.then(() => store.dispatch('sendValidCancellations'));
 
     promise = promise.then(() => {
         store.commit('SET_SYNCING', false);

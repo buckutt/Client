@@ -56,4 +56,10 @@ export default {
 .b-lower-bar__reload__chip__remove {
     height: 26px;
 }
+
+@media(min-width: 769px) {
+    .b-lower-bar__reload {
+        display: none;
+    }
+}
 </style>
