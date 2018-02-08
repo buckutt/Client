@@ -7,7 +7,6 @@ module.exports = class NFC extends EventEmitter {
     }
 
     write(data) {
-        console.warn('nfc-write-disabled', data);
     }
 
     dataToCredit(data, signingKey) {

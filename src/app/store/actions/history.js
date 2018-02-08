@@ -7,7 +7,7 @@ export const toggleHistory = ({ commit }) => {
 };
 
 export const removeFromHistory = ({ commit }, payload) => {
-    commit('REMOVE_FROM_HISTRY', payload);
+    commit('REMOVE_FROM_HISTORY', payload);
 };
 
 export const cancelEntry = (store, payload) => {

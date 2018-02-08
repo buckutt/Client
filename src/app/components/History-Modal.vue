@@ -20,12 +20,14 @@
 <script>
 export default {
     data() {
-        success: false
+        return {
+            success: false
+        }
     },
 
     methods: {
         cancelCancel() {
-            this.$parent.selectedEntry = null;
+            this.$emit('cancel');
         },
 
         ok() {

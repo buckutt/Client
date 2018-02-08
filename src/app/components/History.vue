@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <modal v-if="selectedEntry" ref="modal"/>
+        <modal v-if="selectedEntry" ref="modal" @cancel="selectedEntry = null"/>
     </div>
 </template>
 
@@ -68,6 +68,10 @@ export default {
                 return;
             }
 
+            if (!Number.isInteger(credit)) {
+                credit = 0;
+            }
+
             this
                 .cancelEntry(this.selectedEntry)
                 .then(() => {
@@ -78,14 +82,14 @@ export default {
                     const newCredit = credit + this.creditDifference(this.selectedEntry);
 
                     if (newCredit < 0) {
-                        // this.error
+                        this.$store.commit('ERROR', { message: 'Not enough credit' });
                         return;
                     }
 
                     this.removeFromHistory(this.selectedEntry);
 
                     window.nfc.write(
-                        window.nfc.creditToData(newCredit, config.app.signingKey)
+                        window.nfc.creditToData(newCredit, config.signingKey)
                     );
 
                     this.$refs.modal.ok();
@@ -130,10 +134,7 @@ export default {
         },
 
         creditDifference(entry) {
-            const cost   = entry.basketToSend.filter(e => e.cost).map(e => e.cost).reduce((a, b) => a + b, 0);
-            const reload = entry.basketToSend.filter(e => e.credit).map(e => e.credit).reduce((a, b) => a + b, 0);
-
-            return reload - cost;
+            return -1 * (entry.reload - entry.cost);
         },
 
         ...mapActions(['toggleHistory', 'cancelEntry', 'removeFromHistory'])
