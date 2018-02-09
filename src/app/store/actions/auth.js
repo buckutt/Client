@@ -102,6 +102,7 @@ export const cancelLogout = ({ commit }) => {
 };
 
 export const buyer = (store, { cardNumber, credit }) => {
+    console.trace(credit);
     const token = store.getters.tokenHeaders;
 
     store.commit('SET_DATA_LOADED', false);
@@ -120,7 +121,7 @@ export const buyer = (store, { cardNumber, credit }) => {
 
     if (!store.state.auth.device.config.doubleValidation) {
         shouldClearBasket = true;
-        // First time: sendbasket to set "WAITING_FOR_BUYER"
+        // First time: sendBasket will active "WAITING_FOR_BUYER" and return
         shouldSendBasket = true;
 
         if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
@@ -129,7 +130,7 @@ export const buyer = (store, { cardNumber, credit }) => {
             interfaceLoaderCredentials = { type: config.buyerMeanOfLogin, mol: cardNumber };
         }
     } else {
-        if (store.state.auth.isAuth) {
+        if (store.state.auth.buyer.isAuth) {
             shouldSendBasket = true;
             shouldClearBasket = true;
         } else {
@@ -138,8 +139,12 @@ export const buyer = (store, { cardNumber, credit }) => {
     }
 
     if (shouldSendBasket) {
+        if (credit) {
+            store.commit('OVERRIDE_BUYER_CREDIT', credit);
+        }
+
         initialPromise = initialPromise
-            .then(() => store.dispatch('sendBasket', { cardNumber, credit }))
+            .then(() => store.dispatch('sendBasket', { cardNumber }))
             .then(() => store.commit('SET_BASKET_STATUS', 'WAITING'));
     } else {
         initialPromise = initialPromise
@@ -148,8 +153,9 @@ export const buyer = (store, { cardNumber, credit }) => {
 
     if (shouldWriteCredit && store.state.auth.device.event.config.useCardData) {
         initialPromise = initialPromise.then(() => {
-            const credit = window.nfc.creditToData(store.state.ui.lastUser.credit, config.signingKey);
-            window.nfc.write(credit);
+            window.nfc.write(
+                window.nfc.creditToData(store.state.ui.lastUser.credit, config.signingKey)
+            );
         });
     }
 
@@ -159,6 +165,11 @@ export const buyer = (store, { cardNumber, credit }) => {
 
     initialPromise = initialPromise
         .then(() => store.dispatch('interfaceLoader', interfaceLoaderCredentials))
+        .then(() => {
+            if (credit && store.state.auth.device.event.config.useCardData) {
+                store.commit('OVERRIDE_BUYER_CREDIT', credit);
+            }
+        })
         .catch((err) => {
             console.log(err);
 

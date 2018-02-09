@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export const interfaceLoader = (store, obj) => {
+export const interfaceLoader = (store, credentials) => {
     const token = store.getters.tokenHeaders;
     let params  = '';
 
-    if (obj) {
-        params = `?buyer=${obj.mol.trim()}&molType=${obj.type}`;
+    if (credentials) {
+        params = `?buyer=${credentials.mol.trim()}&molType=${credentials.type}`;
     }
 
     const initialPromise = (!store.getters.isDegradedModeActive) ?

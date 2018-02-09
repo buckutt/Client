@@ -76,7 +76,7 @@ export default {
 
             console.log('login-validate', cardNumber, credit)
             if (this.seller.isAuth) {
-                if (credit || credit === 0) {
+                if (Number.isInteger(credit)) {
                     this.setBuyer({
                         cardNumber,
                         credit

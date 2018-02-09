@@ -113,6 +113,10 @@ const mutations = {
         state.buyer.purchases    = payload.purchases;
     },
 
+    OVERRIDE_BUYER_CREDIT(state, credit) {
+        state.buyer.credit = credit;
+    },
+
     LOGOUT_SELLER(state) {
         state.seller.isAuth = false;
     },
