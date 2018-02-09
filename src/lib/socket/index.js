@@ -8,4 +8,4 @@ const opts = {
     rejectUnauthorized: false
 };
 
-module.exports = (clientOpts) => io(JSON.parse(config.api), { ...opts, ...clientOpts });
+module.exports = (clientOpts) => io(JSON.parse(config.api), Object.assign({}, opts, clientOpts));
