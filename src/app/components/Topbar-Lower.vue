@@ -100,7 +100,7 @@ export default {
 
     .b-lower-bar__device__point,
     .b-lower-bar__device__event {
-        flex: 1;
+        flex: 0;
         border-left: 0;
         line-height: 35px;
         margin-left: 0;

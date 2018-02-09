@@ -17,7 +17,7 @@ function init() {
 }
 
 if (process.env.TARGET === 'cordova') {
-  document.addEventListener("deviceready", () => init(), false)
+  document.addEventListener("deviceready", init, false)
 } else {
   init()
 }

@@ -1,4 +1,5 @@
 const initialState = {
+    alert: null,
     device: {
         id   : null,
         point: {
@@ -37,8 +38,10 @@ const initialState = {
         lastname         : null,
         canSell          : false,
         canReload        : false,
+        canAssign        : false,
         disconnectWarning: false
-    }
+    },
+    groups: []
 };
 
 const mutations = {
@@ -89,6 +92,11 @@ const mutations = {
         state.seller.lastname    = payload.lastname;
         state.seller.canSell     = payload.canSell;
         state.seller.canReload   = payload.canReload;
+        state.seller.canAssign   = payload.canAssign;
+    },
+
+    SET_GROUPS(state, groups) {
+        state.groups = groups;
     },
 
     UPDATE_TOKEN(state, token) {
@@ -104,6 +112,11 @@ const mutations = {
         state.buyer.groups       = payload.groups;
         state.buyer.purchases    = payload.purchases;
     },
+
+    OVERRIDE_BUYER_CREDIT(state, credit) {
+        state.buyer.credit = credit;
+    },
+
     LOGOUT_SELLER(state) {
         state.seller.isAuth = false;
     },
@@ -118,6 +131,14 @@ const mutations = {
 
     LOGOUT_BUYER(state) {
         state.buyer.isAuth = false;
+    },
+
+    SET_ALERT(state, alert) {
+        state.alert = alert;
+    },
+
+    CLOSE_ALERT(state) {
+        state.alert = null;
     }
 };
 

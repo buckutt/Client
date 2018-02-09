@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-export const interfaceLoader = (store, obj) => {
+export const interfaceLoader = (store, credentials) => {
     const token = store.getters.tokenHeaders;
     let params  = '';
 
-    if (obj) {
-        params = `?buyer=${obj.mol.trim()}&molType=${obj.type}`;
+    if (credentials) {
+        params = `?buyer=${credentials.mol.trim()}&molType=${credentials.type}`;
     }
 
-    const initialPromise = (store.state.online.status) ?
+    const initialPromise = (!store.getters.isDegradedModeActive) ?
         axios.get(`${config.api}/services/items${params}`, token) :
         Promise.resolve({ data: store.state.online.offline.defaultItems });
 
@@ -42,7 +42,15 @@ export const interfaceLoader = (store, obj) => {
 
             return store.dispatch('createTabs');
         })
-        .then(() => store.dispatch('createTabsItems'));
+        .then(() => store.dispatch('createTabsItems'))
+        .catch((err) => {
+            if (err.message === 'Network Error') {
+                store.commit('ERROR', { message: 'Server not reacheable' });
+                return;
+            }
+
+            store.commit('ERROR', err.response.data);
+        });
 };
 
 export const clearInterface = (store) => {

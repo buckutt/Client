@@ -1,12 +1,19 @@
-import { EventEmitter } from 'events';
+const { EventEmitter } = require('events');
 
-export default class NFC extends EventEmitter {
+module.exports = class NFC extends EventEmitter {
     constructor() {
         super();
         console.warn('NFC is not available in browser');
     }
 
-    listenNFC() {
-        console.log('Listening on NFC');
+    write(data) {
+    }
+
+    dataToCredit(data, signingKey) {
+        console.warn('nfc-data-to-credit-disabled', data);
+    }
+
+    creditToData(credit, signingKey) {
+        console.warn('nfc-credit-to-data-disabled', credit);
     }
 }

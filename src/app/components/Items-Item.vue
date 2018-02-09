@@ -60,7 +60,9 @@ export default {
 
         const $name = this.$refs.name;
         const size = textSize(this.item.name);
-        const maxSize = 130;
+
+        // width - padding - padding - blue border
+        const maxSize = this.$refs.name.getBoundingClientRect().width - parseInt(getComputedStyle(this.$refs.name).paddingLeft, 10) * 2 - 4 * 2;
 
         if (size > maxSize) {
             $name.style.fontSize = `${initialFontSize * (maxSize / size)}px`;
@@ -99,6 +101,7 @@ export default {
     & > img {
         &:before {
             background-image: url('../assets/placeholder.jpg');
+            background-size: 100%;
             content: ' ';
             position: absolute;
             top: 0;

@@ -34,6 +34,7 @@ export default {
 
 @media (max-width: 768px) {
     .b-items {
+        background-color: #f3f3f3;
         padding-top: 15px;
     }
 }

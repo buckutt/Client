@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const dataLoader = (store) => {
-    if (!store.state.online.status) {
+    if (store.getters.isDegradedModeActive) {
         return Promise.resolve();
     }
 
@@ -46,6 +46,30 @@ export const dataLoader = (store) => {
             store.dispatch('setFullDevice', device);
         })
         .catch((err) => {
+            if (err.message === 'Network Error') {
+                commit('ERROR', { message: 'Server not reacheable' });
+                return;
+            }
+
             store.commit('ERROR', err.response.data);
+        });
+};
+
+export const loadGroups = (store) => {
+    if (!store.state.online.status) {
+        if (window.localStorage.hasOwnProperty('groups')) {
+            return Promise.resolve(JSON.parse(window.localStorage.getItem('groups')));
+        }
+
+        return Promise.resolve();
+    }
+
+    const token = store.getters.tokenHeaders;
+
+    axios
+        .get(`${config.api}/groups`, token)
+        .then((res) => {
+            store.commit('SET_GROUPS', res.data);
+            window.localStorage.setItem('groups', JSON.stringify(res.data));
         });
 };

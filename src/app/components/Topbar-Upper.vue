@@ -17,10 +17,17 @@
         </div>
         <div class="b-upper-bar__actions">
             <div
-                v-if="seller.isAuth || seller.meanOfLogin.length > 0"
+                v-if="!loginState"
                 class="b-upper-bar__actions__action-eject"
                 @click="logout">
                 <i class="b-icon">eject</i>
+            </div>
+            <div
+                v-if="!loginState && seller.canSell"
+                class="b-upper-bar__actions__action-cancel"
+                :class="historyClass"
+                @click="toggleHistory">
+                <i class="b-icon">history</i>
             </div>
             <div
                 v-if="!loginState && seller.canReload && seller.canSell"
@@ -33,7 +40,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 import Currency from './Currency';
 import LiveTime from './Topbar-Upper-Time';
@@ -49,9 +56,19 @@ export default {
         LiveTime
     },
 
-    computed: mapGetters(['loginState', 'credit']),
+    computed: {
+        ...mapGetters(['loginState', 'credit']),
 
-    methods: mapActions(['openReloadModal', 'logout'])
+        ...mapState({
+            history: state => state.history.opened
+        }),
+
+        historyClass() {
+            return this.history ? 'b-upper-bar__actions__action-cancel--active' : '';
+        }
+    },
+
+    methods: mapActions(['openReloadModal', 'toggleHistory', 'logout'])
 };
 </script>
 
@@ -65,11 +82,14 @@ export default {
     font-size: 18px;
     justify-content: center;
     padding-left: 20px;
+    position: absolute;
+    height: 100%;
 }
 
 .b-upper-bar {
     display: flex;
     height: 65px;
+    position: relative;
 }
 
 .b-upper-bar__date {
@@ -81,6 +101,9 @@ export default {
 }
 
 .b-upper-bar__actions {
+    right: 0;
+    position: absolute;
+    height: 100%;
     display: flex;
     line-height: 65px;
 
@@ -91,11 +114,9 @@ export default {
     }
 }
 
-.b-upper-bar__actions__action-eject {
-    cursor: pointer;
-}
-
-.b-upper-bar__actions__action-reload {
+.b-upper-bar__actions__action-eject,
+.b-upper-bar__actions__action-reload,
+.b-upper-bar__actions__action-cancel {
     cursor: pointer;
 }
 
@@ -129,6 +150,10 @@ export default {
         & > :last-child > .b-icon {
             margin-right: 10px;
         }
+    }
+
+    .b-upper-bar__actions__action-cancel--active > .b-icon {
+        color: var(--red);
     }
 }
 </style>

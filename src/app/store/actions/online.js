@@ -6,37 +6,53 @@ import q              from '../../utils/q';
 
 let socket = null;
 
-export const setupSocket = (store) => {
-    if (!socket) {
-        if (process.env.TARGET === 'electron') {
-            socket = require('electron').remote.getCurrentWindow().io();
-        } else {
-            console.log('branche else', config.api)
-            socket = ioClient(config.api, { rejectUnauthorized: false });
-        }
+export const setupSocket = (store, token) => {
+    if (socket) {
+       socket.off('disconnect');
+       socket.close();
+    }
+
+    let opts = {};
+
+    if (token) {
+        opts = {
+            transportOptions: {
+                polling: {
+                    extraHeaders: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            }
+        };
+    }
+
+    if (process.env.TARGET === 'electron') {
+        socket = require('electron').remote.getCurrentWindow().io(opts);
+    } else {
+        socket = ioClient(config.api, { rejectUnauthorized: false, ...opts });
     }
 
     socket.on('connect', () => {
         store.commit('SET_ONLINE');
         store.dispatch('updateEssentials');
         store.dispatch('reconnect');
+        socket.emit('alert');
+    });
+
+    socket.on('alert', (alert) => {
+        store.commit('SET_ALERT', alert);
     });
 
     socket.on('disconnect', () => {
-        if (store.state.auth.device.event.config.useCardData) {
-            store.commit('SET_OFFLINE');
-        }
-
+        store.commit('SET_OFFLINE');
         store.commit('ERROR', {
             message: 'Server not reacheable'
         });
-
-        //store.commit('DISABLE_DOUBLE_VALIDATION');
     });
 };
 
 export const reconnect = (store) => {
-    if (!store.state.auth.seller.isAuth || !store.state.online.status) {
+    if (!store.state.auth.seller.isAuth || !store.getters.isDegradedModeActive) {
         return;
     }
 
@@ -57,23 +73,33 @@ export const reconnect = (store) => {
         axios.post(`${config.api}/services/login`, credentials, store.getters.tokenHeaders)
             .then(res => store.commit('UPDATE_TOKEN', res.data.token));
 
-    storedRequests.forEach((transactionToSend) => {
+    storedRequests.forEach((request) => {
         promise = promise
             .then(() =>
-                axios.post(`${config.api}/services/basket`, transactionToSend, store.getters.tokenHeaders)
+                axios.post(request.url, request.body, store.getters.tokenHeaders)
             )
+            .then((res) => {
+                const transactionId = transactionToSend.offlineTransactionId;
+
+                store.commit('UPDATE_HISTORY_ENTRY', {
+                    transactionId,
+                    basketData: res.data
+                });
+            })
             .then(() => new Promise((resolve) => {
                     setTimeout(() => resolve(), 150);
                 })
             )
             .catch((err) => {
-                failedRequests.push(transactionToSend);
+                failedRequests.push(request);
                 console.error('Error while resending basket : ', err);
             // })
             // .then(() => {
             //     store.commit('PUSH_REQUEST');
             });
     });
+
+    promise = promise.then(() => store.dispatch('sendValidCancellations'));
 
     promise = promise.then(() => {
         store.commit('SET_SYNCING', false);
@@ -103,10 +129,11 @@ export const addPendingRequest = (store, payload) => {
 };
 
 export const setPendingRequests = (store, payload) => {
-    window.localStorage.setItem('pendingRequests', JSON.stringify(store.state.online.pendingRequests));
     if (payload.length > 0) {
         store.commit('SET_PENDING_REQUESTS', payload);
     } else {
         store.commit('CLEAR_PENDING_REQUESTS');
     }
+
+    window.localStorage.setItem('pendingRequests', JSON.stringify(store.state.online.pendingRequests));
 };

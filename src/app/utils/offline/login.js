@@ -22,6 +22,7 @@ export default (deviceSellers, credentials) => new Promise((resolve, reject) => 
 
     const canSell   = validRights.some(right => right.name === 'seller');
     const canReload = validRights.some(right => right.name === 'reloader');
+    const canAssign = validRights.some(right => right.name === 'assigner');
 
     return resolve({
         data: {
@@ -31,7 +32,8 @@ export default (deviceSellers, credentials) => new Promise((resolve, reject) => 
                 firstname: seller.firstname,
                 lastname : seller.lastname,
                 canSell,
-                canReload
+                canReload,
+                canAssign
             }
         }
     });

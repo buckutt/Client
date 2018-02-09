@@ -8,7 +8,15 @@ export default (state, error) => {
     console.error(error);
 
     if (error.message === 'User not found') {
-        return state.auth.seller.isAuth ? 'Client introuvable' : 'Vendeur introuvable';
+        return state.auth.seller.isAuth ? 'Client introuvable' : 'Identifiants incorrects';
+    }
+
+    if (error.message === 'This device doesn\'t meet the minimal requirements to run offline.') {
+        return 'Cet équippement ne possède pas les données minimum pour fonctionner hors-ligne.';
+    }
+
+    if (error.message === 'Duplicate Entry') {
+        return state.auth.seller.canAssign ? 'Cette carte est déjà assignée' : 'Entrée déjà existante';
     }
 
     if (error.message === 'Not enough rights') {

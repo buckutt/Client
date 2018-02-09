@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import axios from 'axios';
+import axios    from 'axios';
+import uniqueId from 'lodash.uniqueid';
 
 export const addItemToBasket = ({ commit }, item) => {
     commit('ADD_ITEM', item);
@@ -34,7 +35,8 @@ export const sendBasket = (store, payload = {}) => {
         return;
     }
 
-    if (store.state.auth.buyer.isAuth && store.getters.credit < 0) {
+    // !useCardData = checked by the API
+    if (store.state.auth.device.event.config.useCardData && store.getters.credit < 0) {
         return Promise.reject({ response: { data: { message: 'Not enough credit' } } });
     }
 
@@ -48,8 +50,8 @@ export const sendBasket = (store, payload = {}) => {
 
     const basketToSend = [];
 
-    let bought   = 0;
-    let reloaded = 0;
+    let bought   = store.getters.basketAmount;
+    let reloaded = store.getters.reloadAmount;
 
     basket.items.forEach((article) => {
         basketToSend.push({
@@ -64,8 +66,6 @@ export const sendBasket = (store, payload = {}) => {
             cost   : article.price.amount,
             type   : 'purchase'
         });
-
-        bought += article.price.amount;
     });
 
     basket.promotions.forEach((promotion) => {
@@ -90,8 +90,6 @@ export const sendBasket = (store, payload = {}) => {
             type        : 'purchase',
             alcohol
         });
-
-        bought += promotion.price.amount;
     });
 
     reloads.forEach((reload) => {
@@ -100,8 +98,6 @@ export const sendBasket = (store, payload = {}) => {
             trace    : reload.trace,
             type     : reload.type
         });
-
-        reloaded += reload.amount;
     });
 
     const transactionToSend = {
@@ -113,26 +109,43 @@ export const sendBasket = (store, payload = {}) => {
 
     let initialPromise;
 
-    if (!store.state.online.status) {
-        const newCredit = payload.credit - bought + reloaded;
+    if (store.getters.isDegradedModeActive) {
+        const transactionIds = uniqueId('offline-transaction-id');
 
-        if (newCredit >= 0) {
-            transactionToSend.seller = store.state.auth.seller.id;
-            store.dispatch('addPendingRequest', transactionToSend);
+        transactionToSend.seller = store.state.auth.seller.id;
+        transactionToSend.offlineTransactionId = transactionIds;
 
-            initialPromise = Promise.resolve({ data: { credit: newCredit } });
-        } else {
-            initialPromise = Promise.reject({ response: { data: { message: 'Not enough credit' } } });
-        }
+        store.dispatch('addPendingRequest', {
+            url: `${config.api}/services/basket?offline=1`,
+            data: transactionToSend
+        });
+
+        initialPromise = Promise.resolve({
+            data: {
+                transactionIds,
+                pendingCardUpdates: 0,
+                credit: store.getters.credit
+            }
+        });
     } else {
-        initialPromise = axios.post(`${config.api}/services/basket`, transactionToSend, store.getters.tokenHeaders)
+        initialPromise = axios.post(`${config.api}/services/basket`, transactionToSend, store.getters.tokenHeaders);
     }
 
     return initialPromise
         .then((lastBuyer) => {
+            // store last lastBuyer + transactionIds
+            store.commit('ADD_HISTORY_TRANSACTION', {
+                cardNumber,
+                basketToSend,
+                date: new Date(),
+                transactionIds: lastBuyer.data.transactionIds
+            });
+
             store.commit('ID_BUYER', {
-                id       : lastBuyer.data.id,
-                credit   : lastBuyer.data.credit,
+                id    : lastBuyer.data.id,
+                credit: store.state.auth.device.event.config.useCardData
+                    ? store.getters.credit + lastBuyer.data.pendingCardUpdates
+                    : lastBuyer.data.credit,
                 firstname: lastBuyer.data.firstname,
                 lastname : lastBuyer.data.lastname
             });
@@ -151,8 +164,14 @@ export const sendBasket = (store, payload = {}) => {
             store.commit('LOGOUT_BUYER');
         })
         .catch((err) => {
+            console.log(err);
             store.commit('SET_BASKET_STATUS', 'ERROR');
-            store.commit('ERROR', err.response.data);
+
+            if (err.message === 'Network Error') {
+                store.commit('ERROR', { message: 'Server not reacheable' });
+            } else {
+                store.commit('ERROR', err.response.data);
+            }
 
             return Promise.reject(err);
         });

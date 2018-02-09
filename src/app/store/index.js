@@ -6,12 +6,13 @@ import createLogger from 'vuex/dist/logger';
 import * as actions from './actions';
 import * as getters from './getters';
 
-import auth   from './modules/auth';
-import items  from './modules/items';
-import reload from './modules/reload';
-import ui     from './modules/ui';
-import basket from './modules/basket';
-import online from './modules/online';
+import auth    from './modules/auth';
+import items   from './modules/items';
+import reload  from './modules/reload';
+import ui      from './modules/ui';
+import basket  from './modules/basket';
+import online  from './modules/online';
+import history from './modules/history';
 
 Vue.use(Vuex);
 
@@ -32,7 +33,8 @@ export default new Vuex.Store({
         reload,
         ui,
         basket,
-        online
+        online,
+        history
     },
     strict : debug,
     plugins: debug ? [createLogger()] : []

@@ -18,20 +18,20 @@ export const setEvent = ({ commit }, payload) => {
     commit('SET_EVENT', payload);
 };
 
-export const login = ({ commit, dispatch, state }, { meanOfLogin, password }) => {
+export const login = ({ commit, dispatch, state, getters }, { meanOfLogin, password }) => {
     const credentials = {
         meanOfLogin: config.loginMeanOfLogin,
         data       : meanOfLogin,
         pin        : password
     };
 
-    const initialPromise = (state.online.status) ?
+    const initialPromise = (!getters.isDegradedModeActive) ?
         axios.post(`${config.api}/services/login`, credentials) :
         offlineLogin(state.online.offline.sellers, credentials);
 
     return initialPromise
         .then((res) => {
-            if (!res.data.user.canSell && !res.data.user.canReload) {
+            if (!res.data.user.canSell && !res.data.user.canReload && !res.data.user.canAssign) {
                 return Promise.reject({ response: { data: { message: 'Not enough rights' } } });
             }
 
@@ -43,22 +43,32 @@ export const login = ({ commit, dispatch, state }, { meanOfLogin, password }) =>
                 firstname  : res.data.user.firstname,
                 lastname   : res.data.user.lastname,
                 canSell    : res.data.user.canSell,
-                canReload  : res.data.user.canReload
+                canReload  : res.data.user.canReload,
+                canAssign  : res.data.user.canAssign
             });
 
-            commit('SET_DATA_LOADED', false);
+            if (!res.data.user.canAssign) {
+                commit('SET_DATA_LOADED', false);
 
-            dispatch('reconnect');
-
-            return dispatch('dataLoader')
-                .then(() => dispatch('interfaceLoader'))
-                .then(() => commit('SET_DATA_LOADED', true));
+                return dispatch('dataLoader')
+                    .then(() => dispatch('interfaceLoader'))
+                    .then(() => commit('SET_DATA_LOADED', true));
+            } else {
+                return dispatch('loadGroups');
+            }
         })
+        .then(() => dispatch('setupSocket', state.auth.seller.token))
         .catch((err) => {
             console.error(err);
 
             commit('ID_SELLER', '');
             commit('SET_DATA_LOADED', null);
+
+            if (err.message === 'Network Error') {
+                commit('ERROR', { message: 'Server not reacheable' });
+                return;
+            }
+
             commit('ERROR', err.response.data);
         });
 };
@@ -66,6 +76,7 @@ export const login = ({ commit, dispatch, state }, { meanOfLogin, password }) =>
 export const logout = (store) => {
     if (store.state.auth.buyer.isAuth) {
         store.commit('LOGOUT_BUYER');
+        store.dispatch('setupSocket');
         return store.dispatch('clearBasket')
             .then(() => store.dispatch('interfaceLoader'));
     } else if (store.state.auth.seller.isAuth) {
@@ -91,11 +102,17 @@ export const cancelLogout = ({ commit }) => {
 };
 
 export const buyer = (store, { cardNumber, credit }) => {
+    console.trace(credit);
     const token = store.getters.tokenHeaders;
 
     store.commit('SET_DATA_LOADED', false);
 
     let initialPromise = Promise.resolve();
+
+    if (store.state.auth.seller.canAssign) {
+        store.commit('SET_DATA_LOADED', true);
+        return;
+    }
 
     let interfaceLoaderCredentials;
     let shouldSendBasket = false;
@@ -104,7 +121,7 @@ export const buyer = (store, { cardNumber, credit }) => {
 
     if (!store.state.auth.device.config.doubleValidation) {
         shouldClearBasket = true;
-        // First time: sendbasket to set "WAITING_FOR_BUYER"
+        // First time: sendBasket will active "WAITING_FOR_BUYER" and return
         shouldSendBasket = true;
 
         if (store.state.basket.basketStatus === 'WAITING_FOR_BUYER') {
@@ -113,7 +130,7 @@ export const buyer = (store, { cardNumber, credit }) => {
             interfaceLoaderCredentials = { type: config.buyerMeanOfLogin, mol: cardNumber };
         }
     } else {
-        if (store.state.auth.isAuth) {
+        if (store.state.auth.buyer.isAuth) {
             shouldSendBasket = true;
             shouldClearBasket = true;
         } else {
@@ -122,8 +139,12 @@ export const buyer = (store, { cardNumber, credit }) => {
     }
 
     if (shouldSendBasket) {
+        if (credit) {
+            store.commit('OVERRIDE_BUYER_CREDIT', credit);
+        }
+
         initialPromise = initialPromise
-            .then(() => store.dispatch('sendBasket', { cardNumber, credit }))
+            .then(() => store.dispatch('sendBasket', { cardNumber }))
             .then(() => store.commit('SET_BASKET_STATUS', 'WAITING'));
     } else {
         initialPromise = initialPromise
@@ -132,8 +153,9 @@ export const buyer = (store, { cardNumber, credit }) => {
 
     if (shouldWriteCredit && store.state.auth.device.event.config.useCardData) {
         initialPromise = initialPromise.then(() => {
-            const credit = window.nfc.creditToData(store.state.ui.lastUser.credit, config.signingKey);
-            window.nfc.write(credit);
+            window.nfc.write(
+                window.nfc.creditToData(store.state.ui.lastUser.credit, config.signingKey)
+            );
         });
     }
 
@@ -143,13 +165,34 @@ export const buyer = (store, { cardNumber, credit }) => {
 
     initialPromise = initialPromise
         .then(() => store.dispatch('interfaceLoader', interfaceLoaderCredentials))
+        .then(() => {
+            if (credit && store.state.auth.device.event.config.useCardData) {
+                store.commit('OVERRIDE_BUYER_CREDIT', credit);
+            }
+        })
         .catch((err) => {
             console.log(err);
+
+            if (err.message === 'Network Error') {
+                store.commit('ERROR', { message: 'Server not reacheable' });
+                return;
+            }
+
             store.commit('ERROR', err.response.data);
         })
         .then(() => store.commit('SET_DATA_LOADED', true));
+
+    return initialPromise;
 };
 
 export const sellerId = ({ commit }, meanOfLogin) => {
     commit('ID_SELLER', meanOfLogin);
+};
+
+export const alert = ({ commit }, alert) => {
+    commit('ALERT', alert);
+};
+
+export const closeAlert = ({ commit }) => {
+    commit('CLOSE_ALERT');
 };

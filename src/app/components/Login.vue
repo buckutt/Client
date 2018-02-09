@@ -76,7 +76,7 @@ export default {
 
             console.log('login-validate', cardNumber, credit)
             if (this.seller.isAuth) {
-                if (credit || credit === 0) {
+                if (Number.isInteger(credit)) {
                     this.setBuyer({
                         cardNumber,
                         credit
@@ -110,23 +110,12 @@ export default {
         ...mapActions({
             sellerId        : 'sellerId',
             setBuyer        : 'buyer',
-            login           : 'login',
-            updateEssentials: 'updateEssentials'
+            login           : 'login'
         })
     },
 
     mounted() {
         this.timeout = 0;
-
-        this.updateEssentials();
-
-        setInterval(() => {
-            if (!this.seller.isAuth) {
-                this.updateEssentials(true);
-            } else {
-                this.updateEssentials();
-            }
-        }, 60 * 1000);
 
         document.body.addEventListener('click', this.refocus, false);
     }
