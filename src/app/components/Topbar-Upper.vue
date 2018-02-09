@@ -23,7 +23,7 @@
                 <i class="b-icon">eject</i>
             </div>
             <div
-                v-if="!loginState && seller.canSell"
+                v-if="!loginState && seller.canSell && false"
                 class="b-upper-bar__actions__action-cancel"
                 :class="historyClass"
                 @click="toggleHistory">
