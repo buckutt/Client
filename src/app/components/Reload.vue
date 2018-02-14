@@ -184,6 +184,13 @@ export default {
 }
 
 @media (max-width: 768px) {
+    .b-reload--reloadOnly {
+        & .b-reload__modal {
+            transform: none;
+            z-index: 4;
+        }
+    }
+
     .b-reload__modal {
         max-width: 310px;
     }
