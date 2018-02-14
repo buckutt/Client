@@ -54,7 +54,8 @@ export const login = ({ commit, dispatch, state, getters }, { meanOfLogin, passw
                     .then(() => dispatch('interfaceLoader'))
                     .then(() => commit('SET_DATA_LOADED', true));
             } else {
-                return dispatch('loadGroups');
+                return dispatch('loadGroups')
+                    .then(() => dispatch('loadEvent'))
             }
         })
         .then(() => dispatch('setupSocket', state.auth.seller.token))

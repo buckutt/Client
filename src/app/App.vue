@@ -114,9 +114,9 @@ export default {
             this.inputValue = '';
 
             if (this.waitingForBuyer || !this.buyer.isAuth) {
-                if (this.history) {
+                if (this.seller.isAuth && this.history) {
                     this.$refs.history.onCard(value, credit);
-                } else if (this.seller.canAssign) {
+                } else if (this.seller.isAuth && this.seller.canAssign) {
                     this.$refs.assign.onBarcode(value);
                 } else {
                     this.$refs.login.validate(value, credit);
@@ -202,11 +202,21 @@ export default {
             });
 
             nfc.on('data', (data) => {
-                console.log('nfc-data', nfc.dataToCredit(data.toLowerCase(), config.signingKey));
+                let credit;
+
+                try {
+                    credit = nfc.dataToCredit(data.toLowerCase(), config.signingKey);
+                    console.log('nfc-data', credit);
+                } catch (err) {
+                    if (err.message === 'Signature does not match') {
+                        console.log('signature does not match');
+                    }
+                }
+
                 // set input value to previous uid
                 this.inputValue = uid;
                 // adds data/credit to validate
-                this.validate(nfc.dataToCredit(data.toLowerCase(), config.signingKey));
+                this.validate(credit);
             });
         } else {
             nfc.on('uid', (data) => {

@@ -4,6 +4,7 @@ class AssignerOfflineData {
 
     init() {
         return new Promise((resolve, reject) => {
+            console.log('assigner-offline-data setup');
             this.db = window.sqlitePlugin.openDatabase({
                 name    : 'buckless.db',
                 location: 'default'
@@ -22,6 +23,7 @@ class AssignerOfflineData {
     }
 
     empty() {
+        console.log('assigner-offline-data empty');
         return new Promise((resolve, reject) => {
             this.db.transaction((tx) => {
                 tx.executeSql('delete from users');
@@ -80,6 +82,7 @@ class AssignerOfflineData {
     }
 
     insert(users) {
+        console.log('assigner-offline-data insert', users.length);
         return new Promise((resolve, reject) => {
             this.db.transaction((tx) => {
                 for (let i = users.length - 1; i >= 0; i--) {

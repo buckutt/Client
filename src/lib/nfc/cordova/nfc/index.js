@@ -16,6 +16,7 @@ module.exports = class NFCReader extends EventEmitter {
     }
 
     write(data) {
+        console.timeEnd('NFC Write');
         return this.ultralightC.write(data);
     }
 }

@@ -58,7 +58,8 @@ export const dataLoader = (store) => {
 export const loadGroups = (store) => {
     if (!store.state.online.status) {
         if (window.localStorage.hasOwnProperty('groups')) {
-            return Promise.resolve(JSON.parse(window.localStorage.getItem('groups')));
+            store.commit('SET_GROUPS', JSON.parse(window.localStorage.getItem('groups')));
+            return Promise.resolve();
         }
 
         return Promise.resolve();
@@ -71,5 +72,25 @@ export const loadGroups = (store) => {
         .then((res) => {
             store.commit('SET_GROUPS', res.data);
             window.localStorage.setItem('groups', JSON.stringify(res.data));
+        });
+};
+
+export const loadEvent = (store) => {
+    if (!store.state.online.status) {
+        if (window.localStorage.hasOwnProperty('event')) {
+            store.commit('SET_EVENT', JSON.parse(window.localStorage.getItem('event')));
+            return Promise.resolve();
+        }
+
+        return Promise.resolve();
+    }
+
+    const token = store.getters.tokenHeaders;
+
+    axios
+        .get(`${config.api}/events/${store.state.auth.device.event.id}`, token)
+        .then((res) => {
+            store.commit('SET_EVENT', res.data);
+            window.localStorage.setItem('event', JSON.stringify(res.data));
         });
 };
