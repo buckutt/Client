@@ -72,6 +72,10 @@ export default {
                 return;
             }
 
+            if (!this.selectedEntry) {
+                return;
+            }
+
             if (!Number.isInteger(credit)) {
                 credit = 0;
             }
@@ -159,7 +163,7 @@ export default {
 .b-history__text {
     font-size: 18px;
     font-weight: bold;
-    padding: 30px 0;
+    padding: 30px 5px;
     text-align: center;
 }
 

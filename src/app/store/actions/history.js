@@ -70,5 +70,13 @@ export const sendValidCancellations = (store) => {
             return Promise.all(bodys.map(body => axios.post(cancelUrl, body, store.getters.tokenHeaders)));
         });
 
-    return Promise.all(cancellations);
+    return Promise
+        .all(cancellations)
+        .then(() => {
+            store.state.history.pendingCancellations
+                .filter((pending) => typeof pending.transactionIds === 'object')
+                .forEach((pending) => {
+                    store.dispatch('REMOVE_FROM_HISTORY', pending);
+                });
+        });
 };
