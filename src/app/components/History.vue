@@ -17,12 +17,14 @@
                     <span class="b-history__list__entry__date">
                         {{ entry.date }}
                     </span>
-                    <span class="b-history__list__entry__reload" v-if="entry.reload">
-                        <currency :value="entry.reload" showPlus />
-                    </span>
-                    <span class="b-history__list__entry__cost">
-                        -<currency :value="entry.cost" />
-                    </span>
+                    <div>
+                        <span class="b-history__list__entry__reload" v-if="entry.reload">
+                            <currency :value="entry.reload" showPlus />
+                        </span>
+                        <span class="b-history__list__entry__cost">
+                            -<currency :value="entry.cost" />
+                        </span>
+                    </div>
                     <span class="b-history__list__entry__content">
                         <span v-if="entry.firstItem">{{ entry.firstItem }}</span><span v-if="entry.more">, ...</span>
                     </span>
@@ -133,7 +135,7 @@ export default {
                 firstItem = firstItemBought;
             } else {
                 if (reload > 0) {
-                    firstItem = `Rechargement ${reload}`;
+                    firstItem = 'Rechargement';
                 }
             }
 
@@ -198,6 +200,7 @@ export default {
 
 .b-history__list__entry {
     display: flex;
+    flex-wrap: wrap;
     padding: 20px 15px;
     align-items: center;
 
