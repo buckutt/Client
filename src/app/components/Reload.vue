@@ -7,7 +7,7 @@
             class="b-reload__drop"
             v-if="!reloadOnly"
             @click="closeReload"></div>
-        <div class="b-reload__modal">
+        <div class="b-reload__modal" :class="{ 'b-reload__modal--fromtop': reloadSum > 0 }">
             <div class="b-reload__modal__topbar">
                 <h3 class="b-reload__modal__topbar__title">Rechargement</h3>
                 <h3
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 
 import Currency       from './Currency';
 import Methods        from './Reload-Methods';
@@ -65,11 +65,15 @@ export default {
         };
     },
 
-    computed: mapState({
-        reloadState     : state => state.reload.reloadState,
-        buyer           : state => state.auth.buyer,
-        doubleValidation: state => state.auth.device.config.doubleValidation
-    }),
+    computed: {
+        ...mapState({
+            reloadState     : state => state.reload.reloadState,
+            buyer           : state => state.auth.buyer,
+            doubleValidation: state => state.auth.device.config.doubleValidation
+        }),
+
+        ...mapGetters(['reloadSum'])
+    },
 
     methods: {
         updateCurrency(amount) {
@@ -189,6 +193,10 @@ export default {
             transform: translateX(-50%);
             top: 90px;
             z-index: 4;
+
+            &.b-reload__modal--fromtop {
+                top: 150px;
+            }
         }
     }
 

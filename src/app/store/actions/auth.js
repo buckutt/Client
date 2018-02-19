@@ -103,7 +103,6 @@ export const cancelLogout = ({ commit }) => {
 };
 
 export const buyer = (store, { cardNumber, credit }) => {
-    console.trace(credit);
     const token = store.getters.tokenHeaders;
 
     store.commit('SET_DATA_LOADED', false);
@@ -140,7 +139,7 @@ export const buyer = (store, { cardNumber, credit }) => {
     }
 
     if (shouldSendBasket) {
-        if (credit) {
+        if (typeof credit === 'number') {
             store.commit('OVERRIDE_BUYER_CREDIT', credit);
         }
 
@@ -167,8 +166,12 @@ export const buyer = (store, { cardNumber, credit }) => {
     initialPromise = initialPromise
         .then(() => store.dispatch('interfaceLoader', interfaceLoaderCredentials))
         .then(() => {
-            if (credit && store.state.auth.device.event.config.useCardData) {
+            if (typeof credit === 'number' && store.state.auth.device.event.config.useCardData) {
                 store.commit('OVERRIDE_BUYER_CREDIT', credit);
+            }
+
+            if (shouldSendBasket && shouldWriteCredit && store.state.auth.device.event.config.useCardData) {
+                store.commit('LOGOUT_BUYER');
             }
         })
         .catch((err) => {

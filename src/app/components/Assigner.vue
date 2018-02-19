@@ -153,7 +153,7 @@ export default {
             if (this.online) {
                 axios.get(`${config.api}/services/assigner?ticketOrMail=${value}`, this.tokenHeaders)
                     .then((res) => {
-                        if (res.data.credit) {
+                        if (typeof res.data.credit === 'number') {
                             this.assignModal(res.data.credit, res.data.name, res.data.id);
                             return;
                         }

@@ -11,6 +11,10 @@ export default (state, error) => {
         return state.auth.seller.isAuth ? 'Client introuvable' : 'Identifiants incorrects';
     }
 
+    if (error.message === 'Couldn\'t find ticket') {
+        return 'Ticket introuvable';
+    }
+
     if (error.message === 'Invalid buyer') {
         return 'Client introuvable';
     }
