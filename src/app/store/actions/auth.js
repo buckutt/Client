@@ -82,6 +82,8 @@ export const logout = (store) => {
             .then(() => store.dispatch('interfaceLoader'));
     } else if (store.state.auth.seller.isAuth) {
         store.commit('FIRST_LOGOUT_SELLER');
+    } else {
+        return store.dispatch('pursueLogout');
     }
 
     return Promise.resolve();
