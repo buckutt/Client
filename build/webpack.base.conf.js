@@ -40,7 +40,8 @@ let base = {
           resolve('src'),
           resolve('test'),
           resolve('node_modules/@buckless/signed-number'),
-          resolve('node_modules/ws')
+          resolve('node_modules/ws'),
+          resolve('node_modules/engine.io-client')
         ]
       },
       {
