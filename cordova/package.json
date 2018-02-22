@@ -7,12 +7,12 @@
       "android"
     ],
     "plugins": {
-      "cordova-plugin-mifare-ultralight": {},
       "cordova-plugin-whitelist": {},
       "cordova-client-cert-authentication": {},
       "phonegap-plugin-barcodescanner": {},
       "cordova-plugin-keyboard": {},
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
+      "cordova-plugin-mifare-ultralight": {}
     }
   },
   "dependencies": {
@@ -20,7 +20,7 @@
     "cordova-client-cert-authentication": "^1.0.0",
     "cordova-plugin-compat": "^1.1.0",
     "cordova-plugin-keyboard": "^1.2.0",
-    "cordova-plugin-mifare-ultralight": "git+https://github.com/buckless-team/cordova-plugin-mifare-ultralight.git",
+    "cordova-plugin-mifare-ultralight": "^1.0.1",
     "cordova-plugin-whitelist": "^1.3.3",
     "cordova-sqlite-storage": "^2.2.0",
     "phonegap-plugin-barcodescanner": "^7.0.2"

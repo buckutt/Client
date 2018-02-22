@@ -11,6 +11,14 @@ export default (state, error) => {
         return state.auth.seller.isAuth ? 'Client introuvable' : 'Identifiants incorrects';
     }
 
+    if (error.message === 'Couldn\'t find ticket') {
+        return 'Ticket introuvable';
+    }
+
+    if (error.message === 'Invalid buyer') {
+        return 'Client introuvable';
+    }
+
     if (error.message === 'This device doesn\'t meet the minimal requirements to run offline.') {
         return 'Cet équippement ne possède pas les données minimum pour fonctionner hors-ligne.';
     }

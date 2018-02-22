@@ -131,6 +131,7 @@ const mutations = {
 
     LOGOUT_BUYER(state) {
         state.buyer.isAuth = false;
+        state.buyer.credit = 0;
     },
 
     SET_ALERT(state, alert) {

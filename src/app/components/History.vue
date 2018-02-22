@@ -17,12 +17,14 @@
                     <span class="b-history__list__entry__date">
                         {{ entry.date }}
                     </span>
-                    <span class="b-history__list__entry__reload" v-if="entry.reload">
-                        <currency :value="entry.reload" showPlus />
-                    </span>
-                    <span class="b-history__list__entry__cost">
-                        -<currency :value="entry.cost" />
-                    </span>
+                    <div>
+                        <span class="b-history__list__entry__reload" v-if="entry.reload">
+                            <currency :value="entry.reload" showPlus />
+                        </span>
+                        <span class="b-history__list__entry__cost">
+                            -<currency :value="entry.cost" />
+                        </span>
+                    </div>
                     <span class="b-history__list__entry__content">
                         <span v-if="entry.firstItem">{{ entry.firstItem }}</span><span v-if="entry.more">, ...</span>
                     </span>
@@ -72,6 +74,10 @@ export default {
                 return;
             }
 
+            if (!this.selectedEntry) {
+                return;
+            }
+
             if (!Number.isInteger(credit)) {
                 credit = 0;
             }
@@ -111,16 +117,26 @@ export default {
             const reload = entry.basketToSend.filter(e => e.credit).map(e => e.credit).reduce((a, b) => a + b, 0);
             const more   = entry.basketToSend.filter(e => e.cost).length > 0;
 
-            let firstItem = entry.basketToSend.find(e => e.cost)
+            let firstItem;
 
-            if (firstItem.promotion_id) {
-                firstItem = this.$store.state.items.promotions
-                    .find(p => p.id === firstItem.promotion_id)
-                    .name;
+            let firstItemBought = entry.basketToSend.find(e => e.cost)
+
+            if (firstItemBought) {
+                if (firstItemBought.promotion_id) {
+                    firstItemBought = this.$store.state.items.promotions
+                        .find(p => p.id === firstItemBought.promotion_id)
+                        .name;
+                } else {
+                    firstItemBought = this.$store.state.items.items
+                        .find(p => p.id === firstItemBought.articles[0].id)
+                        .name;
+                }
+
+                firstItem = firstItemBought;
             } else {
-                firstItem = this.$store.state.items.items
-                    .find(p => p.id === firstItem.articles[0].id)
-                    .name;
+                if (reload > 0) {
+                    firstItem = 'Rechargement';
+                }
             }
 
             const p = n => n < 10 ? `0${n}` : n.toString();
@@ -159,7 +175,7 @@ export default {
 .b-history__text {
     font-size: 18px;
     font-weight: bold;
-    padding: 30px 0;
+    padding: 30px 5px;
     text-align: center;
 }
 
@@ -184,6 +200,7 @@ export default {
 
 .b-history__list__entry {
     display: flex;
+    flex-wrap: wrap;
     padding: 20px 15px;
     align-items: center;
 

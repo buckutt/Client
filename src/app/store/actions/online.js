@@ -52,7 +52,7 @@ export const setupSocket = (store, token) => {
 };
 
 export const reconnect = (store) => {
-    if (!store.state.auth.seller.isAuth || !store.getters.isDegradedModeActive) {
+    if (!store.state.auth.seller.isAuth || !store.state.auth.device.event.config.useCardData) {
         return;
     }
 
@@ -79,12 +79,14 @@ export const reconnect = (store) => {
                 axios.post(request.url, request.body, store.getters.tokenHeaders)
             )
             .then((res) => {
-                const transactionId = transactionToSend.offlineTransactionId;
+                if (request.body.offlineTransactionId) {
+                    const transactionId = request.body.offlineTransactionId;
 
-                store.commit('UPDATE_HISTORY_ENTRY', {
-                    transactionId,
-                    basketData: res.data
-                });
+                    store.commit('UPDATE_HISTORY_ENTRY', {
+                        transactionId,
+                        basketData: res.data
+                    });
+                }
             })
             .then(() => new Promise((resolve) => {
                     setTimeout(() => resolve(), 150);

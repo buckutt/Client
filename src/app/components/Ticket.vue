@@ -75,6 +75,7 @@ export default {
 .b-ticket--modal {
     & .b-ticket__modal {
         @add-mixin modal 400px;
+        max-width: calc(100vw - 20px);
     }
 
     & .b-ticket__drop {

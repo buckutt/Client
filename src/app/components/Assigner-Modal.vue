@@ -13,8 +13,8 @@
                 <h4 v-if="groups.length > 0">Groupes :</h4>
                 <div class="b-assigner-modal__modal__text__groups" v-if="groups.length > 0">
                     <div class="b-assigner-modal__modal__text__groups__group" v-for="group in groups">
-                        <input type="checkbox" name="group" class="b--out-of-screen" :id="group.id" v-model="groups" :value="activeGroups">
-                        <label :for="group.id" @click.prevent.stop="select($event)">
+                        <input type="checkbox" name="group" class="b--out-of-screen" :id="group.id" v-model="activeGroups" :value="group">
+                        <label :for="group.id">
                             {{ group.name }}
                         </label>
                     </div>
@@ -45,17 +45,13 @@ export default {
     },
 
     computed: mapState({
-        groups: state => state.auth.groups.filter(group => group.name !== 'Défaut')
+        groups: state => state.auth.groups
+            .filter(group => group.name !== 'Défaut' && group.name !== app.$store.state.auth.device.event.name)
     }),
 
     methods: {
         cancel() {
-            this.$emit('closeModal');
-        },
-
-        select(e) {
-            // avoid scrolling top
-            e.currentTarget.previousElementSibling.checked = !e.currentTarget.previousElementSibling.checked;
+            this.$emit('close');
         }
     }
 }

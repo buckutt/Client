@@ -17,17 +17,17 @@
         </div>
         <div class="b-upper-bar__actions">
             <div
-                v-if="!loginState"
-                class="b-upper-bar__actions__action-eject"
-                @click="logout">
-                <i class="b-icon">eject</i>
-            </div>
-            <div
                 v-if="!loginState && seller.canSell && false"
                 class="b-upper-bar__actions__action-cancel"
                 :class="historyClass"
                 @click="toggleHistory">
                 <i class="b-icon">history</i>
+            </div>
+            <div
+                v-if="displayLogout"
+                class="b-upper-bar__actions__action-eject"
+                @click="logout">
+                <i class="b-icon">eject</i>
             </div>
             <div
                 v-if="!loginState && seller.canReload && seller.canSell"
@@ -60,7 +60,8 @@ export default {
         ...mapGetters(['loginState', 'credit']),
 
         ...mapState({
-            history: state => state.history.opened
+            history      : state => state.history.opened,
+            displayLogout: state => state.auth.seller.meanOfLogin.length > 0
         }),
 
         historyClass() {

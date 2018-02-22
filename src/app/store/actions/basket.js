@@ -116,8 +116,8 @@ export const sendBasket = (store, payload = {}) => {
         transactionToSend.offlineTransactionId = transactionIds;
 
         store.dispatch('addPendingRequest', {
-            url: `${config.api}/services/basket?offline=1`,
-            data: transactionToSend
+            url : `${config.api}/services/basket?offline=1`,
+            body: transactionToSend
         });
 
         initialPromise = Promise.resolve({

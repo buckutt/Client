@@ -8,10 +8,13 @@ module.exports = class UltralightC extends EventEmitter {
         super();
 
         document.addEventListener('mifareTagDiscovered', (tag) => {
+            console.log(tag);
             this.emit('uid', tag.tag.map((dec) => dec.toString(16)).join(''));
             this.emit('log', tag.tag.map((dec) => dec.toString(16)).join(''));
             this.emit('atr', module.exports.ATR);
             this.emit('cardType', 'ultralightC');
+
+            console.time('NFC Write');
 
             this
                 .connect()
@@ -22,6 +25,15 @@ module.exports = class UltralightC extends EventEmitter {
                 .catch((err) => {
                     console.log(err);
                 });
+        });
+    }
+
+    disconnect() {
+        return new Promise((resolve, reject) => {
+            window.mifare.disconnect(
+                () => { resolve(); },
+                err => { reject(err); }
+            );
         });
     }
 
@@ -106,7 +118,10 @@ module.exports = class UltralightC extends EventEmitter {
                             i + config.ultralight.firstWritablePage,
                             Array.from(page).map(int => int.toString(16)),
                             (res) => resolve(res),
-                            (err) => reject(err));
+                            (err) => {
+                                console.log('error from write', err);
+                                reject(err);
+                            });
                     });
                 })
                 .then((res) => {

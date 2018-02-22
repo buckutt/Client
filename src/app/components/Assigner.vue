@@ -91,7 +91,7 @@ export default {
     },
 
     methods: {
-        assignCard() {
+        assignCard(value) {
             const mol = {
                 user_id: this.assignModalId,
                 type   : 'cardId',
@@ -130,7 +130,7 @@ export default {
             } else {
                 this.addPendingRequest({
                     url : `${config.api}/meansoflogin`,
-                    data: mol
+                    body: mol
                 });
 
                 this.addPendingRequest({
@@ -151,9 +151,9 @@ export default {
 
         ticketScanned(value) {
             if (this.online) {
-                axios.get(`${config.api}/services/assigner?ticketId=${value}`, this.tokenHeaders)
+                axios.get(`${config.api}/services/assigner?ticketOrMail=${value}`, this.tokenHeaders)
                     .then((res) => {
-                        if (res.data.credit) {
+                        if (typeof res.data.credit === 'number') {
                             this.assignModal(res.data.credit, res.data.name, res.data.id);
                             return;
                         }
@@ -184,13 +184,15 @@ export default {
             this.assignModalId     = '';
         },
 
-        onBarcode(value) {
+        onBarcode(value, isFromBarcode) {
             if (this.assignModalOpened) {
                 this.assignCard(value);
                 return;
             }
 
-            this.ticketScanned(value);
+            if (isFromBarcode) {
+                this.ticketScanned(value);
+            }
         },
 
         assignModal(credit, name, id) {
@@ -201,7 +203,7 @@ export default {
         },
 
         barcode() {
-            barcode().then(value => this.onBarcode(value));
+            barcode().then(value => this.onBarcode(value, true));
         },
 
         ok() {

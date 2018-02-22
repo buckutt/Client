@@ -54,7 +54,8 @@ export const login = ({ commit, dispatch, state, getters }, { meanOfLogin, passw
                     .then(() => dispatch('interfaceLoader'))
                     .then(() => commit('SET_DATA_LOADED', true));
             } else {
-                return dispatch('loadGroups');
+                return dispatch('loadGroups')
+                    .then(() => dispatch('loadEvent'))
             }
         })
         .then(() => dispatch('setupSocket', state.auth.seller.token))
@@ -81,6 +82,8 @@ export const logout = (store) => {
             .then(() => store.dispatch('interfaceLoader'));
     } else if (store.state.auth.seller.isAuth) {
         store.commit('FIRST_LOGOUT_SELLER');
+    } else {
+        return store.dispatch('pursueLogout');
     }
 
     return Promise.resolve();
@@ -102,7 +105,6 @@ export const cancelLogout = ({ commit }) => {
 };
 
 export const buyer = (store, { cardNumber, credit }) => {
-    console.trace(credit);
     const token = store.getters.tokenHeaders;
 
     store.commit('SET_DATA_LOADED', false);
@@ -139,7 +141,7 @@ export const buyer = (store, { cardNumber, credit }) => {
     }
 
     if (shouldSendBasket) {
-        if (credit) {
+        if (typeof credit === 'number') {
             store.commit('OVERRIDE_BUYER_CREDIT', credit);
         }
 
@@ -166,8 +168,12 @@ export const buyer = (store, { cardNumber, credit }) => {
     initialPromise = initialPromise
         .then(() => store.dispatch('interfaceLoader', interfaceLoaderCredentials))
         .then(() => {
-            if (credit && store.state.auth.device.event.config.useCardData) {
+            if (typeof credit === 'number' && store.state.auth.device.event.config.useCardData) {
                 store.commit('OVERRIDE_BUYER_CREDIT', credit);
+            }
+
+            if (shouldSendBasket && shouldWriteCredit && store.state.auth.device.event.config.useCardData) {
+                store.commit('LOGOUT_BUYER');
             }
         })
         .catch((err) => {
